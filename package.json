@@ -1,0 +1,23 @@
+{
+  "name": "mern-boilerplate",
+  "version": "1.0.0",
+  "engines": {
+    "node": "10.20.1",
+    "npm": "6.14.4"
+  },
+  "description": "mern-boilerplate",
+  "main": "server/index.js",
+  "scripts": {
+    "start": "node server/index.js",
+    "dev": "concurrently \"npm run server\" \"npm run start --prefix client\"",
+    "server": "nodemon server/index.js",
+    "preinstall": "npm install --prefix client && npm install --prefix server",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm run build --prefix client"
+  },
+  "author": "Samuel Fils",
+  "license": "ISC",
+  "devDependencies": {
+    "concurrently": "^5.2.0",
+    "nodemon": "^2.0.4"
+  }
+}

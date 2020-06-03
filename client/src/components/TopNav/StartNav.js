@@ -1,7 +1,9 @@
 import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, useMediaQuery, IconButton } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
+import { setDrawer, toggleDrawer } from "../../redux/actions/layout";
 import youtubeLogo from "../../assets/youtube-logo.png";
 
 const useStyles = makeStyles((theme) => ({
@@ -18,13 +20,15 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const StartNav = () => {
+  const layout = useSelector(({ layout }) => layout);
+  const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
   const [isOpen, setOpen] = React.useState(false);
   const isMinScreenLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   useEffect(() => {
-    setOpen(isMinScreenLg);
+    dispatch(setDrawer(isMinScreenLg));
   }, [isMinScreenLg]);
 
   return (
@@ -33,7 +37,11 @@ const StartNav = () => {
         gutters: classes.toolbar,
       }}
     >
-      <IconButton aria-label="open drawer" edge="start">
+      <IconButton
+        aria-label="open drawer"
+        edge="start"
+        onClick={() => dispatch(toggleDrawer())}
+      >
         <MenuIcon />
       </IconButton>
       <img

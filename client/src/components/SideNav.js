@@ -1,11 +1,11 @@
 import React from "react";
-import { makeStyles, useTheme } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
+import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { Drawer, Divider } from "@material-ui/core";
 import MainNavMenu from "./MainNavMenu";
 
 const drawerWidth = 240;
-const isOpen = false;
 const useStyles = makeStyles((theme) => ({
   drawer: {
     width: drawerWidth,
@@ -41,18 +41,20 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const SideNav = () => {
+  const layout = useSelector(({ layout }) => layout);
+
   const classes = useStyles();
   return (
     <Drawer
       variant="permanent"
       className={clsx(classes.drawer, {
-        [classes.drawerOpen]: isOpen,
-        [classes.drawerClose]: !isOpen,
+        [classes.drawerOpen]: layout.isDrawerOpen,
+        [classes.drawerClose]: !layout.isDrawerOpen,
       })}
       classes={{
         paper: clsx({
-          [classes.drawerOpen]: isOpen,
-          [classes.drawerClose]: !isOpen,
+          [classes.drawerOpen]: layout.isDrawerOpen,
+          [classes.drawerClose]: !layout.isDrawerOpen,
         }),
       }}
     >

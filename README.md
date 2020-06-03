@@ -1,6 +1,6 @@
 # MERN Boilerplate (Counter App)
 
-This is a MERN boilerplate project that implements a realtime counter application with authentication
+This is a YouTube Clone that implements the main features of [YouTube](https://www.youtube.com/)
 
 ## Technologies
 
@@ -9,12 +9,10 @@ This is a MERN boilerplate project that implements a realtime counter applicatio
 - [React](https://reactjs.org/docs/create-a-new-react-app.html) for the frontend
 - [React Router](https://reacttraining.com/react-router/) for the frontend routing
 - [Sendgid](https://github.com/sendgrid/sendgrid-nodejs) for email service
-- [Socket.io](https://socket.io/) for realtime events
 - [Json Web Tokens](https://github.com/auth0/node-jsonwebtoken) for authentication
 - [bcryptjs](https://github.com/dcodeIO/bcrypt.js) for hashing the user passwords
 - [Redux](https://react-redux.js.org/) for application state
 - [Formik](https://jaredpalmer.com/formik/) for forms
-- [React Bootstrap](https://react-bootstrap.github.io/) for styles
 - [Material UI](https://material-ui.com/) for styles (pagination)
 
 ## Features

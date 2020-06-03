@@ -6,8 +6,8 @@ import RegisterPage from "./components/RegisterPage";
 import LoginPage from "./components/LoginPage";
 import ResetPage from "./components/ResetPage";
 import ForgotPage from "./components/ForgotPasswordPage";
-import NavBar from "./components/NavBar";
 import auth from "./hoc/auth";
+import TopNav from "./components/TopNav";
 
 function App() {
   const Home = auth(HomePage, false);
@@ -17,9 +17,8 @@ function App() {
   const Forgot = auth(ForgotPage, false);
   return (
     <div>
-      <NavBar />
-
-      <Switch>
+      <TopNav />
+      {/* <Switch>
         <Route exact path="/" render={(props) => <Home {...props} />} />
         <Route exact path="/login" render={(props) => <Login {...props} />} />
         <Route
@@ -34,7 +33,7 @@ function App() {
         />
         <Route exact path="/forgot" render={(props) => <Forgot {...props} />} />
         <Route render={() => <Redirect to="/" />} />
-      </Switch>
+      </Switch> */}
     </div>
   );
 }

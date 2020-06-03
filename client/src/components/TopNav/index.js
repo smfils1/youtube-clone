@@ -16,7 +16,6 @@ const useStyles = makeStyles((theme) => ({
   appBar: {
     display: "flex",
     flexDirection: "row",
-    padding: "0 1em",
 
     background: "white",
     zIndex: theme.zIndex.drawer + 1,

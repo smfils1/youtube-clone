@@ -23,13 +23,20 @@ const useStyles = makeStyles((theme) => ({
     borderColor: blue[800],
     borderRadius: "3px",
   },
+  toolbar: {
+    paddingLeft: "0px",
+  },
 }));
 
 const NavBar = () => {
   const classes = useStyles();
   const theme = useTheme();
   return (
-    <Toolbar disableGutters>
+    <Toolbar
+      classes={{
+        gutters: classes.toolbar,
+      }}
+    >
       <Hidden smUp>
         <IconButton size={theme.breakpoints.up("md") ? "small" : "medium"}>
           <SearchIcon />

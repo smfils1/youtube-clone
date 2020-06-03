@@ -12,6 +12,9 @@ const useStyles = makeStyles((theme) => ({
       height: "40px",
     },
   },
+  toolbar: {
+    paddingRight: "0px",
+  },
 }));
 
 const StartNav = () => {
@@ -25,7 +28,11 @@ const StartNav = () => {
   }, [isMinScreenLg]);
 
   return (
-    <Toolbar disableGutters>
+    <Toolbar
+      classes={{
+        gutters: classes.toolbar,
+      }}
+    >
       <IconButton aria-label="open drawer" edge="start">
         <MenuIcon />
       </IconButton>

@@ -1,4 +1,5 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { blue } from "@material-ui/core/colors";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import {
@@ -6,7 +7,6 @@ import {
   IconButton,
   Hidden,
   Button,
-  ButtonBase,
   Tooltip,
 } from "@material-ui/core";
 import {
@@ -16,6 +16,7 @@ import {
   MoreVert as MoreIcon,
   Apps as AppsIcon,
 } from "@material-ui/icons";
+import { setMobileSearch } from "../../redux/actions/layout";
 
 const useStyles = makeStyles((theme) => ({
   signButton: {
@@ -29,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavBar = () => {
+  const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
   return (
@@ -38,7 +40,10 @@ const NavBar = () => {
       }}
     >
       <Hidden smUp>
-        <IconButton size={theme.breakpoints.up("md") ? "small" : "medium"}>
+        <IconButton
+          onClick={() => dispatch(setMobileSearch(true))}
+          size={theme.breakpoints.up("md") ? "small" : "medium"}
+        >
           <SearchIcon />
         </IconButton>
       </Hidden>

@@ -1,7 +1,8 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { AppBar, CssBaseline, Toolbar } from "@material-ui/core";
-
+import { useSelector } from "react-redux";
+import MobileSearch from "./MobileSearch";
 import StartNav from "./StartNav";
 import MiddleNav from "./MiddleNav";
 import EndNav from "./EndNav";
@@ -28,17 +29,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default () => {
   const classes = useStyles();
+  const layout = useSelector(({ layout }) => layout);
 
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar elevation={0} position="fixed" className={classes.appBar}>
-        <StartNav />
-        <div className={classes.grow} />
+        {!layout.isMobileSearchClick ? (
+          <>
+            <StartNav />
+            <div className={classes.grow} />
 
-        <MiddleNav />
-        <div className={classes.grow} />
-        <EndNav />
+            <MiddleNav />
+            <div className={classes.grow} />
+            <EndNav />
+          </>
+        ) : (
+          <MobileSearch />
+        )}
       </AppBar>
     </div>
   );

@@ -27,6 +27,15 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     paddingLeft: "0px",
   },
+  iconButton: {
+    "&:hover": {
+      //you want this to be the same as the backgroundColor above
+      backgroundColor: "white",
+    },
+    "&:focus": {
+      outline: "white",
+    },
+  },
 }));
 
 const NavBar = () => {
@@ -49,7 +58,7 @@ const NavBar = () => {
       </Hidden>
       <Hidden smDown>
         <Tooltip title="Create">
-          <IconButton>
+          <IconButton className={classes.iconButton}>
             <VideoIcon />
           </IconButton>
         </Tooltip>

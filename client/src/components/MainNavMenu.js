@@ -6,6 +6,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Divider,
 } from "@material-ui/core";
 import {
   Home as HomeIcon,
@@ -47,14 +48,17 @@ const MainNavMenu = () => {
           component: <HistoryIcon />,
         },
       ].map((item, index) => (
-        <Tooltip title={item.title} key={index}>
-          <ListItem button>
-            <ListItemIcon className={classes.icon}>
-              {item.component}
-            </ListItemIcon>
-            <ListItemText primary={item.title} />
-          </ListItem>
-        </Tooltip>
+        <>
+          <Tooltip title={item.title} key={index}>
+            <ListItem button>
+              <ListItemIcon className={classes.icon}>
+                {item.component}
+              </ListItemIcon>
+              <ListItemText primary={item.title} />
+            </ListItem>
+          </Tooltip>
+          {index === 1 && <Divider key={index} />}
+        </>
       ))}
     </List>
   );

@@ -17,6 +17,15 @@ const useStyles = makeStyles((theme) => ({
   toolbar: {
     paddingRight: "0px",
   },
+  iconButton: {
+    "&:hover": {
+      //you want this to be the same as the backgroundColor above
+      backgroundColor: "white",
+    },
+    "&:focus": {
+      outline: "white",
+    },
+  },
 }));
 
 const StartNav = () => {
@@ -38,10 +47,12 @@ const StartNav = () => {
       <IconButton
         aria-label="open drawer"
         edge="start"
+        className={classes.iconButton}
         onClick={() => dispatch(toggleDrawer())}
       >
         <MenuIcon />
       </IconButton>
+
       <img
         src={youtubeLogo}
         className={classes.youtubeLogo}

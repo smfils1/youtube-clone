@@ -2,9 +2,9 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { useSelector } from "react-redux";
 import clsx from "clsx";
-import { Drawer, Divider } from "@material-ui/core";
+import { Drawer, Divider, Hidden } from "@material-ui/core";
 import MainNavMenu from "./MainNavMenu";
-
+import CategoryMenu from "./CategoryMenu";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   drawer: {
@@ -62,6 +62,7 @@ const SideNav = () => {
       <Divider />
       <MainNavMenu />
       <Divider />
+      {layout.isDrawerOpen && <CategoryMenu />}
     </Drawer>
   );
 };

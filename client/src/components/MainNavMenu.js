@@ -48,8 +48,8 @@ const MainNavMenu = () => {
           component: <HistoryIcon />,
         },
       ].map((item, index) => (
-        <>
-          <Tooltip title={item.title} key={index}>
+        <React.Fragment key={index}>
+          <Tooltip title={item.title}>
             <ListItem button>
               <ListItemIcon className={classes.icon}>
                 {item.component}
@@ -57,8 +57,8 @@ const MainNavMenu = () => {
               <ListItemText primary={item.title} />
             </ListItem>
           </Tooltip>
-          {index === 1 && <Divider key={index} />}
-        </>
+          {index === 1 && <Divider />}
+        </React.Fragment>
       ))}
     </List>
   );

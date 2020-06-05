@@ -28,15 +28,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StartNav = () => {
+const StartNav = ({ mobile }) => {
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
   const isMinScreenLg = useMediaQuery(theme.breakpoints.up("lg"));
 
   useEffect(() => {
-    dispatch(setDrawer(isMinScreenLg));
-  }, [isMinScreenLg]);
+    if (!mobile) dispatch(setDrawer(isMinScreenLg));
+  });
 
   return (
     <Toolbar

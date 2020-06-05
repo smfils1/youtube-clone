@@ -1,6 +1,6 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, InputBase, Button, Tooltip, Hidden } from "@material-ui/core";
+import { Toolbar, Hidden } from "@material-ui/core";
 import NavSearch from "./NavSearch";
 const useStyles = makeStyles((theme) => ({
   root: {

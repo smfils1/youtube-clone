@@ -52,6 +52,7 @@ const NavBar = () => {
         <IconButton
           onClick={() => dispatch(setMobileSearch(true))}
           size={theme.breakpoints.up("md") ? "small" : "medium"}
+          className={classes.iconButton}
         >
           <SearchIcon />
         </IconButton>

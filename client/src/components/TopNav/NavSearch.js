@@ -1,7 +1,7 @@
 import React from "react";
-import { grey, blue } from "@material-ui/core/colors";
+import { grey } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
-import { Toolbar, InputBase, Button, Tooltip, Hidden } from "@material-ui/core";
+import { InputBase, Button, Tooltip } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({

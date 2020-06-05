@@ -46,37 +46,61 @@ const CategoryMenu = () => {
         {
           title: "Music",
           component: (
-            <img src={musicIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={musicIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="music logo"
+            />
           ),
         },
         {
           title: "Sports",
           component: (
-            <img src={sportsIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={sportsIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="sports logo"
+            />
           ),
         },
         {
           title: "Gaming",
           component: (
-            <img src={gameIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={gameIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="game logo"
+            />
           ),
         },
         {
           title: "Movies & Shows",
           component: (
-            <img src={filmIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={filmIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="film logo"
+            />
           ),
         },
         {
           title: "News",
           component: (
-            <img src={newsIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={newsIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="news logo"
+            />
           ),
         },
         {
           title: "Live",
           component: (
-            <img src={liveIcon} className={classes.bestOfYoutubeIcon} />
+            <img
+              src={liveIcon}
+              className={classes.bestOfYoutubeIcon}
+              alt="live logo"
+            />
           ),
         },
       ].map((item, index) => (

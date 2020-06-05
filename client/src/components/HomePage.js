@@ -1,5 +1,5 @@
-import React, { useEffect } from "react";
-import { clearAuthMessage } from "../redux/actions/auth";
+import React from "react";
+//import { clearAuthMessage } from "../redux/actions/auth";
 import { useSelector, useDispatch } from "react-redux";
 
 const HomePage = () => {

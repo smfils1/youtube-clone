@@ -1,5 +1,5 @@
 import React from "react";
-//import { Switch, Route, Redirect } from "react-router-dom";
+import { Switch, Route, Redirect } from "react-router-dom";
 import SignInPage from "./components/SignInPage";
 // import HomePage from "./components/HomePage";
 // import RegisterPage from "./components/RegisterPage";
@@ -18,24 +18,35 @@ function App() {
   return (
     <div>
       <NavBar>
-        <SignInPage page="history" />
+        <Switch>
+          <Route
+            exact
+            path="/"
+            render={(props) => <div {...props}>Home</div>}
+          />
+          <Route
+            exact
+            path="/trending"
+            render={(props) => <div {...props}>Trending</div>}
+          />
+          <Route
+            exact
+            path="/subscriptions"
+            render={(props) => <SignInPage page="subscriptions" {...props} />}
+          />
+          <Route
+            exact
+            path="/library"
+            render={(props) => <SignInPage page="library" {...props} />}
+          />
+          <Route
+            exact
+            path="/history"
+            render={(props) => <SignInPage page="history" {...props} />}
+          />
+          <Route render={() => <Redirect to="/" />} />
+        </Switch>
       </NavBar>
-      {/* <Switch>
-        <Route exact path="/" render={(props) => <Home {...props} />} />
-        <Route exact path="/login" render={(props) => <Login {...props} />} />
-        <Route
-          exact
-          path="/reset/:id"
-          render={(props) => <Reset {...props} />}
-        />
-        <Route
-          exact
-          path="/register"
-          render={(props) => <Register {...props} />}
-        />
-        <Route exact path="/forgot" render={(props) => <Forgot {...props} />} />
-        <Route render={() => <Redirect to="/" />} />
-      </Switch> */}
     </div>
   );
 }

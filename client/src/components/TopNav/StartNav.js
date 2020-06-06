@@ -3,6 +3,8 @@ import { useDispatch } from "react-redux";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, useMediaQuery, IconButton } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
+
+import { NavLink } from "react-router-dom";
 import { setDrawer, toggleDrawer } from "../../redux/actions/layout";
 import youtubeLogo from "../../assets/youtube-logo.png";
 
@@ -52,12 +54,13 @@ const StartNav = ({ mobile }) => {
       >
         <MenuIcon />
       </IconButton>
-
-      <img
-        src={youtubeLogo}
-        className={classes.youtubeLogo}
-        alt="YouTube logo"
-      />
+      <NavLink to="/">
+        <img
+          src={youtubeLogo}
+          className={classes.youtubeLogo}
+          alt="YouTube logo"
+        />
+      </NavLink>
     </Toolbar>
   );
 };

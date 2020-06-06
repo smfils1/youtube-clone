@@ -19,30 +19,22 @@ function App() {
     <div>
       <NavBar>
         <Switch>
-          <Route
-            exact
-            path="/"
-            render={(props) => <div {...props}>Home</div>}
-          />
-          <Route
-            exact
-            path="/trending"
-            render={(props) => <div {...props}>Trending</div>}
-          />
+          <Route exact path="/" render={() => <div>Home</div>} />
+          <Route exact path="/trending" render={() => <div>Trending</div>} />
           <Route
             exact
             path="/subscriptions"
-            render={(props) => <SignInPage page="subscriptions" {...props} />}
+            render={() => <SignInPage page="subscriptions" />}
           />
           <Route
             exact
             path="/library"
-            render={(props) => <SignInPage page="library" {...props} />}
+            render={() => <SignInPage page="library" />}
           />
           <Route
             exact
             path="/history"
-            render={(props) => <SignInPage page="history" {...props} />}
+            render={() => <SignInPage page="history" />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

@@ -1,6 +1,6 @@
 import React from "react";
 //import { Switch, Route, Redirect } from "react-router-dom";
-
+import SignInPage from "./components/SignInPage";
 // import HomePage from "./components/HomePage";
 // import RegisterPage from "./components/RegisterPage";
 // import LoginPage from "./components/LoginPage";
@@ -18,7 +18,7 @@ function App() {
   return (
     <div>
       <NavBar>
-        <div>Hello World</div>
+        <SignInPage page="history" />
       </NavBar>
       {/* <Switch>
         <Route exact path="/" render={(props) => <Home {...props} />} />

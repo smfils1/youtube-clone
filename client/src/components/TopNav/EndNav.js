@@ -1,29 +1,16 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { blue } from "@material-ui/core/colors";
 import { makeStyles, useTheme } from "@material-ui/core/styles";
-import {
-  Toolbar,
-  IconButton,
-  Hidden,
-  Button,
-  Tooltip,
-} from "@material-ui/core";
+import { Toolbar, IconButton, Hidden, Tooltip } from "@material-ui/core";
 import {
   Search as SearchIcon,
-  AccountCircle as AccountIcon,
   VideoCall as VideoIcon,
   MoreVert as MoreIcon,
   Apps as AppsIcon,
 } from "@material-ui/icons";
 import { setMobileSearch } from "../../redux/actions/layout";
-
+import SignInBtn from "../SignInBtn";
 const useStyles = makeStyles((theme) => ({
-  signButton: {
-    color: blue[800],
-    borderColor: blue[800],
-    borderRadius: "3px",
-  },
   toolbar: {
     paddingLeft: "0px",
   },
@@ -80,14 +67,7 @@ const NavBar = () => {
         </Tooltip>
       </Hidden>
 
-      <Button
-        variant="outlined"
-        size={theme.breakpoints.up("md") ? "medium" : "large"}
-        className={classes.signButton}
-        startIcon={<AccountIcon />}
-      >
-        sign in
-      </Button>
+      <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />
     </Toolbar>
   );
 };

@@ -8,13 +8,8 @@ import {
   ListItemText,
   Divider,
 } from "@material-ui/core";
-import {
-  Home as HomeIcon,
-  Whatshot as TrendingIcon,
-  History as HistoryIcon,
-  VideoLibrary as LibraryIcon,
-  Subscriptions as SubscriptionIcon,
-} from "@material-ui/icons";
+import { Home as HomeIcon, Whatshot as TrendingIcon } from "@material-ui/icons";
+import menuAuthIcons from "./menuAuthIcons";
 
 const useStyles = makeStyles((theme) => ({
   icon: {
@@ -29,37 +24,29 @@ const MainNavMenu = () => {
       {[
         {
           title: "Home",
-          component: <HomeIcon />,
+          icon: HomeIcon,
         },
         {
           title: "Trending",
-          component: <TrendingIcon />,
+          icon: TrendingIcon,
         },
-        {
-          title: "Subscriptions",
-          component: <SubscriptionIcon />,
-        },
-        {
-          title: "Library",
-          component: <LibraryIcon />,
-        },
-        {
-          title: "History",
-          component: <HistoryIcon />,
-        },
-      ].map((item, index) => (
-        <React.Fragment key={index}>
-          <Tooltip title={item.title}>
-            <ListItem button>
-              <ListItemIcon className={classes.icon}>
-                {item.component}
-              </ListItemIcon>
-              <ListItemText primary={item.title} />
-            </ListItem>
-          </Tooltip>
-          {index === 1 && <Divider />}
-        </React.Fragment>
-      ))}
+        ...menuAuthIcons,
+      ].map((item, index) => {
+        const Icon = item.icon;
+        return (
+          <React.Fragment key={index}>
+            <Tooltip title={item.title}>
+              <ListItem button>
+                <ListItemIcon className={classes.icon}>
+                  <Icon />
+                </ListItemIcon>
+                <ListItemText primary={item.title} />
+              </ListItem>
+            </Tooltip>
+            {index === 1 && <Divider />}
+          </React.Fragment>
+        );
+      })}
     </List>
   );
 };

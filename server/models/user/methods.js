@@ -1,31 +1,6 @@
 const bcrypt = require("bcrypt");
 
 const methods = (userSchema) => {
-  userSchema.methods.comparePassword = function (plainPassword) {
-    const user = this;
-    return bcrypt.compare(plainPassword, user.password);
-  };
-
-  userSchema.statics.validate = async function ({ email, password, error }) {
-    const User = this;
-    let user;
-
-    try {
-      user = await User.findOne({ email });
-      if (!user) throw error;
-
-      const isPasswordMatch = await user.comparePassword(password);
-
-      if (isPasswordMatch) {
-        return user;
-      } else {
-        throw error;
-      }
-    } catch (err) {
-      throw err;
-    }
-  };
-
   userSchema.statics.create = async function (userInfo, error) {
     const User = this;
     const user = new User(userInfo);
@@ -38,20 +13,25 @@ const methods = (userSchema) => {
     }
   };
 
-  userSchema.statics.updatePasswordById = async function (
-    { id, password },
+  userSchema.statics.findOrCreate = async function (
+    { id: oauthId, displayName: name, _json: { email, picture: profileImg } },
     error
   ) {
     const User = this;
+    let user;
     try {
-      const user = await User.findById({ _id: id });
-      user.password = password;
-      await user.save();
-
-      if (!user) throw error;
+      user = await User.findOne({ oauthId });
+      if (!user) {
+        user = User.create({
+          oauthId,
+          name,
+          email,
+          profileImg,
+        });
+      }
       return user;
     } catch (err) {
-      throw error || err;
+      error(err);
     }
   };
 };

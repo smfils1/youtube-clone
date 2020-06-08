@@ -14,19 +14,15 @@ const dbConnect = require("./config/db");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const auth = require("./middleware/auth");
-
-const website =
-  config.NODE_ENV === "production"
-    ? config.WEBSITE_URL
-    : "http://localhost:3000";
-
+const passport = require("./config/passport");
 //Use Middlewares
 app.use(
   cors({
-    origin: website,
+    origin: config.WEBSITE_URL,
     credentials: true,
   })
 );
+app.use(passport.initialize());
 app.use(helmet()); //Secure HTTP headers
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

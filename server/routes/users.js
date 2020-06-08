@@ -11,6 +11,7 @@ router.get("/", async (req, res) => {
     res.json({
       name: user.name,
       email: user.email,
+      profileImg: user.profileImg,
     });
   } catch (err) {
     errorResponse(err, res);

@@ -8,7 +8,6 @@ import SignInPage from "./components/SignInPage";
 // import ForgotPage from "./components/ForgotPasswordPage";
 import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
-import SignInBtn from "./components/SignInBtn";
 
 function App() {
   const HomePage = () => <div>Home</div>;

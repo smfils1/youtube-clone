@@ -2,6 +2,10 @@ const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
 const userSchema = mongoose.Schema({
+  oauthId: {
+    type: String,
+    required: [true, "{PATH} is required"],
+  },
   name: {
     type: String,
     required: [true, "{PATH} is required"],

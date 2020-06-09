@@ -22,6 +22,8 @@
     "mongoose": "^5.9.14",
     "mongoose-unique-validator": "^2.0.3",
     "nodemailer": "^6.4.6",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0",
     "socket.io": "^2.3.0"
   }
 }

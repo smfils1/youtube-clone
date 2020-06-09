@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { auth } from "../redux/actions/auth";
+import { auth } from "../redux/actions/user";
 
 export default (OriginalComponent, isPrivate = true) => {
   const ComposedComponent = (props) => {
@@ -11,6 +11,7 @@ export default (OriginalComponent, isPrivate = true) => {
       if (!isAuth && isPrivate) {
         props.history.push("/login");
       }
+      console.log(props);
       if (
         isAuth &&
         (props.location.pathname === "/login" ||

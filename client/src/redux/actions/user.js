@@ -23,7 +23,7 @@ const setUserInfo = (user) => {
 const logoutUser = (history) => {
   return async (dispatch) => {
     try {
-      await api.get("/api/auth/logout");
+      await api.get("/api/auth/google/logout");
       dispatch(setAuth(false));
       dispatch(
         setUserInfo({
@@ -52,7 +52,7 @@ const auth = () => {
       const { data } = await api.get("/api/users");
       dispatch(setAuth(true));
       dispatch(
-        setUser({
+        setUserInfo({
           name: data.name,
           email: data.email,
           profileImg: data.profileImg,
@@ -70,6 +70,4 @@ const auth = () => {
     }
   };
 };
-export { auth, logoutUser };
-
-export { setUser };
+export { auth, logoutUser, setUserInfo };

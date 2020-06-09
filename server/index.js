@@ -5,6 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
+const auth = require("./middleware/auth");
 
 //Configurations
 const config = require("./config");
@@ -13,8 +14,8 @@ const dbConnect = require("./config/db");
 // routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
-const auth = require("./middleware/auth");
 const passport = require("./config/passport");
+
 //Use Middlewares
 app.use(
   cors({
@@ -29,7 +30,7 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 // Use Routes
-app.use("/api/auth", authRoutes);
+app.use("/api/auth/google", authRoutes);
 app.use("/api/users", auth, userRoutes);
 
 if (process.env.NODE_ENV === "production") {

@@ -6,35 +6,38 @@ import SignInPage from "./components/SignInPage";
 // import LoginPage from "./components/LoginPage";
 // import ResetPage from "./components/ResetPage";
 // import ForgotPage from "./components/ForgotPasswordPage";
-// import auth from "./hoc/auth";
+import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
+import SignInBtn from "./components/SignInBtn";
 
 function App() {
-  // const Home = auth(HomePage, false);
-  // const Login = auth(LoginPage, false);
-  // const Register = auth(RegisterPage, false);
-  // const Reset = auth(ResetPage, false);
-  // const Forgot = auth(ForgotPage, false);
+  const HomePage = () => <div>Home</div>;
+  const Home = auth(HomePage, false);
+  const Subscriptions = auth(SignInPage);
+  const Library = auth(SignInPage);
+  const History = auth(SignInPage);
   return (
     <div>
       <NavBar>
         <Switch>
-          <Route exact path="/" render={() => <div>Home</div>} />
+          <Route exact path="/" render={(props) => <Home {...props} />} />
           <Route exact path="/trending" render={() => <div>Trending</div>} />
           <Route
             exact
             path="/subscriptions"
-            render={() => <SignInPage page="subscriptions" />}
+            render={(props) => (
+              <Subscriptions {...props} page="subscriptions" />
+            )}
           />
           <Route
             exact
             path="/library"
-            render={() => <SignInPage page="library" />}
+            render={(props) => <Library {...props} page="library" />}
           />
           <Route
             exact
             path="/history"
-            render={() => <SignInPage page="history" />}
+            render={(props) => <History {...props} page="history" />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

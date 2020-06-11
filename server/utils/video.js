@@ -1,5 +1,10 @@
 const fs = require("fs");
 const multer = require("multer");
+const path = require("path");
+const ffmpeg = require("fluent-ffmpeg");
+
+const localVidPath = path.join("data", "videos");
+const localThumbPath = path.join("data", "thumbnails");
 
 const stream = (videPath, range, res) => {
   const stat = fs.statSync(videPath);
@@ -29,10 +34,10 @@ const stream = (videPath, range, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    if (!fs.existsSync("data")) {
-      fs.mkdirSync("data");
+    if (!fs.existsSync(localVidPath)) {
+      fs.mkdirSync(localVidPath, { recursive: true });
     }
-    cb(null, "data");
+    cb(null, localVidPath);
   },
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
@@ -46,7 +51,48 @@ const storage = multer.diskStorage({
   },
 });
 
+const upload = multer({ storage }).single("file");
+
+const generateThumbnails = (videoPath, limit) => {
+  let thumbnailPaths;
+  const promise = new Promise((resolve, reject) => {
+    ffmpeg(videoPath)
+      .on("filenames", function (filenames) {
+        thumbnailPaths = filenames.map((filename) =>
+          path.join(localThumbPath, filename)
+        );
+      })
+      .on("error", (err) => {
+        reject(err);
+      })
+      .on("end", function () {
+        resolve(thumbnailPaths);
+      })
+      .screenshots({
+        count: limit,
+        folder: localThumbPath,
+        size: "1280x720",
+        filename: "thumbnail-%b.png",
+      });
+    return promise;
+  });
+};
+
+const info = (videoPath) => {
+  const promise = new Promise((resolve, reject) => {
+    ffmpeg.ffprobe(videoPath, function (err, metadata) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve({ duration: metadata.format.duration });
+      }
+    });
+  });
+};
+
 module.exports = {
   stream,
-  upload: multer({ storage }).single("file"),
+  upload,
+  generateThumbnails,
+  info,
 };

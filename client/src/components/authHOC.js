@@ -11,14 +11,6 @@ export default (OriginalComponent, isPrivate = true) => {
       if (!isAuth && isPrivate) {
         props.history.push("/login");
       }
-      console.log(props);
-      if (
-        isAuth &&
-        (props.location.pathname === "/login" ||
-          props.location.pathname === "/register")
-      ) {
-        props.history.push("/");
-      }
     };
 
     useEffect(() => {

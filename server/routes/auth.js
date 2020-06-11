@@ -5,7 +5,7 @@ const errorResponse = require("../utils/error");
 const { generateToken } = require("../utils/jwt");
 const { WEBSITE_URL } = require("../config/index");
 
-const User = require("../models/user/user");
+const User = require("../models/user");
 
 const config = require("../config");
 

@@ -2,7 +2,7 @@ const passport = require("passport");
 const url = require("url");
 const GoogleStrategy = require("passport-google-oauth20");
 const { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET } = require("./index");
-const User = require("../models/user/user");
+const User = require("../models/user");
 const { PORT, NODE_ENV, WEBSITE_URL } = require("./index");
 //Google Strategy
 const BACKEND_URL =

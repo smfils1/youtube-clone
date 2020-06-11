@@ -14,6 +14,7 @@ const dbConnect = require("./config/db");
 // routes
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
+const videoRoutes = require("./routes/videos");
 const passport = require("./config/passport");
 
 //Use Middlewares
@@ -32,6 +33,7 @@ app.use(cookieParser());
 // Use Routes
 app.use("/api/auth/google", authRoutes);
 app.use("/api/users", auth, userRoutes);
+app.use("/api/videos", videoRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../", "client", "build")));

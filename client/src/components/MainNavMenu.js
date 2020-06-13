@@ -1,10 +1,21 @@
 import React from "react";
-import { List, Divider } from "@material-ui/core";
+import { useDispatch } from "react-redux";
+
+import { List, Divider, useMediaQuery, useTheme } from "@material-ui/core";
 import { Home as HomeIcon, Whatshot as TrendingIcon } from "@material-ui/icons";
 import menuAuthIcons from "./menuAuthIcons";
-import ListItemLink from "./ListItemLink";
+import NavItem from "./NavItem";
+import { toggleDrawer } from "../redux/actions/layout";
 
 const MainNavMenu = () => {
+  const theme = useTheme();
+
+  const isMinScreenLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const dispatch = useDispatch();
+  const handleItemClick = () => {
+    dispatch(toggleDrawer(isMinScreenLg));
+  };
+
   return (
     <List>
       {[
@@ -22,7 +33,12 @@ const MainNavMenu = () => {
       ].map((item, index) => {
         return (
           <React.Fragment key={index}>
-            <ListItemLink to={item.path} title={item.title} icon={item.icon} />
+            <NavItem
+              to={item.path}
+              title={item.title}
+              icon={item.icon}
+              onClick={handleItemClick}
+            />
             {index === 1 && <Divider />}
           </React.Fragment>
         );

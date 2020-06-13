@@ -30,27 +30,34 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ListItemLink = ({ children, to, title, icon }) => {
+const NavItem = ({ children, to, title, icon, onClick, disableActive }) => {
   const classes = useStyles();
   const location = useLocation();
   const isActive = location.pathname === to;
   const Icon = icon;
-  return (
-    <Tooltip title={title}>
-      <NavLink to={to} className={classes.text}>
-        <ListItem button className={isActive ? classes.active : ""}>
-          <ListItemIcon
-            className={clsx(classes.icon, {
-              [classes.iconActive]: isActive,
-            })}
-          >
-            <Icon />
-          </ListItemIcon>
-          <ListItemText primary={title} />
-        </ListItem>
-      </NavLink>
-    </Tooltip>
+  const Item = (
+    <ListItem
+      button
+      onClick={onClick}
+      className={isActive ? classes.active : ""}
+    >
+      <ListItemIcon
+        className={clsx(classes.icon, {
+          [classes.iconActive]: isActive && !disableActive,
+        })}
+      >
+        <Icon />
+      </ListItemIcon>
+      <ListItemText primary={title} />
+    </ListItem>
+  );
+  return to ? (
+    <NavLink to={to} className={classes.text}>
+      {Item}
+    </NavLink>
+  ) : (
+    <> {Item} </>
   );
 };
 
-export default ListItemLink;
+export default NavItem;

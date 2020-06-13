@@ -12,7 +12,8 @@ import {
 import { setMobileSearch } from "../../redux/actions/layout";
 import SignInBtn from "../SignInBtn";
 import { BACKEND_URL } from "../../config";
-import NavMenuBtn from "./NavMenuBtn";
+import NavUserMenuBtn from "./NavUserMenuBtn";
+import NavVidMenuBtn from "./NavVidMenuBtn";
 const useStyles = makeStyles((theme) => ({
   toolbar: {
     paddingLeft: "0px",
@@ -50,9 +51,10 @@ const NavBar = () => {
           </IconButton>
         </Hidden>
         <Tooltip title="Create">
-          <IconButton className={classes.iconButton}>
+          <NavVidMenuBtn />
+          {/* <IconButton className={classes.iconButton}>
             <VideoIcon />
-          </IconButton>
+          </IconButton> */}
         </Tooltip>
         <Hidden smDown>
           <>
@@ -82,7 +84,7 @@ const NavBar = () => {
           </Tooltip>
         )}
 
-        {isAuth && <NavMenuBtn />}
+        {isAuth && <NavUserMenuBtn />}
         {isAuth || (
           <a href={`${BACKEND_URL}/api/auth/google`}>
             <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />

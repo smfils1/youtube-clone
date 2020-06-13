@@ -48,7 +48,7 @@ const TooltipHeader = ({ text, children }) => (
   </Tooltip>
 );
 
-const NavMenuBtn = () => {
+const NavUserMenuBtn = () => {
   const dispatch = useDispatch();
   const profileImg = useSelector(({ user }) => user.profileImg);
   const name = useSelector(({ user }) => user.name);
@@ -127,7 +127,13 @@ const NavMenuBtn = () => {
               </Grid>
               <Divider />
               <List component="nav" aria-labelledby="nested-list-subheader">
-                <ListItem button onClick={() => dispatch(logoutUser())}>
+                <ListItem
+                  button
+                  onClick={(e) => {
+                    handleClose(e);
+                    dispatch(logoutUser());
+                  }}
+                >
                   <ListItemIcon>
                     <ExitToAppIcon />
                   </ListItemIcon>
@@ -146,4 +152,4 @@ const NavMenuBtn = () => {
   );
 };
 
-export default NavMenuBtn;
+export default NavUserMenuBtn;

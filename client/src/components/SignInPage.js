@@ -1,4 +1,7 @@
 import React from "react";
+
+import { useSelector } from "react-redux";
+
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
@@ -24,6 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const SignInPage = ({ page }) => {
+  const isAuth = useSelector(({ user }) => user.isAuth);
   const authIcon = menuAuthIcons.filter(
     ({ title }) => title.toLowerCase() === page
   )[0];
@@ -31,16 +35,24 @@ const SignInPage = ({ page }) => {
   const classes = useStyles();
   return (
     <Container className={classes.root}>
-      <div className={classes.content}>
-        <Icon className={classes.icon} />
-        <Typography variant="h4" align="center" className={classes.text}>
-          {authIcon.description}
-        </Typography>
-        <Typography variant="subtitle1" align="center" className={classes.text}>
-          {authIcon.signInMsg}
-        </Typography>
-        <SignInBtn size="large" />
-      </div>
+      {!isAuth ? (
+        <div className={classes.content}>
+          <Icon className={classes.icon} />
+          <Typography variant="h4" align="center" className={classes.text}>
+            {authIcon.description}
+          </Typography>
+          <Typography
+            variant="subtitle1"
+            align="center"
+            className={classes.text}
+          >
+            {authIcon.signInMsg}
+          </Typography>
+          <SignInBtn size="large" />
+        </div>
+      ) : (
+        <div>{page}</div>
+      )}
     </Container>
   );
 };

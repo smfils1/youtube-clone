@@ -5,16 +5,17 @@ import SignInPage from "./components/SignInPage";
 // import RegisterPage from "./components/RegisterPage";
 // import LoginPage from "./components/LoginPage";
 // import ResetPage from "./components/ResetPage";
-// import ForgotPage from "./components/ForgotPasswordPage";
+import UploadPage from "./components/UploadPage/UploadPage";
 import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
 
 function App() {
   const HomePage = () => <div>Home</div>;
   const Home = auth(HomePage, false);
-  const Subscriptions = auth(SignInPage);
-  const Library = auth(SignInPage);
-  const History = auth(SignInPage);
+  const Subscriptions = auth(SignInPage, false);
+  const Library = auth(SignInPage, false);
+  const History = auth(SignInPage, false);
+  //const Upload = auth(UploadPage);
   return (
     <div>
       <NavBar>

@@ -47,21 +47,17 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-const DialogActions = withStyles((theme) => ({
-  root: {
-    margin: 0,
-    padding: theme.spacing(1),
-  },
-}))(MuiDialogActions);
-
-export default function CustomizedDialogs({ isOpen }) {
+export default function CustomizedDialogs({ isOpen, handUploadClose }) {
   const [open, setOpen] = React.useState(isOpen);
+  const [openStepper, setOpenStepper] = React.useState(false);
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
   const handleClose = () => {
     setOpen(false);
+    handUploadClose();
+  };
+
+  const loadStepper = () => {
+    setOpenStepper(true);
   };
 
   return (
@@ -74,7 +70,11 @@ export default function CustomizedDialogs({ isOpen }) {
         Upload video
       </DialogTitle>
       <DialogContent dividers>
-        <VidDropzone />
+        {openStepper ? (
+          <div>Upload Steps</div>
+        ) : (
+          <VidDropzone onSuccess={loadStepper} />
+        )}
       </DialogContent>
     </Dialog>
   );

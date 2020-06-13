@@ -41,23 +41,26 @@ const NavVideoMenuBtn = () => {
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const [openUpload, setOpenUpload] = React.useState(false);
-  const anchorRef = React.useRef(null);
+  const anchorBtnRef = React.useRef(null);
 
   const handleToggle = () => {
     setOpen((prevOpen) => !prevOpen);
   };
 
   const handleClose = (event) => {
-    if (anchorRef.current && anchorRef.current.contains(event.target)) {
+    if (anchorBtnRef.current && anchorBtnRef.current.contains(event.target)) {
       return;
     }
-
     setOpen(false);
   };
 
   const handUploadClick = (event) => {
-    handleClose(event);
-    setOpenUpload(true);
+    handleToggle();
+    setOpenUpload((prevOpen) => !prevOpen);
+  };
+
+  const handUploadClose = (event) => {
+    setOpenUpload(false);
   };
 
   function handleListKeyDown(event) {
@@ -70,7 +73,7 @@ const NavVideoMenuBtn = () => {
   return (
     <>
       <IconButton
-        ref={anchorRef}
+        ref={anchorBtnRef}
         aria-controls={open ? "menu-list-grow" : undefined}
         aria-haspopup="true"
         className={classes.iconButton}
@@ -78,41 +81,42 @@ const NavVideoMenuBtn = () => {
       >
         <VideoIcon />
       </IconButton>
-      {openUpload ? (
-        <UploadModal isOpen />
-      ) : (
-        <Popper
-          open={open}
-          anchorEl={anchorRef.current}
-          role={undefined}
-          transition
-          disablePortal
-        >
-          <Paper>
-            <ClickAwayListener onClickAway={handleClose}>
-              <MenuList
-                autoFocusItem={open}
-                id="menu-list-grow"
-                onKeyDown={handleListKeyDown}
-              >
-                <List component="nav" aria-labelledby="nested-list-subheader">
-                  <NavItem
-                    title="Upload"
-                    icon={TVIcon}
-                    onClick={handUploadClick}
-                  />
-                  <NavItem
-                    to="#"
-                    title="Go live"
-                    icon={LiveIcon}
-                    onClick={handleClose}
-                  />
-                </List>
-                <Divider />
-              </MenuList>
-            </ClickAwayListener>
-          </Paper>
-        </Popper>
+      {openUpload && (
+        <UploadModal isOpen={openUpload} handUploadClose={handUploadClose} />
+      )}
+      (
+      <Popper
+        open={open}
+        anchorEl={anchorBtnRef.current}
+        role={undefined}
+        transition
+        disablePortal
+      >
+        <Paper>
+          <ClickAwayListener onClickAway={handleClose}>
+            <MenuList
+              autoFocusItem={open}
+              id="menu-list-grow"
+              onKeyDown={handleListKeyDown}
+            >
+              <List component="nav" aria-labelledby="nested-list-subheader">
+                <NavItem
+                  title="Upload"
+                  icon={TVIcon}
+                  onClick={handUploadClick}
+                />
+                <NavItem
+                  to="#"
+                  title="Go live"
+                  icon={LiveIcon}
+                  onClick={handleClose}
+                />
+              </List>
+              <Divider />
+            </MenuList>
+          </ClickAwayListener>
+        </Paper>
+      </Popper>
       )}
     </>
   );

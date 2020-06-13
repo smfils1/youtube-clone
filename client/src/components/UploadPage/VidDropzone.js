@@ -47,11 +47,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StyledDropzone(props) {
+function StyledDropzone({ onSuccess }) {
   const classes = useStyles();
   const onDrop = useCallback(([videoFile]) => {
     if (videoFile) {
       console.log(videoFile);
+      onSuccess();
     }
   }, []);
   const {
@@ -89,7 +90,7 @@ function StyledDropzone(props) {
           <PublishIcon className={classes.uploadIcon} />
         </Fab>
         <Typography variant="body1">
-          Drag and drop <strong>.mp4 </strong> files to upload
+          Drag and drop a <strong>.mp4 </strong> file to upload
         </Typography>
         <Typography variant="body2" gutterBottom>
           Your videos will be private until you publish them.
@@ -101,7 +102,7 @@ function StyledDropzone(props) {
           color="primary"
           onClick={open}
         >
-          Select Files
+          Select File
         </Button>
       </div>
       {/* <aside>
@@ -111,8 +112,8 @@ function StyledDropzone(props) {
     </div>
   );
 }
-const VidDropzone = () => {
-  return <StyledDropzone />;
+const VidDropzone = (props) => {
+  return <StyledDropzone {...props} />;
 };
 
 export default VidDropzone;

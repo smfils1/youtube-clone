@@ -5,9 +5,9 @@ import SignInPage from "./components/SignInPage";
 // import RegisterPage from "./components/RegisterPage";
 // import LoginPage from "./components/LoginPage";
 // import ResetPage from "./components/ResetPage";
-import UploadPage from "./components/UploadPage/UploadPage";
 import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
+import UploadForm from "./components/Upload/UploadForm";
 
 function App() {
   const HomePage = () => <div>Home</div>;
@@ -15,7 +15,7 @@ function App() {
   const Subscriptions = auth(SignInPage, false);
   const Library = auth(SignInPage, false);
   const History = auth(SignInPage, false);
-  //const Upload = auth(UploadPage);
+
   return (
     <div>
       <NavBar>
@@ -38,6 +38,11 @@ function App() {
             exact
             path="/history"
             render={(props) => <History {...props} page="history" />}
+          />
+          <Route
+            exact
+            path="/test"
+            render={(props) => <UploadForm {...props} type="details" />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

@@ -10,10 +10,12 @@ import { toggleDrawer } from "../redux/actions/layout";
 const MainNavMenu = () => {
   const theme = useTheme();
 
-  const isMinScreenLg = useMediaQuery(theme.breakpoints.up("lg"));
+  const isMinScreenMd = useMediaQuery(theme.breakpoints.up("md"));
   const dispatch = useDispatch();
   const handleItemClick = () => {
-    dispatch(toggleDrawer(isMinScreenLg));
+    if (!isMinScreenMd) {
+      dispatch(toggleDrawer(isMinScreenMd));
+    }
   };
 
   return (

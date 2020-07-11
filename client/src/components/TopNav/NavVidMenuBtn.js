@@ -24,7 +24,7 @@ import {
 } from "@material-ui/icons";
 import { logoutUser } from "../../redux/actions/user";
 import NavItem from "../NavItem";
-import UploadModal from "../UploadModal";
+import UploadModal from "../Upload/UploadModal";
 const useStyles = makeStyles((theme) => ({
   iconButton: {
     "&:hover": {

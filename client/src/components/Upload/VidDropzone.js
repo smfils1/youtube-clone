@@ -5,6 +5,7 @@ import { Button, Fab, Typography } from "@material-ui/core";
 import { Publish as PublishIcon } from "@material-ui/icons";
 import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
+import axios from "axios";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -49,10 +50,21 @@ const useStyles = makeStyles((theme) => ({
 
 function StyledDropzone({ onSuccess }) {
   const classes = useStyles();
-  const onDrop = useCallback(([videoFile]) => {
+  const onDrop = useCallback(async ([videoFile]) => {
     if (videoFile) {
-      console.log(videoFile);
-      onSuccess();
+      let formData = new FormData();
+      const config = {
+        header: { "content-type": "multipart/form-data" },
+      };
+      formData.append("file", videoFile);
+      try {
+        const { data } = await axios.post(
+          "http://localhost:5000/api/videos/",
+          formData,
+          config
+        );
+        onSuccess(data.fileName);
+      } catch (err) {}
     }
   }, []);
   const {

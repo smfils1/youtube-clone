@@ -8,8 +8,9 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import VidDropzone from "./UploadPage/VidDropzone";
+import VidDropzone from "./VidDropzone";
 
+import UploadStepper from "./UploadStepper";
 const styles = (theme) => ({
   root: {
     margin: 0,
@@ -49,6 +50,7 @@ const DialogContent = withStyles((theme) => ({
 
 export default function CustomizedDialogs({ isOpen, handUploadClose }) {
   const [open, setOpen] = React.useState(isOpen);
+  const [filename, setFilename] = React.useState("");
   const [openStepper, setOpenStepper] = React.useState(false);
 
   const handleClose = () => {
@@ -56,9 +58,12 @@ export default function CustomizedDialogs({ isOpen, handUploadClose }) {
     handUploadClose();
   };
 
-  const loadStepper = () => {
+  const loadStepper = (filename) => {
     setOpenStepper(true);
+    setFilename(filename);
   };
+
+  const onVideoUploadSuccess = () => {};
 
   return (
     <Dialog
@@ -70,8 +75,8 @@ export default function CustomizedDialogs({ isOpen, handUploadClose }) {
         Upload video
       </DialogTitle>
       <DialogContent dividers>
-        {openStepper ? (
-          <div>Upload Steps</div>
+        {openStepper && filename ? (
+          <UploadStepper filename={filename} />
         ) : (
           <VidDropzone onSuccess={loadStepper} />
         )}

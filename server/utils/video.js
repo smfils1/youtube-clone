@@ -2,6 +2,8 @@ const fs = require("fs");
 const multer = require("multer");
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
+const urljoin = require("url-join");
+const config = require("../config");
 
 const localVidPath = path.join("data", "videos");
 const localThumbPath = path.join("data", "thumbnails");
@@ -42,31 +44,36 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, `${Date.now()}_${file.originalname}`);
   },
-  fileFilter: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
-    if (ext !== ".mp4") {
-      return cb(res.status(400).end("only jpg, png, mp4 is allowed"), false);
-    }
-    cb(null, true);
-  },
 });
 
-const upload = multer({ storage }).single("file");
+const uploadFilter = (req, file, cb) => {
+  const ext = path.extname(file.originalname);
+  if (ext !== ".mp4") {
+    return cb({ message: "Only .mp4 allowed" });
+  }
+  cb(null, true);
+};
+const upload = multer({ storage, fileFilter: uploadFilter }).single("file");
 
 const generateThumbnails = (videoPath, limit) => {
-  let thumbnailPaths;
+  let thumbnailLinks;
   const promise = new Promise((resolve, reject) => {
     ffmpeg(videoPath)
       .on("filenames", function (filenames) {
-        thumbnailPaths = filenames.map((filename) =>
-          path.join(localThumbPath, filename)
-        );
+        thumbnailLinks = filenames.map((filename) => {
+          const link = urljoin(
+            config.BACKEND_URL,
+            "/api/videos/thumbnail",
+            filename
+          );
+          return link;
+        });
       })
       .on("error", (err) => {
         reject(err);
       })
       .on("end", function () {
-        resolve(thumbnailPaths);
+        resolve(thumbnailLinks);
       })
       .screenshots({
         count: limit,
@@ -74,8 +81,8 @@ const generateThumbnails = (videoPath, limit) => {
         size: "1280x720",
         filename: "thumbnail-%b.png",
       });
-    return promise;
   });
+  return promise;
 };
 
 const info = (videoPath) => {
@@ -95,4 +102,6 @@ module.exports = {
   upload,
   generateThumbnails,
   info,
+  localVidPath,
+  localThumbPath,
 };

@@ -26,6 +26,7 @@
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
     "passport-google-oauth20": "^2.0.0",
-    "socket.io": "^2.3.0"
+    "socket.io": "^2.3.0",
+    "url-join": "^4.0.1"
   }
 }

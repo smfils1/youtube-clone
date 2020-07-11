@@ -1,4 +1,6 @@
 import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { makeStyles } from "@material-ui/core/styles";
 import Stepper from "@material-ui/core/Stepper";
 import Step from "@material-ui/core/Step";
@@ -7,6 +9,8 @@ import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import axios from "axios";
 import UploadForm from "./UploadForm";
+import { setVisibility, setDetails } from "../../redux/actions/upload";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -28,54 +32,36 @@ export default function HorizontalLinearStepper({ filename }) {
   const classes = useStyles();
   const formRef = useRef();
   const [activeStep, setActiveStep] = React.useState(0);
-  const [thumbnails, setThumbnails] = React.useState(
-    new Array(3).fill(
-      "https://user-images.githubusercontent.com/101482/29592647-40da86ca-875a-11e7-8bc3-941700b0a323.png"
-    )
-  );
-  const [thumbnail, setThumbnail] = React.useState("");
-  const [enableNext, setEnableNext] = React.useState(false);
-  const [details, setDetails] = React.useState(null);
-  const [visibility, setVisibility] = React.useState(null);
+  const dispatch = useDispatch();
+
+  const isLoading = useSelector(({ upload }) => upload.isLoading);
+  const thumbnails = useSelector(({ upload }) => upload.thumbnails);
   const steps = getSteps();
 
   const handleNext = () => {
     formRef.current.submitForm();
-    if (!Object.keys(formRef.current.errors).length)
+    if (!Object.keys(formRef.current.errors).length) {
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    }
   };
-
-  useEffect(() => {
-    console.log({ ...details, ...visibility });
-  }, [visibility]);
 
   const handleFinish = () => {
     formRef.current.submitForm();
+    if (!Object.keys(formRef.current.errors).length) {
+    }
+  };
 
-    // formRef.current.values
+  const setVisibilityRx = ({ visibility }) => {
+    dispatch(setVisibility(visibility));
+  };
+
+  const setDetailsRx = (details) => {
+    dispatch(setDetails(details));
   };
 
   const handleBack = () => {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
-
-  useEffect(async () => {
-    try {
-      const { data } = await axios.post(
-        "http://localhost:5000/api/videos/thumbnails",
-        {
-          filename,
-        }
-      );
-
-      setThumbnails(data.thumbnails);
-      setEnableNext(true);
-    } catch (err) {}
-  }, []);
 
   return (
     <div className={classes.root}>
@@ -100,7 +86,7 @@ export default function HorizontalLinearStepper({ filename }) {
                 <UploadForm
                   type="visibility"
                   formRef={formRef}
-                  onSubmit={setVisibility}
+                  onSubmit={setVisibilityRx}
                 />
               }
             </Typography>
@@ -116,10 +102,7 @@ export default function HorizontalLinearStepper({ filename }) {
               <Button
                 variant="contained"
                 color="primary"
-                onClick={() => {
-                  handleFinish();
-                  console.log("Finish");
-                }}
+                onClick={handleFinish}
                 className={classes.button}
               >
                 Finish
@@ -133,19 +116,24 @@ export default function HorizontalLinearStepper({ filename }) {
                 <UploadForm
                   type="details"
                   formRef={formRef}
-                  onSubmit={setDetails}
+                  onSubmit={setDetailsRx}
                 />
                 Pick an thumbnail:
-                {thumbnails.map((thumbnail) => (
-                  <img
-                    src={thumbnail}
-                    width="150"
-                    height="100"
-                    onClick={() => {
-                      setThumbnail(thumbnail);
-                    }}
-                  ></img>
-                ))}
+                {isLoading ? (
+                  <div>Loading.....</div>
+                ) : (
+                  thumbnails.map((thumbnail) => (
+                    <img
+                      src={thumbnail}
+                      width="150"
+                      height="100"
+                      onClick={() => {
+                        console.log(thumbnail);
+                      }}
+                    ></img>
+                  ))
+                )}
+                }
               </div>
             </Typography>
             <div>
@@ -161,10 +149,10 @@ export default function HorizontalLinearStepper({ filename }) {
                 variant="contained"
                 color="primary"
                 onClick={handleNext}
-                disabled={!enableNext}
+                disabled={isLoading}
                 className={classes.button}
               >
-                {activeStep === steps.length - 1 ? "Finish" : "Next"}
+                Next
               </Button>
             </div>
           </div>

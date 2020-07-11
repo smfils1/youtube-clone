@@ -71,7 +71,7 @@ router.post(
           res.json({
             success: true,
             filePath: res.req.file.path,
-            fileName: res.req.file.filename,
+            filename: res.req.file.filename,
           });
         }
       });
@@ -98,7 +98,6 @@ router.post(
 
       res.json({ thumbnails: thumbLinks });
     } catch (err) {
-      console.log(err);
       res.status(500).json({
         name: "ServerError",
         message: err.message,

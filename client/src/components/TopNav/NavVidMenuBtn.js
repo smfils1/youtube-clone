@@ -23,6 +23,8 @@ import {
   VideoCall as VideoIcon,
 } from "@material-ui/icons";
 import { logoutUser } from "../../redux/actions/user";
+import { setModal } from "../../redux/actions/upload";
+
 import NavItem from "../NavItem";
 import UploadModal from "../Upload/UploadModal";
 const useStyles = makeStyles((theme) => ({
@@ -38,9 +40,12 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const NavVideoMenuBtn = () => {
+  const dispatch = useDispatch();
+  const isModalOpen = useSelector(({ upload }) => upload.isOpen);
+
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
-  const [openUpload, setOpenUpload] = React.useState(false);
+  //const [openUpload, setOpenUpload] = React.useState(false);
   const anchorBtnRef = React.useRef(null);
 
   const handleToggle = () => {
@@ -54,13 +59,13 @@ const NavVideoMenuBtn = () => {
     setOpen(false);
   };
 
-  const handUploadClick = (event) => {
+  const handleUploadClick = () => {
     handleToggle();
-    setOpenUpload((prevOpen) => !prevOpen);
+    dispatch(setModal(true));
   };
 
-  const handUploadClose = (event) => {
-    setOpenUpload(false);
+  const handleModalClose = (event) => {
+    dispatch(setModal(false));
   };
 
   function handleListKeyDown(event) {
@@ -81,8 +86,8 @@ const NavVideoMenuBtn = () => {
       >
         <VideoIcon />
       </IconButton>
-      {openUpload && (
-        <UploadModal isOpen={openUpload} handUploadClose={handUploadClose} />
+      {isModalOpen && (
+        <UploadModal isOpen={isModalOpen} handleClose={handleModalClose} />
       )}
       (
       <Popper
@@ -103,7 +108,7 @@ const NavVideoMenuBtn = () => {
                 <NavItem
                   title="Upload"
                   icon={TVIcon}
-                  onClick={handUploadClick}
+                  onClick={handleUploadClick}
                 />
                 <NavItem
                   to="#"

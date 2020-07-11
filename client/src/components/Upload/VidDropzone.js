@@ -1,11 +1,13 @@
 import React, { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { useDropzone } from "react-dropzone";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button, Fab, Typography } from "@material-ui/core";
 import { Publish as PublishIcon } from "@material-ui/icons";
 import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
-import axios from "axios";
+import { uploadVideo } from "../../redux/actions/upload";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -48,23 +50,13 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function StyledDropzone({ onSuccess }) {
+function StyledDropzone() {
+  const dispatch = useDispatch();
+
   const classes = useStyles();
   const onDrop = useCallback(async ([videoFile]) => {
     if (videoFile) {
-      let formData = new FormData();
-      const config = {
-        header: { "content-type": "multipart/form-data" },
-      };
-      formData.append("file", videoFile);
-      try {
-        const { data } = await axios.post(
-          "http://localhost:5000/api/videos/",
-          formData,
-          config
-        );
-        onSuccess(data.fileName);
-      } catch (err) {}
+      dispatch(uploadVideo(videoFile));
     }
   }, []);
   const {
@@ -124,8 +116,9 @@ function StyledDropzone({ onSuccess }) {
     </div>
   );
 }
-const VidDropzone = (props) => {
-  return <StyledDropzone {...props} />;
+const VidDropzone = () => {
+  const isLoading = useSelector(({ upload }) => upload.isLoading);
+  return isLoading ? <div>Loading....</div> : <StyledDropzone />;
 };
 
 export default VidDropzone;

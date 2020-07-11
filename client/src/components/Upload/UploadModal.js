@@ -1,4 +1,6 @@
 import React from "react";
+import { useDispatch, useSelector } from "react-redux";
+
 import { withStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -48,20 +50,22 @@ const DialogContent = withStyles((theme) => ({
   },
 }))(MuiDialogContent);
 
-export default function CustomizedDialogs({ isOpen, handUploadClose }) {
-  const [open, setOpen] = React.useState(isOpen);
-  const [filename, setFilename] = React.useState("");
-  const [openStepper, setOpenStepper] = React.useState(false);
+export default function CustomizedDialogs({ isOpen, handleClose }) {
+  const filename = useSelector(({ upload }) => upload.filename);
 
-  const handleClose = () => {
-    setOpen(false);
-    handUploadClose();
-  };
+  //const [open, setOpen] = React.useState(isOpen);
+  //const [filename, setFilename] = React.useState("");
+  //const [openStepper, setOpenStepper] = React.useState(false);
 
-  const loadStepper = (filename) => {
-    setOpenStepper(true);
-    setFilename(filename);
-  };
+  // const handleClose = () => {
+  //   setOpen(false);
+  //   handUploadClose();
+  // };
+
+  // const loadStepper = (filename) => {
+  //   setOpenStepper(true);
+  //   setFilename(filename);
+  // };
 
   const onVideoUploadSuccess = () => {};
 
@@ -69,17 +73,13 @@ export default function CustomizedDialogs({ isOpen, handUploadClose }) {
     <Dialog
       onClose={handleClose}
       aria-labelledby="customized-dialog-title"
-      open={open}
+      open={isOpen}
     >
       <DialogTitle id="customized-dialog-title" onClose={handleClose}>
         Upload video
       </DialogTitle>
       <DialogContent dividers>
-        {openStepper && filename ? (
-          <UploadStepper filename={filename} />
-        ) : (
-          <VidDropzone onSuccess={loadStepper} />
-        )}
+        {filename ? <UploadStepper filename={filename} /> : <VidDropzone />}
       </DialogContent>
     </Dialog>
   );

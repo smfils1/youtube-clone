@@ -45,7 +45,6 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
       initialValues={initialValues}
       validationSchema={validationSchema}
       onSubmit={(values) => {
-        console.log(values);
         onSubmit(values);
       }}
       validateOnMount

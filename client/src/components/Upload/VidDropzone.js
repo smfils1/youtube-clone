@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useDropzone } from "react-dropzone";
@@ -54,16 +54,15 @@ function StyledDropzone() {
   const dispatch = useDispatch();
 
   const classes = useStyles();
-  const onDrop = useCallback(async ([videoFile]) => {
+  const onDrop = ([videoFile]) => {
     if (videoFile) {
       dispatch(uploadVideo(videoFile));
     }
-  }, []);
+  };
   const {
     getRootProps,
     getInputProps,
     open,
-    acceptedFiles,
     isDragAccept,
     isDragReject,
   } = useDropzone({
@@ -73,11 +72,6 @@ function StyledDropzone() {
     onDrop,
   });
 
-  const files = acceptedFiles.map((file) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
-    </li>
-  ));
   return (
     <div className={classes.root}>
       <div

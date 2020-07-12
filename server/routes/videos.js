@@ -16,47 +16,7 @@ const readFile = util.promisify(fs.readFile);
 
 const config = require("../config");
 
-// Save video
-// router.post(
-//   "/",
-//   /*auth, */ (req, res) => {
-//     const {
-//       videoPath: filePath,
-//       thumbnails,
-//       title,
-//       description,
-//       privacy,
-//       category,
-//     } = req.body;
-//     const selectedThumbPath = thumbnails.selected;
-//     const nonSelectedThumbPaths = thumbnails.nonSelected;
-//     const { _id: uploader } = req.user;
-
-//     try {
-//       video.upload(req, res, (err) => {
-//         if (err) {
-//           res.status(400).json({
-//             name: "UploadError",
-//             message: err.message,
-//           });
-//         } else {
-//           res.json({
-//             success: true,
-//             filePath: res.req.file.path,
-//             fileName: res.req.file.filename,
-//           });
-//         }
-//       });
-//     } catch (err) {
-//       res.status(500).json({
-//         name: "ServerError",
-//         message: err.message,
-//       });
-//     }
-//   }
-// );
-
-// Save video
+// Save video temporary
 router.post(
   "/",
   /*auth, */ (req, res) => {
@@ -81,6 +41,18 @@ router.post(
         message: err.message,
       });
     }
+  }
+);
+
+// Save video
+router.post(
+  "/upload",
+  /*auth, */ (req, res) => {
+    const { body } = req;
+    console.log(body);
+    res.json({
+      success: true,
+    });
   }
 );
 

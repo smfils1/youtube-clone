@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
@@ -7,10 +7,9 @@ import Step from "@material-ui/core/Step";
 import StepLabel from "@material-ui/core/StepLabel";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
-import axios from "axios";
 import UploadForm from "./UploadForm";
-import { setVisibility, setDetails } from "../../redux/actions/upload";
-
+import { setVisibilitySubmit, setDetails } from "../../redux/actions/upload";
+import ImagePicker from "../ImagePicker";
 const useStyles = makeStyles((theme) => ({
   root: {
     width: "100%",
@@ -47,12 +46,10 @@ export default function HorizontalLinearStepper({ filename }) {
 
   const handleFinish = () => {
     formRef.current.submitForm();
-    if (!Object.keys(formRef.current.errors).length) {
-    }
   };
 
-  const setVisibilityRx = ({ visibility }) => {
-    dispatch(setVisibility(visibility));
+  const submitInfo = ({ visibility }) => {
+    dispatch(setVisibilitySubmit(visibility));
   };
 
   const setDetailsRx = (details) => {
@@ -86,7 +83,7 @@ export default function HorizontalLinearStepper({ filename }) {
                 <UploadForm
                   type="visibility"
                   formRef={formRef}
-                  onSubmit={setVisibilityRx}
+                  onSubmit={submitInfo}
                 />
               }
             </Typography>
@@ -119,21 +116,7 @@ export default function HorizontalLinearStepper({ filename }) {
                   onSubmit={setDetailsRx}
                 />
                 Pick an thumbnail:
-                {isLoading ? (
-                  <div>Loading.....</div>
-                ) : (
-                  thumbnails.map((thumbnail) => (
-                    <img
-                      src={thumbnail}
-                      width="150"
-                      height="100"
-                      onClick={() => {
-                        console.log(thumbnail);
-                      }}
-                    ></img>
-                  ))
-                )}
-                }
+                <ImagePicker list={thumbnails || new Array(3).fill(null)} />}
               </div>
             </Typography>
             <div>

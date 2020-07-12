@@ -55,6 +55,12 @@ const setVisibility = (visibility) => {
   };
 };
 
+const resetUpload = () => {
+  return {
+    type: "RESET_UPLOAD",
+  };
+};
+
 const uploadVideo = (file) => {
   return async (dispatch) => {
     dispatch(setLoading(true));
@@ -80,4 +86,34 @@ const uploadVideo = (file) => {
   };
 };
 
-export { setModal, uploadVideo, setThumbnail, setDetails, setVisibility };
+const setVisibilitySubmit = (visibility) => {
+  return async (dispatch) => {
+    dispatch(setVisibility(visibility));
+    dispatch(uploadVideoInfo());
+  };
+};
+const uploadVideoInfo = () => {
+  return async (dispatch, getState) => {
+    const { thumbnail, details, visibility } = getState().upload;
+    try {
+      await api.post("/api/videos/upload", {
+        thumbnail,
+        visibility,
+        ...details,
+      });
+      dispatch(resetUpload());
+    } catch (err) {
+      console.log(err);
+    }
+  };
+};
+
+export {
+  setModal,
+  uploadVideo,
+  setThumbnail,
+  setDetails,
+  setVisibility,
+  uploadVideoInfo,
+  setVisibilitySubmit,
+};

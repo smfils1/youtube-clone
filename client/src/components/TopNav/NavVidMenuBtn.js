@@ -2,14 +2,7 @@ import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import {
-  Tooltip,
-  Avatar,
-  Grid,
-  Typography,
   List,
-  ListItem,
-  ListItemIcon,
-  ListItemText,
   Divider,
   ClickAwayListener,
   IconButton,
@@ -22,7 +15,6 @@ import {
   LiveTv as TVIcon,
   VideoCall as VideoIcon,
 } from "@material-ui/icons";
-import { logoutUser } from "../../redux/actions/user";
 import { setModal } from "../../redux/actions/upload";
 
 import NavItem from "../NavItem";

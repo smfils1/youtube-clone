@@ -3,9 +3,7 @@ const initialState = {
   filename: null,
   isLoading: false,
   thumbnail: null,
-  thumbnails: new Array(3).fill(
-    "https://user-images.githubusercontent.com/101482/29592647-40da86ca-875a-11e7-8bc3-941700b0a323.png"
-  ),
+  thumbnails: null,
   details: null,
   visibility: null,
 };
@@ -20,6 +18,8 @@ const uploadReducer = (state = initialState, action) => {
     case "SET_DETAILS":
     case "SET_VISIBILITY":
       return { ...state, ...action.payload };
+    case "RESET_UPLOAD":
+      return { ...initialState };
     default:
       return state;
   }

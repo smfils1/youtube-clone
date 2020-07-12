@@ -1,20 +1,43 @@
-import React, { useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import React from "react";
 import {
   FormHelperText,
   TextField,
   Select,
   MenuItem,
+  FormControl,
+  FormLabel,
+  RadioGroup,
+  FormControlLabel,
+  Radio,
+  makeStyles,
 } from "@material-ui/core/";
 
 import { Formik } from "formik";
 import * as Yup from "yup";
 
-import { capitalize, isString, isPlainObject } from "lodash";
+import { capitalize } from "lodash";
 
 const visibility = ["public", "unlisted", "private"];
+const categories = [
+  "music",
+  "sports",
+  "gaming",
+  "movies & shows",
+  "news",
+  "live",
+];
+
+const useStyles = makeStyles((theme) => ({
+  formControl: {
+    margin: theme.spacing(3),
+  },
+  button: {
+    margin: theme.spacing(1, 1, 0, 0),
+  },
+}));
 
 const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
+  const classes = useStyles();
   const form = (type) => {
     let validation = {};
     let initialValues = {};
@@ -22,12 +45,14 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
       initialValues = {
         title: "",
         description: "",
+        category: 0,
       };
       validation = {
         title: Yup.string().required("Title is required"),
         description: Yup.string()
           .max(100, "Max characters is 100")
           .required("Description is required"),
+        category: Yup.number().required("Category is required"),
       };
     }
     if (["visibility"].includes(type)) {
@@ -60,7 +85,7 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
         validateForm,
       }) => (
         <>
-          {["details"].includes(type) && (
+          {type === "details" && (
             <>
               <TextField
                 error={touched.title && errors.title}
@@ -84,25 +109,54 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
                 onChange={handleChange}
                 onBlur={handleBlur}
               />
-            </>
-          )}
-          {["visibility"].includes(type) && (
-            <>
+
               <Select
-                id="visibility"
-                label="visibility"
-                name="visibility"
-                value={values.visibility}
+                id="category"
+                label="category"
+                name="category"
+                value={values.category}
                 onChange={handleChange}
                 onBlur={handleBlur}
               >
-                <MenuItem value={0}>{visibility[0]}</MenuItem>
-                <MenuItem value={1}>{visibility[1]}</MenuItem>
-                <MenuItem value={2}>{visibility[2]}</MenuItem>
+                {categories.map((value, index) => (
+                  <MenuItem key={index} value={index}>
+                    {capitalize(value)}
+                  </MenuItem>
+                ))}
               </Select>
-              {errors.visibility && touched.color && (
-                <FormHelperText>{errors.visibility}</FormHelperText>
+              {errors.category && touched.color && (
+                <FormHelperText>{errors.category}</FormHelperText>
               )}
+            </>
+          )}
+          {type === "visibility" && (
+            <>
+              <FormControl
+                component="fieldset"
+                error={errors.visibility}
+                className={classes.formControl}
+              >
+                <FormLabel component="legend">
+                  Pick the visibility of this video:
+                </FormLabel>
+                <RadioGroup
+                  aria-label="quiz"
+                  name="quiz"
+                  value={values.visibility}
+                  onChange={handleChange}
+                >
+                  {visibility.map((value, index) => (
+                    <FormControlLabel
+                      value={index}
+                      control={<Radio />}
+                      label={capitalize(value)}
+                    />
+                  ))}
+                </RadioGroup>
+                {errors.visibility && touched.color && (
+                  <FormHelperText>{errors.visibility}</FormHelperText>
+                )}{" "}
+              </FormControl>
             </>
           )}
         </>

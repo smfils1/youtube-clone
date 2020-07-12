@@ -4,7 +4,6 @@ import { makeStyles, useTheme } from "@material-ui/core/styles";
 import { Toolbar, IconButton, Hidden, Tooltip } from "@material-ui/core";
 import {
   Search as SearchIcon,
-  VideoCall as VideoIcon,
   MoreVert as MoreIcon,
   Apps as AppsIcon,
   Notifications as NotificationsIcon,
@@ -52,9 +51,6 @@ const NavBar = () => {
         </Hidden>
         <Tooltip title="Create">
           <NavVidMenuBtn />
-          {/* <IconButton className={classes.iconButton}>
-            <VideoIcon />
-          </IconButton> */}
         </Tooltip>
         <Hidden smDown>
           <>

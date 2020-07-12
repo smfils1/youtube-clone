@@ -94,9 +94,10 @@ const setVisibilitySubmit = (visibility) => {
 };
 const uploadVideoInfo = () => {
   return async (dispatch, getState) => {
-    const { thumbnail, details, visibility } = getState().upload;
+    const { thumbnail, details, visibility, filename } = getState().upload;
     try {
       await api.post("/api/videos/upload", {
+        filename,
         thumbnail,
         visibility,
         ...details,

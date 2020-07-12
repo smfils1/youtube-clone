@@ -64,7 +64,7 @@ const generateThumbnails = (videoPath, limit) => {
           const link = urljoin(
             config.BACKEND_URL,
             "/api/videos/thumbnail",
-            filename
+            encodeURIComponent(filename)
           );
           return link;
         });
@@ -79,16 +79,17 @@ const generateThumbnails = (videoPath, limit) => {
         count: limit,
         folder: localThumbPath,
         size: "1280x720",
-        filename: "thumbnail-%b.png",
+        filename: "thumbnail_%b.png",
       });
   });
   return promise;
 };
 
 const info = (videoPath) => {
-  const promise = new Promise((resolve, reject) => {
+  return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoPath, function (err, metadata) {
       if (err) {
+        console.log(err);
         reject(err);
       } else {
         resolve({ duration: metadata.format.duration });

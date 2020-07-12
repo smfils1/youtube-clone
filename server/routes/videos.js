@@ -56,7 +56,7 @@ router.post(
       videoInfo.duration = duration;
       await Video.create({
         ...videoInfo,
-        video: videoInfo.filename,
+        video: video.generateVideoLink(videoInfo.filename),
         uploader: req.userId || "5edeb0185d791c662f246289",
       });
       res.json({
@@ -122,4 +122,16 @@ router.get(
   }
 );
 
+//Stream video
+router.get(
+  "/stream/:videoFile",
+  /*auth, */ async (req, res) => {
+    const { videoFile } = req.params;
+    video.stream(
+      path.join("data", "videos", decodeURIComponent(videoFile)),
+      req,
+      res
+    );
+  }
+);
 module.exports = router;

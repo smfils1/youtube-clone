@@ -8,29 +8,37 @@ const config = require("../config");
 const localVidPath = path.join("data", "videos");
 const localThumbPath = path.join("data", "thumbnails");
 
-const stream = (videPath, range, res) => {
-  const stat = fs.statSync(videPath);
-  const fileSize = stat.size;
-  if (range) {
-    const parts = range.replace(/bytes=/, "").split("-");
-    const start = parseInt(parts[0], 10);
-    const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
-    const chunksize = end - start + 1;
-    const head = {
-      "Content-Range": `bytes ${start}-${end}/${fileSize}`,
-      "Accept-Ranges": "bytes",
-      "Content-Length": chunksize,
-      "Content-Type": "video/mp4",
-    };
-    res.writeHead(206, head);
-    fs.createReadStream(videPath, { start, end }).pipe(res);
-  } else {
-    const head = {
-      "Content-Length": fileSize,
-      "Content-Type": "video/mp4",
-    };
-    res.writeHead(200, head);
-    fs.createReadStream(videPath).pipe(res);
+const stream = (videPath, req, res) => {
+  try {
+    const stat = fs.statSync(videPath);
+    const fileSize = stat.size;
+    const range = req.headers.range;
+    if (range) {
+      const parts = range.replace(/bytes=/, "").split("-");
+      const start = parseInt(parts[0], 10);
+      const end = parts[1] ? parseInt(parts[1], 10) : fileSize - 1;
+      const chunksize = end - start + 1;
+      const head = {
+        "Content-Range": `bytes ${start}-${end}/${fileSize}`,
+        "Accept-Ranges": "bytes",
+        "Content-Length": chunksize,
+        "Content-Type": "video/mp4",
+      };
+      res.writeHead(206, head);
+      fs.createReadStream(videPath, { start, end }).pipe(res);
+    } else {
+      const head = {
+        "Content-Length": fileSize,
+        "Content-Type": "video/mp4",
+      };
+      res.writeHead(200, head);
+      fs.createReadStream(videPath).pipe(res);
+    }
+  } catch (err) {
+    res.status(500).json({
+      name: "ServerError",
+      message: err.message,
+    });
   }
 };
 
@@ -85,6 +93,13 @@ const generateThumbnails = (videoPath, limit) => {
   return promise;
 };
 
+const generateVideoLink = (videoFile) => {
+  return urljoin(
+    config.BACKEND_URL,
+    "/api/videos/stream",
+    encodeURIComponent(videoFile)
+  );
+};
 const info = (videoPath) => {
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoPath, function (err, metadata) {
@@ -102,6 +117,7 @@ module.exports = {
   stream,
   upload,
   generateThumbnails,
+  generateVideoLink,
   info,
   localVidPath,
   localThumbPath,

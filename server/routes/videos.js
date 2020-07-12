@@ -47,12 +47,27 @@ router.post(
 // Save video
 router.post(
   "/upload",
-  /*auth, */ (req, res) => {
-    const { body } = req;
-    console.log(body);
-    res.json({
-      success: true,
-    });
+  /*auth, */ async (req, res) => {
+    const videoInfo = req.body;
+    try {
+      const { duration } = await video.info(
+        path.join("data", "videos", videoInfo.filename)
+      );
+      videoInfo.duration = duration;
+      await Video.create({
+        ...videoInfo,
+        video: videoInfo.filename,
+        uploader: req.userId || "5edeb0185d791c662f246289",
+      });
+      res.json({
+        success: true,
+      });
+    } catch (err) {
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
   }
 );
 
@@ -84,7 +99,12 @@ router.get(
   /*auth, */ async (req, res) => {
     const { thumbFile } = req.params;
     try {
-      const file = path.join(__dirname, "..", video.localThumbPath, thumbFile);
+      const file = path.join(
+        __dirname,
+        "..",
+        video.localThumbPath,
+        decodeURIComponent(thumbFile)
+      );
       res.sendFile(file, function (err) {
         if (err) {
           res.status(err.status).json({

@@ -88,7 +88,7 @@ const uploadVideo = (file) => {
 
 const setVisibilitySubmit = (visibility) => {
   return async (dispatch) => {
-    dispatch(setVisibility(visibility));
+    dispatch(setVisibility(parseInt(visibility)));
     dispatch(uploadVideoInfo());
   };
 };

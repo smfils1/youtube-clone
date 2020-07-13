@@ -56,8 +56,8 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
       };
     }
     if (["visibility"].includes(type)) {
-      initialValues.visibility = 0;
-      validation.visibility = Yup.number().required("Visibility is required");
+      initialValues.visibility = "0";
+      validation.visibility = Yup.string().required("Visibility is required");
     }
     return { validationSchema: Yup.object().shape(validation), initialValues };
   };
@@ -140,14 +140,15 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
                   Pick the visibility of this video:
                 </FormLabel>
                 <RadioGroup
-                  aria-label="quiz"
-                  name="quiz"
+                  aria-label="visibility"
+                  name="visibility"
                   value={values.visibility}
                   onChange={handleChange}
                 >
                   {visibility.map((value, index) => (
                     <FormControlLabel
-                      value={index}
+                      key={index}
+                      value={index + ""}
                       control={<Radio />}
                       label={capitalize(value)}
                     />

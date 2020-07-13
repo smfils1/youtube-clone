@@ -13,6 +13,10 @@ const videoSchema = mongoose.Schema(
       maxlength: 50,
       required: [true, "{PATH} is required"],
     },
+    filename: {
+      type: String,
+      required: [true, "{PATH} is required"],
+    },
     description: {
       type: String,
       required: [true, "{PATH} is required"],
@@ -46,7 +50,7 @@ const videoSchema = mongoose.Schema(
   },
   { timestamps: true }
 );
-
+require("./methods")(videoSchema);
 const Video = mongoose.model("Video", videoSchema);
 
 module.exports = Video;

@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
-const auth = require("./middleware/auth");
+const { auth, auth2 } = require("./middleware/auth");
 
 //Configurations
 const config = require("./config");
@@ -33,7 +33,7 @@ app.use(cookieParser());
 // Use Routes
 app.use("/api/auth/google", authRoutes);
 app.use("/api/users", auth, userRoutes);
-app.use("/api/videos", videoRoutes);
+app.use("/api/videos", auth2, videoRoutes);
 
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../", "client", "build")));

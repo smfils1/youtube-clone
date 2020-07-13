@@ -123,15 +123,31 @@ router.get(
 );
 
 //Stream video
-router.get(
-  "/stream/:videoFile",
-  /*auth, */ async (req, res) => {
-    const { videoFile } = req.params;
-    video.stream(
-      path.join("data", "videos", decodeURIComponent(videoFile)),
-      req,
-      res
-    );
+router.get("/stream/:videoFile", async (req, res) => {
+  const { videoFile } = req.params;
+  try {
+    const { visibility, uploader } = await Video.findByName({
+      filename: decodeURIComponent(videoFile),
+      error: { message: "video dont exist" },
+    });
+    //req.userId = "5edeb0185d791c662f246289";
+    if (visibility < 2 || (visibility === 2 && uploader == req.userId)) {
+      video.stream(
+        path.join("data", "videos", decodeURIComponent(videoFile)),
+        req,
+        res
+      );
+    } else {
+      res.status(401).json({
+        name: "InaccessibleVidError",
+        message: "InaccessibleVidError",
+      });
+    }
+  } catch (err) {
+    res.status(404).json({
+      name: "InaccessibleVidError",
+      message: err.message,
+    });
   }
-);
+});
 module.exports = router;

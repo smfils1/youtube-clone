@@ -43,6 +43,10 @@ const videoSchema = mongoose.Schema(
       type: Number,
       default: 0,
     },
+    weeklyViews: {
+      type: Number,
+      default: 0,
+    },
     duration: {
       type: String,
       required: [true, "{PATH} is required"],

@@ -16,6 +16,42 @@ const methods = (videoSchema) => {
     }
   };
 
+  videoSchema.statics.getRecommended = async function (uploader, count = 8) {
+    const Video = this;
+    let videos;
+    const filter = {
+      uploader: { $ne: ObjectId(uploader) },
+      visibility: 0,
+    };
+    try {
+      videos = await Video.aggregate([
+        { $match: filter },
+        { $sample: { size: count } },
+      ]);
+      if (!videos) throw { message: "No videos" };
+      return videos;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  videoSchema.statics.getTrending = async function (limit = 20) {
+    const Video = this;
+    let videos;
+    const filter = {
+      visibility: 0,
+      weeklyViews: { $gt: 0 },
+    };
+    const sort = { createdAt: -1 };
+    try {
+      videos = await Video.find(filter).sort(sort).limit(limit);
+      if (!videos) throw { message: "No videos" };
+      return videos;
+    } catch (err) {
+      throw err;
+    }
+  };
+
   videoSchema.methods.resetWeeklyViews = async function (count = 8) {
     const video = this;
     const { createdAt } = video;

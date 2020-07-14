@@ -71,6 +71,50 @@ router.post(
   }
 );
 
+// Get recommonded videos (random vids)
+router.get(
+  "/recommended",
+  /*auth, */ async (req, res) => {
+    req.userId = "5edeb0185d791c662f246280";
+
+    try {
+      //Video.
+      const videos = await Video.getRecommended(req.userId);
+      res.json({
+        videos,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
+  }
+);
+
+// Get trending videos
+router.get(
+  "/trending",
+  /*auth, */ async (req, res) => {
+    req.userId = "5edeb0185d791c662f246280";
+
+    try {
+      //Video.
+      const videos = await Video.getTrending();
+      res.json({
+        videos,
+      });
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
+  }
+);
+
 //Generate thumbs
 router.post(
   "/thumbnails",

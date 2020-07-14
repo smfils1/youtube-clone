@@ -6,6 +6,7 @@ const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
 const { auth, auth2 } = require("./middleware/auth");
+const { runCronJobs } = require("./services/cronJobs");
 
 //Configurations
 const config = require("./config");
@@ -46,4 +47,5 @@ if (process.env.NODE_ENV === "production") {
 app.listen(config.PORT, () => {
   console.log(`Server is running on port ${config.PORT}`);
   dbConnect();
+  runCronJobs();
 });

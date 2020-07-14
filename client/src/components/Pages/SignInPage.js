@@ -5,8 +5,8 @@ import { useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import SignInBtn from "./SignInBtn";
-import menuAuthIcons from "./menuAuthIcons";
+import SignInBtn from "../SignInBtn";
+import menuAuthIcons from "../menuAuthIcons";
 
 const useStyles = makeStyles((theme) => ({
   root: {

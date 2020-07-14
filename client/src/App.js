@@ -1,16 +1,12 @@
 import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
-import SignInPage from "./components/SignInPage";
-// import HomePage from "./components/HomePage";
-// import RegisterPage from "./components/RegisterPage";
-// import LoginPage from "./components/LoginPage";
-// import ResetPage from "./components/ResetPage";
+import SignInPage from "./components/Pages/SignInPage";
+import HomePage from "./components/Pages/HomePage";
 import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
 import UploadForm from "./components/Upload/UploadForm";
 
 function App() {
-  const HomePage = () => <div>Home</div>;
   const Home = auth(HomePage, false);
   const Subscriptions = auth(SignInPage, false);
   const Library = auth(SignInPage, false);
@@ -38,11 +34,6 @@ function App() {
             exact
             path="/history"
             render={(props) => <History {...props} page="history" />}
-          />
-          <Route
-            exact
-            path="/test"
-            render={(props) => <UploadForm {...props} type="details" />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

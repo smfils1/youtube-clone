@@ -5,7 +5,7 @@ import clsx from "clsx";
 import { Drawer, Divider, useMediaQuery } from "@material-ui/core";
 import MainNavMenu from "./MainNavMenu";
 import CategoryMenu from "./CategoryMenu";
-import StartNav from "./TopNav/StartNav";
+import StartNav from "../TopNav/StartNav";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
   drawer: {

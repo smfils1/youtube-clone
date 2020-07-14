@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Divider } from "@material-ui/core";
-
+import VideoGrid from "../VideoGrid";
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(3),
   },
   text: {
-    paddingBottom: theme.spacing(2),
+    paddingBottom: theme.spacing(3),
     fontWeight: 500,
   },
   divider: {
@@ -32,17 +32,17 @@ const HomePage = () => {
 
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
+    <Container maxWidth="xl" className={classes.root}>
       <div className={classes.content}>
         <Typography variant="h5" className={classes.text}>
           Recommended
         </Typography>
-        Videos
+        <VideoGrid />
         <Divider light className={classes.divider} />
         <Typography variant="h5" className={classes.text}>
           Trending
         </Typography>
-        Videos
+        <VideoGrid />
       </div>
     </Container>
   );

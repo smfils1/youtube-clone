@@ -37,3 +37,5 @@ const Thumb = ({
     </div>
   );
 };
+
+export default Thumb;

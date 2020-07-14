@@ -1,10 +1,11 @@
-import React from "react";
+import React, { useEffect } from "react";
 
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Divider } from "@material-ui/core";
 import VideoGrid from "../VideoGrid";
+import { getHomeVideos } from "../../redux/actions/videos";
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -29,7 +30,14 @@ const useStyles = makeStyles((theme) => ({
 }));
 const HomePage = () => {
   const isAuth = useSelector(({ user }) => user.isAuth);
+  const recommendedVids = useSelector(({ videos }) => videos.recommended);
+  const trendingVids = useSelector(({ videos }) => videos.trending);
+  const isLoading = useSelector(({ videos }) => videos.isLoading);
+  const dispatch = useDispatch();
 
+  useEffect(() => {
+    dispatch(getHomeVideos());
+  }, []);
   const classes = useStyles();
   return (
     <Container maxWidth="xl" className={classes.root}>
@@ -37,12 +45,12 @@ const HomePage = () => {
         <Typography variant="h5" className={classes.text}>
           Recommended
         </Typography>
-        <VideoGrid />
+        <VideoGrid isLoading={isLoading} videos={recommendedVids} />
         <Divider light className={classes.divider} />
         <Typography variant="h5" className={classes.text}>
           Trending
         </Typography>
-        <VideoGrid />
+        <VideoGrid isLoading={isLoading} videos={trendingVids} />
       </div>
     </Container>
   );

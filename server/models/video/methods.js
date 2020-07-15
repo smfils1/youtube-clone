@@ -27,9 +27,40 @@ const methods = (videoSchema) => {
       videos = await Video.aggregate([
         { $match: filter },
         { $sample: { size: count } },
+        {
+          $lookup: {
+            from: "users",
+            localField: "uploader",
+            foreignField: "_id",
+            as: "uploader",
+          },
+        },
       ]);
       if (!videos) throw { message: "No videos" };
-      return videos;
+      const recommended = videos.map(
+        ({
+          _id,
+          views,
+          createdAt,
+          thumbnail,
+          title,
+          description,
+          duration,
+          video,
+          uploader,
+        }) => ({
+          _id,
+          views,
+          createdAt,
+          thumbnail,
+          title,
+          description,
+          duration,
+          video,
+          uploader: uploader[0].name,
+        })
+      );
+      return recommended;
     } catch (err) {
       throw err;
     }
@@ -44,9 +75,36 @@ const methods = (videoSchema) => {
     };
     const sort = { createdAt: -1 };
     try {
-      videos = await Video.find(filter).sort(sort).limit(limit);
+      videos = await Video.find(filter)
+        .populate("uploader")
+        .sort(sort)
+        .limit(limit);
       if (!videos) throw { message: "No videos" };
-      return videos;
+      const trending = videos.map(
+        ({
+          _id,
+          createdAt,
+          views,
+          thumbnail,
+          title,
+          description,
+          duration,
+          video,
+          uploader,
+        }) => ({
+          _id,
+          views,
+          createdAt,
+
+          thumbnail,
+          title,
+          description,
+          duration,
+          video,
+          uploader: uploader.name,
+        })
+      );
+      return trending;
     } catch (err) {
       throw err;
     }

@@ -21,6 +21,7 @@ const useStyles = makeStyles((theme) => ({
   },
   container: {
     display: "flex",
+    flexDirection: "column",
     flex: "1 1 auto",
   },
 }));

@@ -6,6 +6,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Divider } from "@material-ui/core";
 import VideoGrid from "../VideoGrid";
 import { getHomeVideos } from "../../redux/actions/videos";
+import Banner from "../Banner";
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -40,19 +41,70 @@ const HomePage = () => {
   }, []);
   const classes = useStyles();
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <div className={classes.content}>
-        <Typography variant="h5" className={classes.text}>
-          Recommended
-        </Typography>
-        <VideoGrid isLoading={isLoading} videos={recommendedVids} />
-        <Divider light className={classes.divider} />
-        <Typography variant="h5" className={classes.text}>
-          Trending
-        </Typography>
-        <VideoGrid isLoading={isLoading} videos={trendingVids} />
-      </div>
-    </Container>
+    <div>
+      <Banner closeable>
+        <div
+          style={{
+            width: "100%",
+            height: "100%",
+            backgroundColor: "black",
+            color: "white",
+            display: "flex",
+            padding: "1em",
+          }}
+        >
+          {" "}
+          <img
+            style={{
+              alignSelf: "center",
+            }}
+            src="https://www.iconsdb.com/icons/preview/white/youtube-xxl.png"
+            height="80%"
+          />
+          <div
+            style={{
+              margin: "2em",
+            }}
+          >
+            <h1
+              style={{
+                fontSize: "4em",
+              }}
+            >
+              FullStack Clone
+            </h1>
+            <h1
+              style={{
+                fontSize: "2em",
+              }}
+            >
+              <a
+                style={{
+                  color: "red",
+                }}
+                href="https://github.com/smfils1/youtube-clone"
+              >
+                GitHub Repo
+              </a>
+            </h1>
+            <p>* For Educational Purposes</p>
+          </div>
+        </div>
+      </Banner>
+      <Container maxWidth="xl" className={classes.root}>
+        <div className={classes.content}>
+          <Typography variant="h5" className={classes.text}>
+            Recommended
+          </Typography>
+          <VideoGrid isLoading={isLoading} videos={recommendedVids} />
+          <Divider light className={classes.divider} />
+          <Typography variant="h5" className={classes.text}>
+            Trending
+          </Typography>
+          <VideoGrid isLoading={isLoading} videos={trendingVids} />
+        </div>
+      </Container>
+    </div>
   );
 };
 

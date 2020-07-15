@@ -2,9 +2,10 @@ import React from "react";
 import { Switch, Route, Redirect } from "react-router-dom";
 import SignInPage from "./components/Pages/SignInPage";
 import HomePage from "./components/Pages/HomePage";
+import VideoPage from "./components/Pages/VideoPage";
+
 import auth from "./components/authHOC";
 import NavBar from "./components/NavBar";
-import UploadForm from "./components/Upload/UploadForm";
 
 function App() {
   const Home = auth(HomePage, false);
@@ -34,6 +35,11 @@ function App() {
             exact
             path="/history"
             render={(props) => <History {...props} page="history" />}
+          />
+          <Route
+            exact
+            path="/watch"
+            render={(props) => <VideoPage {...props} />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

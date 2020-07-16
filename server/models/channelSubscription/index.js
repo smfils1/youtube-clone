@@ -5,14 +5,21 @@ const channelSubscriptionSchema = mongoose.Schema({
   channel: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: [true, "{PATH} is required"],
   },
   subscriber: {
     type: Schema.Types.ObjectId,
     ref: "User",
+    required: [true, "{PATH} is required"],
   },
 });
 
-require("./methods")(userSchema);
+channelSubscriptionSchema.index(
+  { channel: 1, subscriber: 1 },
+  { unique: true }
+);
+
+require("./methods")(channelSubscriptionSchema);
 
 const ChannelSubscriptionSchema = mongoose.model(
   "ChannelSubscription",

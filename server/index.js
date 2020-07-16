@@ -16,6 +16,7 @@ const dbConnect = require("./config/db");
 const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const videoRoutes = require("./routes/videos");
+const subscriptionRoutes = require("./routes/subscriptions");
 const passport = require("./config/passport");
 
 //Use Middlewares
@@ -34,6 +35,7 @@ app.use(cookieParser());
 // Use Routes
 app.use("/api/auth/google", authRoutes);
 app.use("/api/users", auth, userRoutes);
+app.use("/api/subscriptions", /*auth, */ subscriptionRoutes);
 app.use("/api/videos", auth2, videoRoutes);
 
 if (process.env.NODE_ENV === "production") {

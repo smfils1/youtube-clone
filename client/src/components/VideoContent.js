@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import { grey, red } from "@material-ui/core/colors";
-
+import SubscribeBtn from "./SubscribeBtn";
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,
@@ -45,9 +45,7 @@ const useStyles = makeStyles((theme) => ({
     lineHeight: "80%",
   },
   subscribeBtn: {
-    backgroundColor: red[700],
     marginLeft: "auto",
-    borderRadius: 2,
   },
 }));
 
@@ -88,16 +86,7 @@ export default function VideoPage() {
                 5.22K subscribers
               </Typography>
             </div>
-            <Button
-              className={classes.subscribeBtn}
-              disableElevation
-              disableFocusRipple
-              disableRipple
-              variant="contained"
-              color="secondary"
-            >
-              subscribe
-            </Button>
+            <SubscribeBtn className={classes.subscribeBtn} />
           </div>{" "}
           <div>
             <Collapse in={showMore} collapsedHeight={100}>

@@ -1,7 +1,7 @@
 import React from "react";
 
 const Thumb = ({
-  image,
+  image = "https://via.placeholder.com/200x200",
   href,
   width = "100%",
   height = "200px",
@@ -18,7 +18,7 @@ const Thumb = ({
             bottom: 0,
             right: 0,
             position: "absolute",
-            margin: "10px 8px",
+            margin: "0.5em 0.5em",
             color: "#fff",
             backgroundColor: "rgba(17, 17, 17, 0.7)",
             padding: "2px 4px",

@@ -1,6 +1,9 @@
 import React from "react";
 import { makeStyles, Grid, Divider } from "@material-ui/core";
 import VideoContent from "../VideoContent";
+import SecondaryVidContent from "../SecondaryVidContent";
+import VideoCard from "../VideoCard";
+import Thumbnail from "../Thumbnail";
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -18,10 +21,10 @@ export default function VideoPage() {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={9}>
           <VideoContent />
-          Conmments
+          Comments
         </Grid>
         <Grid item xs={12} sm={12} md={3}>
-          Other Videos
+          <SecondaryVidContent />
         </Grid>
       </Grid>
     </div>

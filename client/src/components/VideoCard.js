@@ -9,23 +9,35 @@ import Avatar from "@material-ui/core/Avatar";
 import IconButton from "@material-ui/core/IconButton";
 import MoreVertIcon from "@material-ui/icons/MoreVert";
 import moment from "moment";
+import clsx from "clsx";
 import Skeleton from "@material-ui/lab/Skeleton";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     color: "blue",
     textDecoration: "none" /* no underline */,
   },
   card: {
-    maxWidth: 500,
     backgroundColor: "transparent",
     borderWidth: "0px",
     "&:hover, &:focus": {
       backgroundColor: "transparent",
     },
   },
+  cardV: {
+    maxWidth: 500,
+  },
+  cardH: {
+    display: "flex",
+  },
   footer: {
     alignItems: "start",
     paddingLeft: 0,
+  },
+  side: {
+    alignItems: "start",
+    width: "100%",
+    paddingLeft: theme.spacing(1),
   },
   icon: {
     padding: 0,
@@ -33,9 +45,16 @@ const useStyles = makeStyles((theme) => ({
       backgroundColor: "transparent",
     },
   },
+
+  sideContent2: {
+    display: "flex",
+    flexWrap: "wrap",
+  },
 }));
 
-const VertVidCard = ({
+const VideoCard = ({
+  vertical,
+  horizontal,
   isLoading,
   videoThumbnail,
   ThumbComponent,
@@ -48,17 +67,30 @@ const VertVidCard = ({
 }) => {
   const classes = useStyles();
   const [isActive, setActive] = useState(false);
+  if (!vertical && !horizontal) {
+    vertical = true;
+  }
   return (
     <Card
       onMouseEnter={() => setActive(true)}
       onMouseLeave={() => setActive(false)}
-      className={classes.card}
+      className={clsx(classes.card, {
+        [classes.cardV]: vertical,
+        [classes.cardH]: horizontal,
+      })}
       variant="outlined"
     >
       <CardMedia
         component={
           isLoading
-            ? () => <Skeleton animation={"wave"} variant="rect" height={250} />
+            ? () => (
+                <Skeleton
+                  animation={"wave"}
+                  variant="rect"
+                  width={250}
+                  height={100}
+                />
+              )
             : ThumbComponent
         }
         alt="video thumbnail"
@@ -67,16 +99,23 @@ const VertVidCard = ({
         title="thumbnail"
       />
       <CardHeader
-        className={classes.footer}
-        avatar={
-          isLoading ? (
-            <Skeleton variant="circle">
-              <Avatar />
-            </Skeleton>
-          ) : (
-            <Avatar className={classes.avatar}>R</Avatar>
-          )
-        }
+        className={clsx({
+          [classes.footer]: vertical,
+          [classes.side]: horizontal,
+        })}
+        avatar={(() => {
+          if (vertical && isLoading) {
+            return (
+              <Skeleton variant="circle">
+                <Avatar />
+              </Skeleton>
+            );
+          } else if (vertical) {
+            return <Avatar className={classes.avatar}>R</Avatar>;
+          } else {
+            return <></>;
+          }
+        })()}
         action={
           !isLoading &&
           isActive && (
@@ -101,7 +140,9 @@ const VertVidCard = ({
             </Skeleton>
           ) : (
             <div>
-              <div>{channel}</div>
+              <div className={clsx({ [classes.sideContent2]: horizontal })}>
+                {channel}
+              </div>
               <div>
                 {views} • {moment(date).format("MMM Do YY")}
               </div>
@@ -113,4 +154,4 @@ const VertVidCard = ({
   );
 };
 
-export { VertVidCard };
+export default VideoCard;

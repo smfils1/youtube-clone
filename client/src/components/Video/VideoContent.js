@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   makeStyles,
   Typography,
@@ -10,6 +10,15 @@ import {
 import clsx from "clsx";
 import { grey, red } from "@material-ui/core/colors";
 import SubscribeBtn from "../SubscribeBtn";
+import axios from "axios";
+import NumAbbr from "number-abbreviate";
+import moment from "moment";
+import { BACKEND_URL } from "../../config";
+
+const api = axios.create({
+  withCredentials: true,
+  baseURL: BACKEND_URL,
+});
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,
@@ -50,25 +59,46 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function VideoContent({ videoId }) {
-  const classes = useStyles();
+  const [video, setVideo] = useState({});
+  const [numberOfSubscribers, setSubscribers] = useState(0);
   const [showMore, setShowMore] = useState(false);
+
+  useEffect(async () => {
+    try {
+      const {
+        data: { video },
+      } = await api.get(`/api/videos/${videoId}`);
+      setVideo(video);
+      const {
+        data: { subscribers },
+      } = await api.post(`/api/subscriptions/count`, {
+        channel: video.channelId,
+      });
+      setSubscribers(subscribers);
+    } catch (err) {
+      console.log(err);
+    }
+  }, []);
+
+  const classes = useStyles();
   return (
     <div>
       <video
         style={{ width: "100%" }}
-        src={`http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4`}
+        src={video.videoLink}
         controls
         //autoPlay
       />
       <div className={classes.primaryInfo}>
         <Typography variant="h6" className={classes.text}>
-          Title
+          {video.title}
         </Typography>
         <Typography
           variant="body2"
           className={clsx(classes.text, classes.subTitle)}
         >
-          402 views • Dec 6, 2019
+          {new NumAbbr().abbreviate(video.views, 2)} views •{" "}
+          {moment(video.createdAt).format("MMM Do YY")}
         </Typography>
         <Divider />
       </div>
@@ -80,24 +110,20 @@ export default function VideoContent({ videoId }) {
             <div className={classes.secondaryInfo_3}>
               {" "}
               <Typography variant="body2" className={clsx(classes.channel)}>
-                Channel Name
+                {video.channel}
               </Typography>
               <Typography variant="caption" className={clsx(classes.subTitle)}>
-                5.22K subscribers
+                {numberOfSubscribers} subscribers
               </Typography>
             </div>
-            <SubscribeBtn className={classes.subscribeBtn} />
+            <SubscribeBtn
+              channelId={video.channelId}
+              className={classes.subscribeBtn}
+            />
           </div>{" "}
           <div>
-            <Collapse in={showMore} collapsedHeight={100}>
-              1
-              <br />1
-              <br />1
-              <br />1
-              <br />1
-              <br />1
-              <br />1
-              <br />1
+            <Collapse in={showMore} collapsedHeight={50}>
+              {video.description}
             </Collapse>
             <Typography
               variant="subtitle2"

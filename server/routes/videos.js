@@ -194,4 +194,44 @@ router.get("/stream/:videoFile", async (req, res) => {
     });
   }
 });
+
+// Get video info
+router.get(
+  "/:id",
+  /*auth, */ async (req, res) => {
+    const { id } = req.params;
+    console.log(id);
+    //TODO: handle private videos
+    try {
+      const videoInfo = await Video.findById(id).populate("uploader");
+
+      if (!videoInfo) {
+        res.status(400).json({
+          name: "VideoError",
+          message: "Invalid video",
+        });
+      }
+      const video = {
+        id: videoInfo._id,
+        views: videoInfo.views,
+        createdAt: videoInfo.createdAt,
+        thumbnail: videoInfo.thumbnail,
+        title: videoInfo.title,
+        description: videoInfo.description,
+        duration: videoInfo.duration,
+        videoLink: videoInfo.video,
+        channelImg: videoInfo.uploader.profileImg,
+        channel: videoInfo.uploader.name,
+        channelId: videoInfo.uploader._id,
+      };
+      res.json({ video });
+    } catch (err) {
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
+  }
+);
+
 module.exports = router;

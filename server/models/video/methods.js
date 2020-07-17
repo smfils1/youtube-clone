@@ -104,7 +104,7 @@ const methods = (videoSchema) => {
           video,
           channelImg: uploader.profileImg,
           channel: uploader.name,
-          channelId: uploader.name,
+          channelId: uploader._id,
         })
       );
       return trending;

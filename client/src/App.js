@@ -12,6 +12,7 @@ function App() {
   const Subscriptions = auth(SignInPage, false);
   const Library = auth(SignInPage, false);
   const History = auth(SignInPage, false);
+  const Video = auth(VideoPage, false);
 
   return (
     <div>
@@ -36,11 +37,7 @@ function App() {
             path="/history"
             render={(props) => <History {...props} page="history" />}
           />
-          <Route
-            exact
-            path="/watch"
-            render={(props) => <VideoPage {...props} />}
-          />
+          <Route exact path="/watch" render={(props) => <Video {...props} />} />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
       </Nav>

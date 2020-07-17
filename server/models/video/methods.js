@@ -49,7 +49,7 @@ const methods = (videoSchema) => {
           video,
           uploader,
         }) => ({
-          _id,
+          id: _id,
           views,
           createdAt,
           thumbnail,
@@ -57,7 +57,9 @@ const methods = (videoSchema) => {
           description,
           duration,
           video,
-          uploader: uploader[0].name,
+          channel: uploader[0].name,
+          channelId: uploader[0]._id,
+          channelImg: uploader[0].profileImg,
         })
       );
       return recommended;
@@ -92,16 +94,17 @@ const methods = (videoSchema) => {
           video,
           uploader,
         }) => ({
-          _id,
+          id: _id,
           views,
           createdAt,
-
           thumbnail,
           title,
           description,
           duration,
           video,
-          uploader: uploader.name,
+          channelImg: uploader.profileImg,
+          channel: uploader.name,
+          channelId: uploader.name,
         })
       );
       return trending;

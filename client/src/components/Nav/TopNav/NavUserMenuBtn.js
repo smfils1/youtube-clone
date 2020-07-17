@@ -18,7 +18,7 @@ import {
   Popper,
 } from "@material-ui/core";
 import { ExitToApp as ExitToAppIcon } from "@material-ui/icons";
-import { logoutUser } from "../../redux/actions/user";
+import { logoutUser } from "../../../redux/actions/user";
 
 const useStyles = makeStyles((theme) => ({
   iconButton: {

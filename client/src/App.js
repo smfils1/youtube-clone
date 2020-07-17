@@ -5,7 +5,7 @@ import HomePage from "./components/Pages/HomePage";
 import VideoPage from "./components/Pages/VideoPage";
 
 import auth from "./components/authHOC";
-import NavBar from "./components/NavBar";
+import Nav from "./components/Nav";
 
 function App() {
   const Home = auth(HomePage, false);
@@ -15,7 +15,7 @@ function App() {
 
   return (
     <div>
-      <NavBar>
+      <Nav>
         <Switch>
           <Route exact path="/" render={(props) => <Home {...props} />} />
           <Route exact path="/trending" render={() => <div>Trending</div>} />
@@ -43,7 +43,7 @@ function App() {
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>
-      </NavBar>
+      </Nav>
     </div>
   );
 }

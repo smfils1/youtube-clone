@@ -15,10 +15,10 @@ import {
   LiveTv as TVIcon,
   VideoCall as VideoIcon,
 } from "@material-ui/icons";
-import { setModal } from "../../redux/actions/upload";
+import { setModal } from "../../../redux/actions/upload";
 
 import NavItem from "../NavItem";
-import UploadModal from "../Upload/UploadModal";
+import UploadModal from "../../Upload/UploadModal";
 const useStyles = makeStyles((theme) => ({
   iconButton: {
     "&:hover": {

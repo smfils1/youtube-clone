@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Divider } from "@material-ui/core";
-import VideoGrid from "../VideoGrid";
+import VideoGrid from "../Video/VideoGrid";
 import { getHomeVideos } from "../../redux/actions/videos";
 import Banner from "../Banner";
 const useStyles = makeStyles((theme) => ({

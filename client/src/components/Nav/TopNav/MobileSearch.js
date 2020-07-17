@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Toolbar, IconButton } from "@material-ui/core";
 import { ArrowBack as ArrowBackIcon } from "@material-ui/icons";
 import NavSearch from "./NavSearch";
-import { setMobileSearch } from "../../redux/actions/layout";
+import { setMobileSearch } from "../../../redux/actions/layout";
 
 const useStyles = makeStyles((theme) => ({
   root: {

@@ -1,9 +1,9 @@
 import React from "react";
-import TopNav from "../components/TopNav";
+import TopNav from "./TopNav";
 import { makeStyles } from "@material-ui/core/styles";
 import { Container } from "@material-ui/core";
 
-import SideNav from "../components/SideNav";
+import SideNav from "./SideNav";
 
 const useStyles = makeStyles((theme) => ({
   root: {

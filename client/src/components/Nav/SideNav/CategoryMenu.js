@@ -9,12 +9,12 @@ import {
 } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 
-import musicIcon from "../../assets/music-icon.png";
-import sportsIcon from "../../assets/soccer-icon.png";
-import gameIcon from "../../assets/gaming-icon.png";
-import filmIcon from "../../assets/film-icon.png";
-import newsIcon from "../../assets/news-icon.png";
-import liveIcon from "../../assets/live-icon.png";
+import musicIcon from "../../../assets/music-icon.png";
+import sportsIcon from "../../../assets/soccer-icon.png";
+import gameIcon from "../../../assets/gaming-icon.png";
+import filmIcon from "../../../assets/film-icon.png";
+import newsIcon from "../../../assets/news-icon.png";
+import liveIcon from "../../../assets/live-icon.png";
 const useStyles = makeStyles((theme) => ({
   icon: {
     padding: theme.spacing(0, 1),

@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import clsx from "clsx";
 import { grey, red } from "@material-ui/core/colors";
-import SubscribeBtn from "./SubscribeBtn";
+import SubscribeBtn from "../SubscribeBtn";
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,

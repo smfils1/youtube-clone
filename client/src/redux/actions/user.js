@@ -27,6 +27,7 @@ const logoutUser = (history) => {
       dispatch(setAuth(false));
       dispatch(
         setUserInfo({
+          id: null,
           name: null,
           email: null,
           profileImg: null,
@@ -37,6 +38,7 @@ const logoutUser = (history) => {
       dispatch(setAuth(false));
       dispatch(
         setUserInfo({
+          id: null,
           name: null,
           email: null,
           profileImg: null,
@@ -53,6 +55,7 @@ const auth = () => {
       dispatch(setAuth(true));
       dispatch(
         setUserInfo({
+          id: data.id,
           name: data.name,
           email: data.email,
           profileImg: data.profileImg,
@@ -62,6 +65,7 @@ const auth = () => {
       dispatch(setAuth(false));
       dispatch(
         setUserInfo({
+          id: null,
           name: null,
           email: null,
           profileImg: null,

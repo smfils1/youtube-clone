@@ -111,7 +111,7 @@ const VideoCard = ({
               </Skeleton>
             );
           } else if (vertical) {
-            return <Avatar className={classes.avatar}>R</Avatar>;
+            return <Avatar className={classes.avatar} src={channelThumbnail} />;
           } else {
             return <></>;
           }

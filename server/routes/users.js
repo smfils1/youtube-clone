@@ -9,6 +9,7 @@ router.get("/", async (req, res) => {
     //Get user by id
     const user = await User.findById({ _id: req.userId });
     res.json({
+      id: user._id,
       name: user.name,
       email: user.email,
       profileImg: user.profileImg,

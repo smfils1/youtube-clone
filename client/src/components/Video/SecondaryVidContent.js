@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import VideoList from "./VideoList";
-import { getHomeVideos } from "../redux/actions/videos";
+import { getHomeVideos } from "../../redux/actions/videos";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));

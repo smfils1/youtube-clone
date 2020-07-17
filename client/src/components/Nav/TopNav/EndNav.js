@@ -8,9 +8,9 @@ import {
   Apps as AppsIcon,
   Notifications as NotificationsIcon,
 } from "@material-ui/icons";
-import { setMobileSearch } from "../../redux/actions/layout";
-import SignInBtn from "../SignInBtn";
-import { BACKEND_URL } from "../../config";
+import { setMobileSearch } from "../../../redux/actions/layout";
+import SignInBtn from "../../SignInBtn";
+import { BACKEND_URL } from "../../../config";
 import NavUserMenuBtn from "./NavUserMenuBtn";
 import NavVidMenuBtn from "./NavVidMenuBtn";
 const useStyles = makeStyles((theme) => ({

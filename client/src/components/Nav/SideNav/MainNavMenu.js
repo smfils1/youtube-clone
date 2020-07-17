@@ -3,9 +3,9 @@ import { useDispatch } from "react-redux";
 
 import { List, Divider, useMediaQuery, useTheme } from "@material-ui/core";
 import { Home as HomeIcon, Whatshot as TrendingIcon } from "@material-ui/icons";
-import menuAuthIcons from "../menuAuthIcons";
+import menuAuthIcons from "../../menuAuthIcons";
 import NavItem from "../NavItem";
-import { toggleDrawer } from "../../redux/actions/layout";
+import { toggleDrawer } from "../../../redux/actions/layout";
 
 const MainNavMenu = () => {
   const theme = useTheme();

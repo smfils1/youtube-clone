@@ -5,8 +5,8 @@ import { Toolbar, useMediaQuery, IconButton } from "@material-ui/core";
 import { Menu as MenuIcon } from "@material-ui/icons";
 
 import { NavLink } from "react-router-dom";
-import { setDrawer, toggleDrawer } from "../../redux/actions/layout";
-import youtubeLogo from "../../assets/youtube-logo.png";
+import { setDrawer, toggleDrawer } from "../../../redux/actions/layout";
+import youtubeLogo from "../../../assets/youtube-logo.png";
 
 const useStyles = makeStyles((theme) => ({
   youtubeLogo: {

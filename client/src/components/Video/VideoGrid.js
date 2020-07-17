@@ -19,8 +19,11 @@ export default function VideoGrid({ isLoading, videos }) {
           ? videos.map(
               (
                 {
+                  channelImg,
                   duration,
-                  uploader,
+                  channel,
+                  channelId,
+                  id,
                   createdAt,
                   thumbnail,
                   title,
@@ -29,12 +32,13 @@ export default function VideoGrid({ isLoading, videos }) {
                 },
                 i
               ) => (
-                <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
+                <Grid key={id} item xs={12} sm={6} md={4} lg={3}>
                   <VideoCard
+                    channelThumbnail={channelImg}
                     date={createdAt}
                     videoLink={video}
                     title={title}
-                    channel={uploader}
+                    channel={channel}
                     views={views}
                     ThumbComponent={() => (
                       <Thumbnail

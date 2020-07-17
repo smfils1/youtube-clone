@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles, Grid, Divider } from "@material-ui/core";
-import VideoContent from "../VideoContent";
-import SecondaryVidContent from "../SecondaryVidContent";
-import VideoCard from "../VideoCard";
-import Thumbnail from "../Thumbnail";
+import VideoContent from "../Video/VideoContent";
+import SecondaryVidContent from "../Video/SecondaryVidContent";
+import VideoCard from "../Video/VideoCard";
+import Thumbnail from "../Video/Thumbnail";
 
 const useStyles = makeStyles((theme) => ({
   container: {

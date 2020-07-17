@@ -2,9 +2,7 @@ import React from "react";
 import { makeStyles, Grid, Divider } from "@material-ui/core";
 import VideoContent from "../Video/VideoContent";
 import SecondaryVidContent from "../Video/SecondaryVidContent";
-import VideoCard from "../Video/VideoCard";
-import Thumbnail from "../Video/Thumbnail";
-
+import queryString from "query-string";
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: theme.spacing(8),
@@ -14,13 +12,14 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VideoPage() {
+export default function VideoPage({ location }) {
   const classes = useStyles();
+  const { v: id } = queryString.parse(location.search);
   return (
     <div className={classes.container}>
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={9}>
-          <VideoContent />
+          <VideoContent videoId={id} />
           Comments
         </Grid>
         <Grid item xs={12} sm={12} md={3}>

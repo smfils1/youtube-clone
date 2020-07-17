@@ -49,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VideoPage() {
+export default function VideoContent({ videoId }) {
   const classes = useStyles();
   const [showMore, setShowMore] = useState(false);
   return (

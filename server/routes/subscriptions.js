@@ -33,9 +33,10 @@ router.post("/", async (req, res) => {
 
 // Check if subscribed
 router.post("/subscribed", async (req, res) => {
-  req.userId = "5edeb0185d791c662f246289";
+  //req.userId = "5edeb0185d791c662f246289";
   const subscriber = req.userId;
   const { channel } = req.body;
+  console.log(subscriber, channel);
 
   if (!channel) {
     res.status(400).json({
@@ -59,21 +60,41 @@ router.post("/subscribed", async (req, res) => {
   }
 });
 
-// Unsubscribe to a channel
-router.delete("/", async (req, res) => {
-  req.userId = "5edeb0185d791c662f246289";
-  const subscriber = req.userId;
+// Get number of subscriptions
+router.post("/count", async (req, res) => {
   const { channel } = req.body;
 
   if (!channel) {
     res.status(400).json({
       name: "SubscriptionError",
-      message: "Invalid subscription",
+      message: "Invalid Channel",
     });
   }
   try {
-    await ChannelSubscription.findOneAndDelete({
+    const count = await ChannelSubscription.countDocuments({
       channel,
+    });
+    res.json({
+      subscribers: count,
+    });
+  } catch (err) {
+    res.status(500).json({
+      name: "ServerError",
+      message: err.message,
+    });
+  }
+});
+
+// Unsubscribe to a channel
+router.delete("/:id", async (req, res) => {
+  //req.userId = "5edeb0185d791c662f246289";
+  const subscriber = req.userId;
+  const { id } = req.params;
+  console.log(id);
+
+  try {
+    await ChannelSubscription.findOneAndDelete({
+      channel: id,
       subscriber,
     });
     res.json({

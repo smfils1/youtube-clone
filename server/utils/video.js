@@ -4,9 +4,10 @@ const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const urljoin = require("url-join");
 const config = require("../config");
+const googleStore = require("../services/fileStorage");
 
-const localVidPath = path.join("data", "videos");
-const localThumbPath = path.join("data", "thumbnails");
+const localVidPath = path.join(__dirname, "../", "data", "videos");
+const localThumbPath = path.join(__dirname, "../", "data", "thumbnails");
 
 const stream = (videPath, req, res) => {
   try {
@@ -113,6 +114,28 @@ const info = (videoPath) => {
   });
 };
 
+const storeVideo = async (filename) => {
+  const filePath = path.join(localVidPath, filename);
+  const mimeType = "video/mp4";
+  try {
+    const results = await googleStore.getFile({ filePath, filename, mimeType });
+    return results;
+  } catch (err) {
+    throw err;
+  }
+};
+
+const storeThumbnail = async (filename) => {
+  const filePath = path.join(localThumbPath, filename);
+  const mimeType = "image/png";
+  try {
+    const results = await googleStore.getFile({ filePath, filename, mimeType });
+    return results;
+  } catch (err) {
+    throw err;
+  }
+};
+
 module.exports = {
   stream,
   upload,
@@ -121,4 +144,6 @@ module.exports = {
   info,
   localVidPath,
   localThumbPath,
+  storeThumbnail,
+  storeVideo,
 };

@@ -16,6 +16,41 @@ const readFile = util.promisify(fs.readFile);
 
 const config = require("../config");
 
+// // Get channel videos
+// router.get(
+//   "/channel/:id",
+//   /*auth, */ async (req, res) => {
+//     const { userId } = req;
+//     const { id } = req.params;
+//     //TODO: handle private videos
+//     const filter = {uploader: id}
+//     if(userId !== id) filter.visibility = 0
+//     try {
+//       const videos = await Video.find(filter).populate("uploader");
+
+//       const video = {
+//         id: videoInfo._id,
+//         views: videoInfo.views,
+//         createdAt: videoInfo.createdAt,
+//         thumbnail: videoInfo.thumbnail,
+//         title: videoInfo.title,
+//         description: videoInfo.description,
+//         duration: videoInfo.duration,
+//         videoLink: videoInfo.video,
+//         channelImg: videoInfo.uploader.profileImg,
+//         channel: videoInfo.uploader.name,
+//         channelId: videoInfo.uploader._id,
+//       };
+//       res.json({ video });
+//     } catch (err) {
+//       res.status(500).json({
+//         name: "ServerError",
+//         message: err.message,
+//       });
+//     }
+//   }
+// );
+
 // Save video temporary
 router.post(
   "/",
@@ -50,11 +85,23 @@ router.post(
   /*auth, */ async (req, res) => {
     const videoInfo = req.body;
     try {
+      const videoName = videoInfo.filename;
+      const thumbLink = videoInfo.thumbnail;
+      const thumbSplit = thumbLink.split("/");
+      const thumbnailName = decodeURIComponent(
+        thumbSplit[thumbLink.length - 1]
+      );
+      const { id: videoStoreId } = await video.storeVideo(videoName);
+      const { id: thumbnailStoreId } = await video.storeThumbnail(
+        thumbnailName
+      );
       const { duration } = await video.info(
-        path.join("data", "videos", videoInfo.filename)
+        path.join(__dirname, "../", "data", "videos", videoInfo.filename)
       );
       videoInfo.duration = duration;
       await Video.create({
+        videoStoreId,
+        thumbnailStoreId,
         ...videoInfo,
         video: video.generateVideoLink(videoInfo.filename),
         uploader: req.userId || "5edeb0185d791c662f246289",
@@ -123,7 +170,7 @@ router.post(
     console.log(filename);
     try {
       const thumbLinks = await video.generateThumbnails(
-        path.join("data", "videos", filename),
+        path.join(__dirname, "../", "data", "videos", filename),
         3
       );
 
@@ -177,7 +224,13 @@ router.get("/stream/:videoFile", async (req, res) => {
     //req.userId = "5edeb0185d791c662f246289";
     if (visibility < 2 || (visibility === 2 && uploader == req.userId)) {
       video.stream(
-        path.join("data", "videos", decodeURIComponent(videoFile)),
+        path.join(
+          __dirname,
+          "../",
+          "data",
+          "videos",
+          decodeURIComponent(videoFile)
+        ),
         req,
         res
       );

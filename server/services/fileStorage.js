@@ -12,7 +12,6 @@ const getFile = (fileId) => {
         fileId,
         fields: "*",
       });
-      console.log(file);
       const url = file.data.webContentLink;
       const path = file.data.name;
       const writer = fs.createWriteStream(path);
@@ -63,9 +62,6 @@ const saveFile = ({ filePath, filename, mimeType }) => {
       const drive = await getDrive();
 
       const bucket = await getBucket("youtube");
-      console.log(111);
-
-      console.log(bucket);
       const file = await drive.files.create({
         resource: {
           name: filename,

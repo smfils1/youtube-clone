@@ -69,6 +69,7 @@ function StyledDropzone() {
     noClick: true,
     noKeyboard: true,
     accept: "video/mp4",
+    maxSize: 25 * 1024 * 1024,
     onDrop,
   });
 

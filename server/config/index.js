@@ -25,7 +25,6 @@ const config = {
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
   GOOGLE_DRIVE_CREDENTIALS: JSON.parse(process.env.GOOGLE_DRIVE_CREDENTIALS),
-  GOOGLE_DRIVE_TOKEN: JSON.parse(process.env.GOOGLE_DRIVE_TOKEN),
 };
 
 module.exports = config;

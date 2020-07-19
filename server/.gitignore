@@ -9,9 +9,8 @@ node_modules/
 .env
 .env.test
 
-token.json
 # parcel-bundler cache (https://parceljs.org/)
 .cache
 
-# Local data
+# Local/Temp data
 /data

@@ -17,6 +17,7 @@ const authRoutes = require("./routes/auth");
 const userRoutes = require("./routes/users");
 const videoRoutes = require("./routes/videos");
 const subscriptionRoutes = require("./routes/subscriptions");
+const commentRoutes = require("./routes/comments");
 const passport = require("./config/passport");
 
 //Use Middlewares
@@ -37,7 +38,9 @@ app.use("/api/auth/google", authRoutes);
 app.use("/api/users", auth, userRoutes);
 app.use("/api/subscriptions", auth, subscriptionRoutes);
 app.use("/api/videos", auth2, videoRoutes);
+app.use("/api/comments", auth2, commentRoutes);
 
+//For Deploying client & api on one server
 if (process.env.NODE_ENV === "production") {
   app.use(express.static(path.resolve(__dirname, "../", "client", "build")));
   app.get("*", (req, res) => {

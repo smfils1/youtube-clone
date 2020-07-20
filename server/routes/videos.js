@@ -16,40 +16,27 @@ const readFile = util.promisify(fs.readFile);
 
 const config = require("../config");
 
-// // Get channel videos
-// router.get(
-//   "/channel/:id",
-//   /*auth, */ async (req, res) => {
-//     const { userId } = req;
-//     const { id } = req.params;
-//     //TODO: handle private videos
-//     const filter = {uploader: id}
-//     if(userId !== id) filter.visibility = 0
-//     try {
-//       const videos = await Video.find(filter).populate("uploader");
+// Get channel videos
+router.get(
+  "/channel/:id",
+  /*auth, */ async (req, res) => {
+    const { userId } = req;
+    const { id } = req.params;
 
-//       const video = {
-//         id: videoInfo._id,
-//         views: videoInfo.views,
-//         createdAt: videoInfo.createdAt,
-//         thumbnail: videoInfo.thumbnail,
-//         title: videoInfo.title,
-//         description: videoInfo.description,
-//         duration: videoInfo.duration,
-//         videoLink: videoInfo.video,
-//         channelImg: videoInfo.uploader.profileImg,
-//         channel: videoInfo.uploader.name,
-//         channelId: videoInfo.uploader._id,
-//       };
-//       res.json({ video });
-//     } catch (err) {
-//       res.status(500).json({
-//         name: "ServerError",
-//         message: err.message,
-//       });
-//     }
-//   }
-// );
+    const filter = { uploader: id };
+    if (userId !== id) filter.visibility = 0;
+    try {
+      const videos = await Video.find(filter).populate("uploader");
+      //TODO: clean up results to  send
+      res.json({ videos });
+    } catch (err) {
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
+  }
+);
 
 // Save video temporary
 router.post(

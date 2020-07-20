@@ -8,6 +8,7 @@ const auth = require("../middleware/auth");
 
 const video = require("../utils/video");
 const Video = require("../models/video");
+const ChannelSubscription = require("../models/channelSubscription");
 
 const fs = require("fs");
 const util = require("util");
@@ -28,6 +29,31 @@ router.get(
     try {
       const videos = await Video.find(filter).populate("uploader");
       //TODO: clean up results to  send
+      res.json({ videos });
+    } catch (err) {
+      res.status(500).json({
+        name: "ServerError",
+        message: err.message,
+      });
+    }
+  }
+);
+
+// Get subscription videos
+router.get(
+  "/subscription",
+  /*auth, */ async (req, res) => {
+    const { userId } = req;
+    try {
+      const channelSubscriptions = await ChannelSubscription.find({
+        subscriber: userId,
+      });
+      const channels = channelSubscriptions.map(({ channel }) => channel);
+      const videos = await Video.find({ uploader: channel }).populate(
+        "uploader"
+      );
+      //TODO: clean up results to  send & handle private/ unlisted videos
+
       res.json({ videos });
     } catch (err) {
       res.status(500).json({

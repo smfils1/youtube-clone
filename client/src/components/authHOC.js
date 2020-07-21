@@ -9,7 +9,7 @@ export default (OriginalComponent, isPrivate = true) => {
     const checkAuth = async () => {
       await dispatch(auth());
       if (!isAuth && isPrivate) {
-        props.history.push("/login");
+        props.history.push("/");
       }
     };
 

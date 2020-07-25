@@ -14,11 +14,11 @@ const dbConnect = require("./config/db");
 
 // routes
 const authRoutes = require("./routes/auth");
-const userRoutes = require("./routes/users");
+const channelRoutes = require("./routes/channels");
 const videoRoutes = require("./routes/videos");
 const subscriptionRoutes = require("./routes/subscriptions");
 const commentRoutes = require("./routes/comments");
-const voteRoutes = require("./routes/votes");
+const ratingRoutes = require("./routes/ratings");
 const passport = require("./config/passport");
 
 //Use Middlewares
@@ -28,6 +28,12 @@ app.use(
     credentials: true,
   })
 );
+
+app.use((req, res, next) => {
+  //Prevents auth leaks when going back in browser
+  res.set("Cache-Control", "no-store");
+  next();
+});
 app.use(passport.initialize());
 app.use(helmet()); //Secure HTTP headers
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -36,11 +42,11 @@ app.use(cookieParser());
 
 // Use Routes
 app.use("/api/auth/google", authRoutes);
-app.use("/api/users", auth, userRoutes);
+app.use("/api/channels", auth, channelRoutes);
 app.use("/api/subscriptions", auth, subscriptionRoutes);
 app.use("/api/videos", auth2, videoRoutes);
 app.use("/api/comments", auth2, commentRoutes);
-app.use("/api/votes", auth, voteRoutes);
+app.use("/api/ratings", auth, ratingRoutes);
 
 //For Deploying client & api on one server
 if (process.env.NODE_ENV === "production") {

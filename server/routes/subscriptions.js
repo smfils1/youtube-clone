@@ -5,15 +5,17 @@ const ChannelSubscription = require("../models/channelSubscription");
 
 // Subscribe to a channel
 router.post("/", async (req, res) => {
-  req.userId = "5edeb0185d791c662f246289";
   const subscriber = req.userId;
   const { channel } = req.body;
 
   if (!channel) {
-    res.status(400).json({
-      name: "SubscriptionError",
-      message: "Invalid subscription",
-    });
+    errorResponse(
+      {
+        name: "InvalidResourceError",
+        message: "Invalid subscription",
+      },
+      res
+    );
   }
   try {
     await ChannelSubscription.create({
@@ -21,28 +23,27 @@ router.post("/", async (req, res) => {
       subscriber,
     });
     res.json({
-      message: "success",
+      success: true,
     });
   } catch (err) {
-    res.status(500).json({
-      name: "ServerError",
-      message: err.message,
-    });
+    errorResponse(err, res);
   }
 });
 
 // Check if subscribed
 router.post("/subscribed", async (req, res) => {
-  //req.userId = "5edeb0185d791c662f246289";
   const subscriber = req.userId;
   const { channel } = req.body;
   console.log(subscriber, channel);
 
   if (!channel) {
-    res.status(400).json({
-      name: "SubscriptionError",
-      message: "Invalid subscription",
-    });
+    errorResponse(
+      {
+        name: "InvalidResourceError",
+        message: "Invalid subscription",
+      },
+      res
+    );
   }
   try {
     const subscription = await ChannelSubscription.findOne({
@@ -53,10 +54,7 @@ router.post("/subscribed", async (req, res) => {
       isSubscribed: !!subscription,
     });
   } catch (err) {
-    res.status(500).json({
-      name: "ServerError",
-      message: err.message,
-    });
+    errorResponse(err, res);
   }
 });
 

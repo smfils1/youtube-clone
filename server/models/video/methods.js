@@ -1,79 +1,98 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
 
+const { extractVideoInfo } = require("../../utils/extract");
+
 const ObjectId = mongoose.Types.ObjectId;
 
 const methods = (videoSchema) => {
-  videoSchema.statics.findByName = async function ({ filename, error }) {
+  videoSchema.statics.findByName = async function (filename) {
     const Video = this;
     let video;
     try {
       video = await Video.findOne({ filename });
-      if (!video) throw error;
+      if (!video)
+        throw {
+          name: "InvalidResourceError",
+          message: "Video not found",
+        };
       return video;
     } catch (err) {
       throw err;
     }
   };
 
-  videoSchema.statics.getRecommended = async function (uploader, count = 8) {
+  videoSchema.statics.findByThumbnail = async function (thumbnailName) {
+    const Video = this;
+    let video;
+    try {
+      video = await Video.findOne({ thumbnailName });
+      if (!video)
+        throw {
+          name: "InvalidResourceError",
+          message: "Video not found",
+        };
+      return video;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  videoSchema.statics.getRecommended = async function ({ userId, count = 8 }) {
     const Video = this;
     let videos;
-    const filter = {
-      uploader: { $ne: ObjectId(uploader) },
-      visibility: 0,
-    };
+
     try {
+      if (!userId) throw { message: "userId is required" };
+      const filter = {
+        uploader: { $ne: ObjectId(userId) },
+        visibility: 0,
+      };
       videos = await Video.aggregate([
         { $match: filter },
-        { $sample: { size: count } },
+        { $sample: { size: count } }, //get random docs
         {
           $lookup: {
-            from: "users",
+            from: "channels",
             localField: "uploader",
             foreignField: "_id",
             as: "uploader",
           },
         },
       ]);
-      if (!videos) throw { message: "No videos" };
-      const recommended = videos.map(
-        ({
-          _id,
-          views,
-          createdAt,
-          thumbnail,
-          title,
-          description,
-          duration,
-          video,
-          uploader,
-        }) => ({
-          id: _id,
-          views,
-          createdAt,
-          thumbnail,
-          title,
-          description,
-          duration,
-          video,
-          channel: uploader[0].name,
-          channelId: uploader[0]._id,
-          channelImg: uploader[0].profileImg,
-        })
-      );
+      const recommended = [];
+      videos.forEach((video) => {
+        authorize(
+          (isAuth) => {
+            if (isAuth) {
+              const recommendVideo = extractVideoInfo(video);
+              recommended.push(recommendVideo);
+            } else {
+            }
+          },
+          {
+            onlyPublic: true,
+            video: { ...video, uploader: video.uploader._id },
+            userId,
+          }
+        );
+      });
       return recommended;
     } catch (err) {
       throw err;
     }
   };
 
-  videoSchema.statics.getTrending = async function (limit = 20) {
+  videoSchema.statics.getTrendingByCategory = async function ({
+    limit = 20,
+    category,
+  }) {
     const Video = this;
     let videos;
     const filter = {
       visibility: 0,
       weeklyViews: { $gt: 0 },
+      category: category || { $gte: 0 },
     };
     const sort = { createdAt: -1 };
     try {
@@ -81,33 +100,63 @@ const methods = (videoSchema) => {
         .populate("uploader")
         .sort(sort)
         .limit(limit);
-      if (!videos) throw { message: "No videos" };
-      const trending = videos.map(
-        ({
-          _id,
-          createdAt,
-          views,
-          thumbnail,
-          title,
-          description,
-          duration,
-          video,
-          uploader,
-        }) => ({
-          id: _id,
-          views,
-          createdAt,
-          thumbnail,
-          title,
-          description,
-          duration,
-          video,
-          channelImg: uploader.profileImg,
-          channel: uploader.name,
-          channelId: uploader._id,
-        })
+
+      const videoResults = [];
+      videos.forEach((video) => {
+        video.authorize(
+          (isAuth) => {
+            if (isAuth) {
+              const videoInfo = extractVideoInfo(video);
+              videoResults.push(videoInfo);
+            } else {
+            }
+          },
+          { onlyPublic: true }
+        );
+      });
+      return videoResults;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  videoSchema.statics.getChannelVideos = async function ({
+    channelId,
+    userId,
+  }) {
+    const Video = this;
+    const filter = { uploader: channelId };
+    if (userId !== channelId) filter.visibility = 0;
+    try {
+      const videos = await Video.find(filter).populate("uploader");
+      const videoResults = videos.map((video) => extractVideoInfo(video));
+      return videoResults;
+    } catch (err) {
+      throw err;
+    }
+  };
+
+  videoSchema.statics.getVideo = async function ({ videoId, userId }) {
+    const Video = this;
+    const video = await Video.findById(videoId).populate("uploader");
+    try {
+      if (!video) {
+        throw {
+          name: "InvalidResourceError",
+          message: "Invalid video",
+        };
+      }
+      video.authorize(
+        (isAuth) => {
+          if (isAuth) {
+            return extractVideoInfo(video);
+          } else {
+          }
+        },
+        {
+          userId,
+        }
       );
-      return trending;
     } catch (err) {
       throw err;
     }
@@ -126,6 +175,24 @@ const methods = (videoSchema) => {
       }
     }
   };
+
+  videoSchema.methods.authorize = authorize;
+};
+
+const authorize = function (callback, { onlyPublic = false, video, userId }) {
+  const { visibility, uploader } = video || this;
+  const strictVisibility = onlyPublic && visibility === 0;
+  const normalVisibility =
+    visibility < 2 || (visibility === 2 && uploader == userId);
+  try {
+    if (normalVisibility && strictVisibility) {
+      callback(true);
+    } else {
+      callback(false);
+    }
+  } catch (err) {
+    throw err;
+  }
 };
 
 module.exports = methods;

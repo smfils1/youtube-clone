@@ -15,7 +15,6 @@ const generateToken = ({ id, errorMessage, secret }) => {
 const verifyToken = ({ token, errorMessage, secret }) => {
   try {
     const jwToken = jwt.verify(token, secret);
-
     return jwToken.id;
   } catch (err) {
     throw errorMessage || err;

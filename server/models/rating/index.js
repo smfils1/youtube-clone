@@ -1,19 +1,19 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const voteSchema = mongoose.Schema({
+const ratingSchema = mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
-    ref: "User",
+    ref: "Channel",
     unique: true,
     required: [true, "{PATH} is required"],
   },
-  vote: {
+  rating: {
     type: Number,
     enum: [-1, 1], // dislike & like
     required: [true, "{PATH} is required"],
   },
-  voteType: {
+  ratingType: {
     type: String,
     enum: ["comment", "video"], // dislike & like
     required: [true, "{PATH} is required"],
@@ -28,7 +28,7 @@ const voteSchema = mongoose.Schema({
   },
 });
 
-require("./methods")(voteSchema);
-const Vote = mongoose.model("Vote", voteSchema);
+require("./methods")(ratingSchema);
+const Rating = mongoose.model("Rating", ratingSchema);
 
-module.exports = Vote;
+module.exports = Rating;

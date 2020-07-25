@@ -1,301 +1,267 @@
 const express = require("express");
-const router = express.Router();
-const passport = require("../config/passport");
-const errorResponse = require("../utils/error");
-const { generateToken } = require("../utils/jwt");
-const { WEBSITE_URL } = require("../config/index");
-const auth = require("../middleware/auth");
-
-const video = require("../utils/video");
+const fileProcess = require("../services/fileProcess");
 const Video = require("../models/video");
 const ChannelSubscription = require("../models/channelSubscription");
+const {
+  extractVideoInfo,
+  extractUploadFilenames,
+} = require("../utils/extract");
 
-const fs = require("fs");
-const util = require("util");
-const path = require("path");
-const readFile = util.promisify(fs.readFile);
+const errorResponse = require("../utils/error");
 
-const config = require("../config");
-
-// Get channel videos
-router.get(
-  "/channel/:id",
-  /*auth, */ async (req, res) => {
-    const { userId } = req;
-    const { id } = req.params;
-
-    const filter = { uploader: id };
-    if (userId !== id) filter.visibility = 0;
-    try {
-      const videos = await Video.find(filter).populate("uploader");
-      //TODO: clean up results to  send
-      res.json({ videos });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
-
-// Get subscription videos
-router.get(
-  "/subscription",
-  /*auth, */ async (req, res) => {
-    const { userId } = req;
-    try {
-      const channelSubscriptions = await ChannelSubscription.find({
-        subscriber: userId,
-      });
-      const channels = channelSubscriptions.map(({ channel }) => channel);
-      const videos = await Video.find({ uploader: channel }).populate(
-        "uploader"
-      );
-      //TODO: clean up results to  send & handle private/ unlisted videos
-
-      res.json({ videos });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
+const router = express.Router();
 
 // Save video temporary
-router.post(
-  "/",
-  /*auth, */ (req, res) => {
-    try {
-      video.upload(req, res, (err) => {
-        if (err) {
-          res.status(400).json({
+router.post("/", (req, res) => {
+  try {
+    fileProcess.uploadFile(req, res, (err) => {
+      if (err) {
+        errorResponse(
+          {
             name: "UploadError",
             message: err.message,
-          });
-        } else {
-          res.json({
-            success: true,
-            filePath: res.req.file.path,
-            filename: res.req.file.filename,
-          });
-        }
-      });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
+          },
+          res
+        );
+      } else {
+        res.json({
+          success: true,
+          filePath: res.req.file.path,
+          filename: res.req.file.filename,
+        });
+      }
+    });
+  } catch (err) {
+    errorResponse(err, res);
   }
-);
+});
 
 // Save video
-router.post(
-  "/upload",
-  /*auth, */ async (req, res) => {
-    const videoInfo = req.body;
-    try {
-      const videoName = videoInfo.filename;
-      const thumbLink = videoInfo.thumbnail;
-      const thumbSplit = thumbLink.split("/");
-      const thumbnailName = decodeURIComponent(
-        thumbSplit[thumbLink.length - 1]
-      );
-      const { id: videoStoreId } = await video.storeVideo(videoName);
-      const { id: thumbnailStoreId } = await video.storeThumbnail(
-        thumbnailName
-      );
-      const { duration } = await video.info(
-        path.join(__dirname, "../", "data", "videos", videoInfo.filename)
-      );
-      videoInfo.duration = duration;
-      await Video.create({
-        videoStoreId,
-        thumbnailStoreId,
-        ...videoInfo,
-        video: video.generateVideoLink(videoInfo.filename),
-        uploader: req.userId || "5edeb0185d791c662f246289",
-      });
-      res.json({
-        success: true,
-      });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
+router.post("/upload", async (req, res) => {
+  const uploadInfo = req.body;
+  try {
+    const { videoFilename, thumbnailFilename } = extractUploadFilenames(
+      uploadInfo
+    );
+    const { id: videoStoreId } = await fileProcess.storeFile({
+      filename: videoFilename,
+      type: "video",
+    }); //"1EpoxKjGQtiB4GCQOZfsPwDtOYjKrX-Ig"
+    const { id: thumbnailStoreId } = await fileProcess.storeFile({
+      filename: thumbnailFilename,
+      type: "thumbnail",
+    });
+    const { duration } = await fileProcess.videoInfo(uploadInfo.filename);
+    uploadInfo.duration = duration;
+    await Video.create({
+      thumbnailName: thumbnailFilename,
+      videoStoreId,
+      thumbnailStoreId,
+      ...uploadInfo,
+      videoLink: fileProcess.generateVideoLink(videoInfo.filename),
+      uploader: req.userId,
+    });
+    res.json({
+      success: true,
+    });
+  } catch (err) {
+    errorResponse(err, res);
   }
-);
-
-// Get recommonded videos (random vids)
-router.get(
-  "/recommended",
-  /*auth, */ async (req, res) => {
-    req.userId = "5edeb0185d791c662f246280";
-
-    try {
-      //Video.
-      const videos = await Video.getRecommended(req.userId);
-      res.json({
-        videos,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
-
-// Get trending videos
-router.get(
-  "/trending",
-  /*auth, */ async (req, res) => {
-    req.userId = "5edeb0185d791c662f246280";
-
-    try {
-      //Video.
-      const videos = await Video.getTrending();
-      res.json({
-        videos,
-      });
-    } catch (err) {
-      console.log(err);
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
-
-//Generate thumbs
-router.post(
-  "/thumbnails",
-  /*auth, */ async (req, res) => {
-    const { filename } = req.body;
-    console.log(filename);
-    try {
-      const thumbLinks = await video.generateThumbnails(
-        path.join(__dirname, "../", "data", "videos", filename),
-        3
-      );
-
-      res.json({ thumbnails: thumbLinks });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
-
-//Get thumb
-router.get(
-  "/thumbnail/:thumbFile",
-  /*auth, */ async (req, res) => {
-    const { thumbFile } = req.params;
-    try {
-      const file = path.join(
-        __dirname,
-        "..",
-        video.localThumbPath,
-        decodeURIComponent(thumbFile)
-      );
-      res.sendFile(file, function (err) {
-        if (err) {
-          res.status(err.status).json({
-            name: "FileError",
-            message: "File do not exist",
-          });
-        }
-      });
-    } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
-    }
-  }
-);
+});
 
 //Stream video
+//TODO: test
 router.get("/stream/:videoFile", async (req, res) => {
   const { videoFile } = req.params;
+  const { userId } = req;
   try {
-    const { visibility, uploader } = await Video.findByName({
+    const isExist = await fileProcess.checkFileExists({
+      type: "video",
       filename: decodeURIComponent(videoFile),
-      error: { message: "video dont exist" },
     });
-    //req.userId = "5edeb0185d791c662f246289";
-    if (visibility < 2 || (visibility === 2 && uploader == req.userId)) {
-      video.stream(
-        path.join(
-          __dirname,
-          "../",
-          "data",
-          "videos",
-          decodeURIComponent(videoFile)
-        ),
-        req,
-        res
-      );
-    } else {
-      res.status(401).json({
-        name: "InaccessibleVidError",
-        message: "InaccessibleVidError",
-      });
-    }
+    const videoDoc = await Video.findByName(decodeURIComponent(videoFile));
+    videoDoc.authorize(
+      async (isAuth) => {
+        const shouldStream = false;
+        if (isAuth && isExist) {
+          shouldStream = true;
+        } else if (isAuth && !isExist) {
+          await fileProcess.getStoreFile({
+            fileStoreId: videoDoc.videoStoreId,
+            type: "video",
+          });
+          shouldStream = true;
+        }
+        if (shouldStream) {
+          fileProcess.streamVideoVideo({
+            videoFile: decodeURIComponent(videoFile),
+            range: req.headers.range,
+            res,
+          });
+        } else {
+          errorResponse(
+            {
+              name: "InaccessibleError",
+              message: "Can't not access video",
+            },
+            res
+          );
+        }
+      },
+      { userId }
+    );
   } catch (err) {
-    res.status(404).json({
-      name: "InaccessibleVidError",
-      message: err.message,
+    errorResponse(
+      {
+        name: "InvalidResourceError",
+        message: "Video not found",
+      },
+      res
+    );
+  }
+});
+
+// Get recommonded videos (random vids)
+router.get("/recommended", async (req, res) => {
+  const { userId } = req;
+  try {
+    const videos = await Video.getRecommended({ userId });
+    res.json({
+      videos,
     });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+// Get trending videos
+router.get("/trending", async (req, res) => {
+  try {
+    const videos = await Video.getTrendingByCategory({});
+    res.json({
+      videos,
+    });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+// Get trending videos in a category
+router.get("/trending/:categoryId", async (req, res) => {
+  const { categoryId } = req.params;
+  try {
+    const videos = await Video.getTrendingByCategory({
+      category: categoryId,
+    });
+    res.json({
+      videos,
+    });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+// Get channel videos
+router.get("/channel/:channelId", async (req, res) => {
+  const { userId } = req;
+  const { channelId } = req.params;
+  try {
+    const videos = await Video.getChannelVideos({
+      channelId,
+      userId,
+    });
+    res.json({ videos });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+// Get subscription videos
+router.get("/subscription", async (req, res) => {
+  const { userId } = req;
+  try {
+    if (!userId) throw { message: "userId is required" };
+    const channelSubscriptions = await ChannelSubscription.find({
+      subscriber: userId,
+    });
+    const channels = channelSubscriptions.map(({ channel }) => channel);
+    const videos = await Video.find({ uploader: { $in: channels } }).populate(
+      "uploader"
+    );
+    const videoResults = videos.map((video) => extractVideoInfo(video));
+    res.json({ videos: videoResults });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+//Generate thumbnails
+router.post("/thumbnails", async (req, res) => {
+  const { filename } = req.body;
+  try {
+    const thumbLinks = await fileProcess.generateThumbnails(filename, 3);
+    res.json({ thumbnails: thumbLinks });
+  } catch (err) {
+    errorResponse(err, res);
+  }
+});
+
+//Get thumbnail
+//TODO: test
+router.get("/thumbnail/:thumbFile", async (req, res) => {
+  const { userId } = req;
+  const { thumbFile } = req.params;
+  try {
+    const isExist = await fileProcess.checkFileExists({
+      type: "thumbnail",
+      filename: decodeURIComponent(thumbFile),
+    });
+    const videoDoc = await Video.findByThumbnail(decodeURIComponent(thumbFile));
+    videoDoc.authorize(
+      async (isAuth) => {
+        const shouldSend = false;
+        if (isAuth && isExist) {
+          shouldSend = true;
+        } else if (isAuth && !isExist) {
+          await fileProcess.getStoreFile({
+            fileStoreId: videoDoc.thumbnailStoreId,
+            type: "thumbnail",
+          });
+          shouldSend = true;
+        }
+        if (shouldSend) {
+          fileProcess.sendImage({
+            filename: decodeURIComponent(thumbFile),
+            res,
+          });
+        } else {
+          errorResponse(
+            {
+              name: "InaccessibleError",
+              message: "Can't not access thumbnail",
+            },
+            res
+          );
+        }
+      },
+      { userId }
+    );
+  } catch (err) {
+    errorResponse(err, res);
   }
 });
 
 // Get video info
 router.get(
-  "/:id",
+  "/:videoId",
   /*auth, */ async (req, res) => {
-    const { id } = req.params;
-    console.log(id);
-    //TODO: handle private videos
+    const { userId } = req;
+    const { videoId } = req.params;
     try {
-      const videoInfo = await Video.findById(id).populate("uploader");
-
-      if (!videoInfo) {
-        res.status(400).json({
-          name: "VideoError",
-          message: "Invalid video",
-        });
-      }
-      const video = {
-        id: videoInfo._id,
-        views: videoInfo.views,
-        createdAt: videoInfo.createdAt,
-        thumbnail: videoInfo.thumbnail,
-        title: videoInfo.title,
-        description: videoInfo.description,
-        duration: videoInfo.duration,
-        videoLink: videoInfo.video,
-        channelImg: videoInfo.uploader.profileImg,
-        channel: videoInfo.uploader.name,
-        channelId: videoInfo.uploader._id,
-      };
+      const video = await Video.getVideo({ videoId, userId });
       res.json({ video });
     } catch (err) {
-      res.status(500).json({
-        name: "ServerError",
-        message: err.message,
-      });
+      errorResponse(err, res);
     }
   }
 );

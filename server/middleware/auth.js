@@ -22,7 +22,7 @@ const auth = (req, res, next) => {
   }
 };
 
-//Doesnt response w/ error if not auth
+//Doesn't response w/ error if not auth
 const auth2 = (req, res, next) => {
   //Get cookies
   const token = req.cookies.jwt_auth;

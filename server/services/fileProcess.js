@@ -3,17 +3,19 @@ const multer = require("multer");
 const path = require("path");
 const ffmpeg = require("fluent-ffmpeg");
 const urljoin = require("url-join");
+
 const config = require("../config");
-const googleStore = require("../services/fileStorage");
+const googleStore = require("./fileStorage");
+const errorResponse = require("../utils/error");
 
 const localVidPath = path.join(__dirname, "../", "data", "videos");
 const localThumbPath = path.join(__dirname, "../", "data", "thumbnails");
 
-const stream = (videPath, req, res) => {
+const streamVideo = ({ videoFile, range, res }) => {
   try {
-    const stat = fs.statSync(videPath);
+    const videoPath = path.join(localVidPath, videoFile);
+    const stat = fs.statSync(videoPath);
     const fileSize = stat.size;
-    const range = req.headers.range;
     if (range) {
       const parts = range.replace(/bytes=/, "").split("-");
       const start = parseInt(parts[0], 10);
@@ -26,21 +28,33 @@ const stream = (videPath, req, res) => {
         "Content-Type": "video/mp4",
       };
       res.writeHead(206, head);
-      fs.createReadStream(videPath, { start, end }).pipe(res);
+      fs.createReadStream(videoPath, { start, end }).pipe(res);
     } else {
       const head = {
         "Content-Length": fileSize,
         "Content-Type": "video/mp4",
       };
       res.writeHead(200, head);
-      fs.createReadStream(videPath).pipe(res);
+      fs.createReadStream(videoPath).pipe(res);
     }
   } catch (err) {
-    res.status(500).json({
-      name: "ServerError",
-      message: err.message,
-    });
+    errorResponse(err, res);
   }
+};
+
+const sendImage = ({ filename, res }) => {
+  const filePath = path.join(localThumbPath, filename);
+  res.sendFile(filePath, function (err) {
+    if (err) {
+      errorResponse(
+        {
+          name: "FileError",
+          message: "File do not exist",
+        },
+        res
+      );
+    }
+  });
 };
 
 const storage = multer.diskStorage({
@@ -62,9 +76,10 @@ const uploadFilter = (req, file, cb) => {
   }
   cb(null, true);
 };
-const upload = multer({ storage, fileFilter: uploadFilter }).single("file");
+const uploadFile = multer({ storage, fileFilter: uploadFilter }).single("file");
 
-const generateThumbnails = (videoPath, limit) => {
+const generateThumbnails = (videoFile, limit) => {
+  const videoPath = path.join(localVidPath, videoFile);
   let thumbnailLinks;
   const promise = new Promise((resolve, reject) => {
     ffmpeg(videoPath)
@@ -101,7 +116,8 @@ const generateVideoLink = (videoFile) => {
     encodeURIComponent(videoFile)
   );
 };
-const info = (videoPath) => {
+const videoInfo = (filename) => {
+  const videoPath = path.join(localVidPath, filename);
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoPath, function (err, metadata) {
       if (err) {
@@ -114,36 +130,59 @@ const info = (videoPath) => {
   });
 };
 
-const storeVideo = async (filename) => {
-  const filePath = path.join(localVidPath, filename);
-  const mimeType = "video/mp4";
+const storeFile = async ({ filename, type }) => {
+  const filePath =
+    type === "video"
+      ? path.join(localVidPath, filename)
+      : path.join(localThumbPath, filename);
+  const mimeType = type === "video" ? "video/mp4" : "image/png";
+
   try {
-    const results = await googleStore.getFile({ filePath, filename, mimeType });
+    console.log(filePath);
+    const results = await googleStore.saveFile({
+      filePath,
+      filename,
+      mimeType,
+    });
     return results;
   } catch (err) {
     throw err;
   }
 };
 
-const storeThumbnail = async (filename) => {
-  const filePath = path.join(localThumbPath, filename);
-  const mimeType = "image/png";
+const getStoreFile = async ({ fileStoreId, type }) => {
+  const path = type === "video" ? localVidPath : localThumbPath;
   try {
-    const results = await googleStore.getFile({ filePath, filename, mimeType });
+    const results = await googleStore.getFile({
+      fileId: fileStoreId,
+      pathDir: path,
+    });
     return results;
   } catch (err) {
     throw err;
+  }
+};
+const checkFileExists = async ({ type, filename }) => {
+  const file =
+    type === "video"
+      ? path.join(localVidPath, filename)
+      : path.join(localThumbPath, filename);
+  try {
+    await fs.promises.access(file, fs.constants.F_OK);
+    return true;
+  } catch (err) {
+    return false;
   }
 };
 
 module.exports = {
-  stream,
-  upload,
+  streamVideo,
+  uploadFile,
   generateThumbnails,
   generateVideoLink,
-  info,
-  localVidPath,
-  localThumbPath,
-  storeThumbnail,
-  storeVideo,
+  videoInfo,
+  storeFile,
+  checkFileExists,
+  getStoreFile,
+  sendImage,
 };

@@ -1,13 +1,12 @@
 const express = require("express");
-const router = express.Router();
+
 const passport = require("../config/passport");
 const errorResponse = require("../utils/error");
 const { generateToken } = require("../utils/jwt");
 const { WEBSITE_URL } = require("../config/index");
-
-const User = require("../models/user");
-
 const config = require("../config");
+
+const router = express.Router();
 
 router.get(
   "/",
@@ -16,6 +15,7 @@ router.get(
     prompt: "select_account",
   })
 );
+
 router.get(
   "/redirect",
   passport.authenticate("google", { failWithError: true, session: false }),

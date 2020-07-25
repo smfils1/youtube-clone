@@ -1,5 +1,5 @@
 const mongoose = require("mongoose");
-const config = require("./index");
+const config = require("./");
 
 //Connect to DB
 const dbConnect = () => {

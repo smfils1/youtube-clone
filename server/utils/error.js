@@ -2,7 +2,8 @@ const errorResponse = (err, res) => {
   if (
     err.name === "CredentialsError" ||
     err.name === "InvalidUserError" ||
-    err.name === "InvalidUpdateError"
+    err.name === "InvalidUpdateError" ||
+    err.name === "UploadError"
   ) {
     res.status(400).json({
       name: err.name,
@@ -21,15 +22,20 @@ const errorResponse = (err, res) => {
       name: "CredentialsError",
       message: "Invalid Token",
     });
-  } else if (
-    err.name === "MailingError" ||
-    err.name === "UpdateError" ||
-    err.name === "GetError"
-  ) {
-    res.status(500).json(err);
+  } else if (err.name === "InaccessibleError") {
+    res.status(401).json({
+      name: err.name,
+      message: err.message,
+    });
+  } else if (err.name === "InvalidResourceError" || err.name === "FileError") {
+    res.status(404).json({
+      name: err.name,
+      message: err.message,
+    });
   } else {
     res.status(500).json({
-      message: "Server Error",
+      name: "ServerError",
+      message: err.message || "Server failed with error",
     });
   }
 };

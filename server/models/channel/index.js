@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const uniqueValidator = require("mongoose-unique-validator");
 
-const userSchema = mongoose.Schema({
+const channelSchema = mongoose.Schema({
   oauthId: {
     type: String,
     required: [true, "{PATH} is required"],
@@ -16,13 +16,13 @@ const userSchema = mongoose.Schema({
     unique: true,
     required: [true, "{PATH} is required"],
   },
-  profileImg: {
+  imageLink: {
     type: String,
   },
 });
-userSchema.plugin(uniqueValidator, { message: "{PATH} must be unique." });
+channelSchema.plugin(uniqueValidator, { message: "{PATH} must be unique." });
 
-require("./methods")(userSchema);
+require("./methods")(channelSchema);
 
-const User = mongoose.model("User", userSchema);
-module.exports = User;
+const Channel = mongoose.model("Channel", channelSchema);
+module.exports = Channel;

@@ -1,10 +1,11 @@
 const fs = require("fs");
+const path = require("path");
 const axios = require("axios");
 const { google } = require("googleapis");
 const { GOOGLE_DRIVE_CREDENTIALS } = require("../config");
 
 //Saves file from google to filesystem
-const getFile = (fileId) => {
+const getFile = ({ fileId, pathDir }) => {
   const promise = new Promise(async (resolve, reject) => {
     try {
       const drive = await getDrive();
@@ -13,8 +14,8 @@ const getFile = (fileId) => {
         fields: "*",
       });
       const url = file.data.webContentLink;
-      const path = file.data.name;
-      const writer = fs.createWriteStream(path);
+      const filePath = path.join(pathDir, file.data.name);
+      const writer = fs.createWriteStream(filePath);
       const response = await axios({
         url,
         method: "GET",

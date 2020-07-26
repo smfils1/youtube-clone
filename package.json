@@ -1,11 +1,11 @@
 {
-  "name": "mern-boilerplate",
+  "name": "youtube-clone",
   "version": "1.0.0",
   "engines": {
     "node": "10.20.1",
     "npm": "6.14.4"
   },
-  "description": "mern-boilerplate",
+  "description": "youtube-clone",
   "main": "server/index.js",
   "scripts": {
     "start": "node server/index.js",

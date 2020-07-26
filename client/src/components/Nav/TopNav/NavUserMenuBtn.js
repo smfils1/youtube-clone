@@ -18,7 +18,7 @@ import {
   Popper,
 } from "@material-ui/core";
 import { ExitToApp as ExitToAppIcon } from "@material-ui/icons";
-import { logoutUser } from "../../../redux/actions/user";
+import { logoutChannel } from "../../../redux/actions/channel";
 
 const useStyles = makeStyles((theme) => ({
   iconButton: {
@@ -50,9 +50,9 @@ const TooltipHeader = ({ text, children }) => (
 
 const NavUserMenuBtn = () => {
   const dispatch = useDispatch();
-  const profileImg = useSelector(({ user }) => user.profileImg);
-  const name = useSelector(({ user }) => user.name);
-  const email = useSelector(({ user }) => user.email);
+  const image = useSelector(({ channel }) => channel.image);
+  const name = useSelector(({ channel }) => channel.name);
+  const email = useSelector(({ channel }) => channel.email);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -85,7 +85,7 @@ const NavUserMenuBtn = () => {
         onClick={handleToggle}
         className={classes.iconButton}
       >
-        <Avatar alt="Profile Image" src={profileImg} />
+        <Avatar alt="Profile Image" src={image} />
       </IconButton>
       <Popper
         open={open}
@@ -110,7 +110,7 @@ const NavUserMenuBtn = () => {
                 style={{ padding: "12px 24px" }}
               >
                 <Grid item>
-                  <Avatar alt="Profile Image" src={profileImg} size="large" />
+                  <Avatar alt="Profile Image" src={image} size="large" />
                 </Grid>
                 <Grid item>
                   <Grid container style={{ overflow: "hidden" }}>
@@ -131,7 +131,7 @@ const NavUserMenuBtn = () => {
                   button
                   onClick={(e) => {
                     handleClose(e);
-                    dispatch(logoutUser());
+                    dispatch(logoutChannel());
                   }}
                 >
                   <ListItemIcon>

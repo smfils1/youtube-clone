@@ -42,6 +42,20 @@ const getHomeVideos = () => {
   };
 };
 
+const getSuggestedVideos = () => {
+  return async (dispatch) => {
+    dispatch(resetVideos());
+    dispatch(getRecommended());
+  };
+};
+
+const getTrendingVideos = (categoryId) => {
+  return async (dispatch) => {
+    dispatch(resetVideos());
+    dispatch(getTrending(categoryId));
+  };
+};
+
 const getRecommended = () => {
   return async (dispatch) => {
     dispatch(setLoading(true));
@@ -52,6 +66,7 @@ const getRecommended = () => {
       console.log(videos);
       dispatch(setRecommended(videos));
     } catch (err) {
+      console.error(err);
       dispatch(setRecommended([]));
     } finally {
       dispatch(setLoading(false));
@@ -59,13 +74,13 @@ const getRecommended = () => {
   };
 };
 
-const getTrending = () => {
+const getTrending = (categoryId) => {
   return async (dispatch) => {
     dispatch(setLoading(true));
     try {
       const {
         data: { videos },
-      } = await api.get("/api/videos/trending");
+      } = await api.get(`/api/videos/trending/${categoryId || ""}`);
       dispatch(setTrending(videos));
     } catch (err) {
       dispatch(setTrending([]));
@@ -75,4 +90,10 @@ const getTrending = () => {
   };
 };
 
-export { getRecommended, getTrending, getHomeVideos };
+export {
+  getTrendingVideos,
+  getRecommended,
+  getSuggestedVideos,
+  getTrending,
+  getHomeVideos,
+};

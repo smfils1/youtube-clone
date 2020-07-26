@@ -2,10 +2,7 @@ const express = require("express");
 const fileProcess = require("../services/fileProcess");
 const Video = require("../models/video");
 const ChannelSubscription = require("../models/channelSubscription");
-const {
-  extractVideoInfo,
-  extractUploadFilenames,
-} = require("../utils/extract");
+const { extractVideoInfo } = require("../utils");
 
 const errorResponse = require("../utils/error");
 
@@ -25,8 +22,6 @@ router.post("/", (req, res) => {
         );
       } else {
         res.json({
-          success: true,
-          filePath: res.req.file.path,
           filename: res.req.file.filename,
         });
       }
@@ -40,9 +35,7 @@ router.post("/", (req, res) => {
 router.post("/upload", async (req, res) => {
   const uploadInfo = req.body;
   try {
-    const { videoFilename, thumbnailFilename } = extractUploadFilenames(
-      uploadInfo
-    );
+    const { filename: videoFilename, thumbnailFilename } = uploadInfo;
     const { id: videoStoreId } = await fileProcess.storeFile({
       filename: videoFilename,
       type: "video",
@@ -54,12 +47,9 @@ router.post("/upload", async (req, res) => {
     const { duration } = await fileProcess.videoInfo(uploadInfo.filename);
     uploadInfo.duration = duration;
     await Video.create({
-      thumbnailName: thumbnailFilename,
       videoStoreId,
       thumbnailStoreId,
       ...uploadInfo,
-      videoLink: fileProcess.generateVideoLink(videoInfo.filename),
-      uploader: req.userId,
     });
     res.json({
       success: true,
@@ -82,7 +72,7 @@ router.get("/stream/:videoFile", async (req, res) => {
     const videoDoc = await Video.findByName(decodeURIComponent(videoFile));
     videoDoc.authorize(
       async (isAuth) => {
-        const shouldStream = false;
+        let shouldStream = false;
         if (isAuth && isExist) {
           shouldStream = true;
         } else if (isAuth && !isExist) {
@@ -93,7 +83,7 @@ router.get("/stream/:videoFile", async (req, res) => {
           shouldStream = true;
         }
         if (shouldStream) {
-          fileProcess.streamVideoVideo({
+          fileProcess.streamVideo({
             videoFile: decodeURIComponent(videoFile),
             range: req.headers.range,
             res,
@@ -129,6 +119,7 @@ router.get("/recommended", async (req, res) => {
     res.json({
       videos,
     });
+    console.log(videos);
   } catch (err) {
     errorResponse(err, res);
   }
@@ -200,7 +191,11 @@ router.post("/thumbnails", async (req, res) => {
   const { filename } = req.body;
   try {
     const thumbLinks = await fileProcess.generateThumbnails(filename, 3);
-    res.json({ thumbnails: thumbLinks });
+    const thumbnails = thumbLinks.map((thumb) => ({
+      ...thumb,
+      link: thumb.link + "?temporary=true",
+    }));
+    res.json({ thumbnails });
   } catch (err) {
     errorResponse(err, res);
   }
@@ -211,15 +206,29 @@ router.post("/thumbnails", async (req, res) => {
 router.get("/thumbnail/:thumbFile", async (req, res) => {
   const { userId } = req;
   const { thumbFile } = req.params;
+  const { temporary } = req.query;
   try {
     const isExist = await fileProcess.checkFileExists({
       type: "thumbnail",
       filename: decodeURIComponent(thumbFile),
     });
-    const videoDoc = await Video.findByThumbnail(decodeURIComponent(thumbFile));
+    let videoDoc;
+    try {
+      videoDoc = await Video.findByThumbnail(decodeURIComponent(thumbFile));
+    } catch (err) {
+      const isTemporary = temporary == "true";
+      if (isTemporary) {
+        return fileProcess.sendImage({
+          filename: decodeURIComponent(thumbFile),
+          res,
+        });
+      } else {
+        throw err;
+      }
+    }
     videoDoc.authorize(
       async (isAuth) => {
-        const shouldSend = false;
+        let shouldSend = false;
         if (isAuth && isExist) {
           shouldSend = true;
         } else if (isAuth && !isExist) {

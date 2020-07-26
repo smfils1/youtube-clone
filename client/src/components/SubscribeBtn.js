@@ -22,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function SubscribeBtn({ className, channelId }) {
   const classes = useStyles();
-  const userId = useSelector(({ user }) => user.id);
+  const userId = useSelector(({ channel }) => channel.id);
   const [isSubscribed, setSubscribed] = useState(false);
   const handleClick = async () => {
     const data = {

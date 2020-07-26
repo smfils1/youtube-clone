@@ -17,7 +17,7 @@ const videoSchema = mongoose.Schema(
       type: String,
       required: [true, "{PATH} is required"],
     },
-    thumbnailName: {
+    thumbnailFilename: {
       type: String,
       required: [true, "{PATH} is required"],
     },
@@ -33,16 +33,6 @@ const videoSchema = mongoose.Schema(
     visibility: {
       type: Number,
       enum: [0, 1, 2], // public, unlisted, private
-      required: [true, "{PATH} is required"],
-    },
-    videoLink: {
-      //May remove
-      type: String,
-      required: [true, "{PATH} is required"],
-    },
-    thumbnailLink: {
-      //May remove
-      type: String,
       required: [true, "{PATH} is required"],
     },
     videoStoreId: {

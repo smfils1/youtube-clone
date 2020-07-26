@@ -4,19 +4,21 @@ import { useSelector, useDispatch } from "react-redux";
 
 import { makeStyles } from "@material-ui/core/styles";
 import VideoList from "./VideoList";
-import { getHomeVideos } from "../../redux/actions/videos";
+import { getSuggestedVideos } from "../../redux/actions/videos";
 const useStyles = makeStyles((theme) => ({
   root: {},
 }));
-const HomePage = () => {
-  const isAuth = useSelector(({ user }) => user.isAuth);
+
+export default () => {
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const recommendedVids = useSelector(({ videos }) => videos.recommended);
   const isLoading = useSelector(({ videos }) => videos.isLoading);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getHomeVideos());
+    dispatch(getSuggestedVideos());
   }, []);
+
   const classes = useStyles();
   return (
     <div>
@@ -24,5 +26,3 @@ const HomePage = () => {
     </div>
   );
 };
-
-export default HomePage;

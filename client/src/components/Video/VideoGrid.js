@@ -21,13 +21,13 @@ export default function VideoGrid({ isLoading, videos }) {
                 {
                   channelImg,
                   duration,
-                  channel,
+                  channelName: channel,
                   channelId,
                   id,
                   createdAt,
-                  thumbnail,
+                  thumbnailLink: thumbnail,
                   title,
-                  video,
+                  videoLink: video,
                   views,
                 },
                 i

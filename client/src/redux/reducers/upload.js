@@ -2,7 +2,7 @@ const initialState = {
   isOpen: false,
   filename: null,
   isLoading: false,
-  thumbnail: null,
+  thumbnailFilename: null,
   thumbnails: null,
   details: null,
   visibility: null,

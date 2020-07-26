@@ -85,12 +85,8 @@ const generateThumbnails = (videoFile, limit) => {
     ffmpeg(videoPath)
       .on("filenames", function (filenames) {
         thumbnailLinks = filenames.map((filename) => {
-          const link = urljoin(
-            config.BACKEND_URL,
-            "/api/videos/thumbnail",
-            encodeURIComponent(filename)
-          );
-          return link;
+          const link = generateLink({ filename, type: "video" });
+          return { filename, link };
         });
       })
       .on("error", (err) => {
@@ -109,12 +105,9 @@ const generateThumbnails = (videoFile, limit) => {
   return promise;
 };
 
-const generateVideoLink = (videoFile) => {
-  return urljoin(
-    config.BACKEND_URL,
-    "/api/videos/stream",
-    encodeURIComponent(videoFile)
-  );
+const generateLink = ({ filename, type }) => {
+  const url = type === "video" ? "/api/videos/stream" : "/api/videos/thumbnail";
+  return urljoin(config.BACKEND_URL, url, encodeURIComponent(filename));
 };
 const videoInfo = (filename) => {
   const videoPath = path.join(localVidPath, filename);
@@ -179,7 +172,7 @@ module.exports = {
   streamVideo,
   uploadFile,
   generateThumbnails,
-  generateVideoLink,
+  generateLink,
   videoInfo,
   storeFile,
   checkFileExists,

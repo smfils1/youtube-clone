@@ -7,6 +7,7 @@ import { Container, Typography, Divider } from "@material-ui/core";
 import VideoGrid from "../Video/VideoGrid";
 import { getHomeVideos } from "../../redux/actions/videos";
 import Banner from "../Banner";
+import youtubeIcon from "../../assets/youtube-icon.png";
 const useStyles = makeStyles((theme) => ({
   root: {
     flex: 1,
@@ -30,7 +31,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const HomePage = () => {
-  const isAuth = useSelector(({ user }) => user.isAuth);
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const recommendedVids = useSelector(({ videos }) => videos.recommended);
   const trendingVids = useSelector(({ videos }) => videos.trending);
   const isLoading = useSelector(({ videos }) => videos.isLoading);
@@ -58,8 +59,8 @@ const HomePage = () => {
             style={{
               alignSelf: "center",
             }}
-            src="https://www.iconsdb.com/icons/preview/white/youtube-xxl.png"
-            height="80%"
+            src={youtubeIcon}
+            height="60%"
           />
           <div
             style={{

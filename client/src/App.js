@@ -3,6 +3,7 @@ import { Switch, Route, Redirect } from "react-router-dom";
 import SignInPage from "./components/Pages/SignInPage";
 import HomePage from "./components/Pages/HomePage";
 import VideoPage from "./components/Pages/VideoPage";
+import TrendingPage from "./components/Pages/TrendingPage";
 //import SubscriptionPage from "./components/Pages/SubscriptionPage";
 
 import auth from "./components/authHOC";
@@ -14,6 +15,7 @@ function App() {
   const Library = auth(SignInPage, false);
   const History = auth(SignInPage, false);
   const Video = auth(VideoPage, false);
+  const Trending = auth(TrendingPage, false);
   //const Subscription = auth(SubscriptionPage, false);
 
   return (
@@ -21,7 +23,17 @@ function App() {
       <Nav>
         <Switch>
           <Route exact path="/" render={(props) => <Home {...props} />} />
-          <Route exact path="/trending" render={() => <div>Trending</div>} />
+
+          <Route
+            exact
+            path="/trending"
+            render={(props) => <Trending {...props} />}
+          />
+          <Route
+            exact
+            path="/trending/:id"
+            render={(props) => <Trending {...props} />}
+          />
           <Route
             exact
             path="/subscriptions"

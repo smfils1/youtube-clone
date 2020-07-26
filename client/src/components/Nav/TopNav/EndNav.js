@@ -30,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 
 const NavBar = () => {
   const dispatch = useDispatch();
-  const isAuth = useSelector(({ user }) => user.isAuth);
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const classes = useStyles();
   const theme = useTheme();
   return (

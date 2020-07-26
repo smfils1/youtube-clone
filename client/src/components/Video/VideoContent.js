@@ -63,31 +63,35 @@ export default function VideoContent({ videoId }) {
   const [numberOfSubscribers, setSubscribers] = useState(0);
   const [showMore, setShowMore] = useState(false);
 
-  useEffect(async () => {
-    try {
-      const {
-        data: { video },
-      } = await api.get(`/api/videos/${videoId}`);
-      setVideo(video);
-      const {
-        data: { subscribers },
-      } = await api.post(`/api/subscriptions/count`, {
-        channel: video.channelId,
-      });
-      setSubscribers(subscribers);
-    } catch (err) {
-      console.log(err);
-    }
+  useEffect(() => {
+    const fetchVideoContent = async () => {
+      try {
+        const {
+          data: { video },
+        } = await api.get(`/api/videos/${videoId}`);
+        setVideo(video || {});
+        const {
+          data: { subscribers },
+        } = await api.post(`/api/subscriptions/count`, {
+          channel: video.channelId,
+        });
+        setSubscribers(subscribers || 0);
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchVideoContent();
   }, []);
 
   const classes = useStyles();
+  console.log(video);
   return (
     <div>
       <video
         style={{ width: "100%" }}
         src={video.videoLink}
         controls
-        //autoPlay
+        autoPlay
       />
       <div className={classes.primaryInfo}>
         <Typography variant="h6" className={classes.text}>
@@ -110,7 +114,7 @@ export default function VideoContent({ videoId }) {
             <div className={classes.secondaryInfo_3}>
               {" "}
               <Typography variant="body2" className={clsx(classes.channel)}>
-                {video.channel}
+                {video.channelName}
               </Typography>
               <Typography variant="caption" className={clsx(classes.subTitle)}>
                 {numberOfSubscribers} subscribers

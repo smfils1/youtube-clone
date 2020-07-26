@@ -116,7 +116,7 @@ export default function HorizontalLinearStepper({ filename }) {
                   onSubmit={setDetailsRx}
                 />
                 Pick an thumbnail:
-                <ImagePicker list={thumbnails || new Array(3).fill(null)} />}
+                <ImagePicker list={thumbnails || new Array(3).fill({})} />}
               </div>
             </Typography>
             <div>

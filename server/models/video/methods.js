@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const moment = require("moment");
 
-const { extractVideoInfo } = require("../../utils/extract");
+const { extractVideoInfo } = require("../../utils");
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -22,11 +22,11 @@ const methods = (videoSchema) => {
     }
   };
 
-  videoSchema.statics.findByThumbnail = async function (thumbnailName) {
+  videoSchema.statics.findByThumbnail = async function (thumbnailFilename) {
     const Video = this;
     let video;
     try {
-      video = await Video.findOne({ thumbnailName });
+      video = await Video.findOne({ thumbnailFilename });
       if (!video)
         throw {
           name: "InvalidResourceError",
@@ -43,7 +43,7 @@ const methods = (videoSchema) => {
     let videos;
 
     try {
-      if (!userId) throw { message: "userId is required" };
+      //if (!userId) throw { message: "userId is required" };
       const filter = {
         uploader: { $ne: ObjectId(userId) },
         visibility: 0,
@@ -64,8 +64,9 @@ const methods = (videoSchema) => {
       videos.forEach((video) => {
         authorize(
           (isAuth) => {
+            console.log(isAuth);
             if (isAuth) {
-              const recommendVideo = extractVideoInfo(video);
+              const recommendVideo = { ...extractVideoInfo(video) };
               recommended.push(recommendVideo);
             } else {
             }
@@ -91,7 +92,7 @@ const methods = (videoSchema) => {
     let videos;
     const filter = {
       visibility: 0,
-      weeklyViews: { $gt: 0 },
+      weeklyViews: { $gte: 0 }, //TODO: change to gt
       category: category || { $gte: 0 },
     };
     const sort = { createdAt: -1 };
@@ -146,11 +147,12 @@ const methods = (videoSchema) => {
           message: "Invalid video",
         };
       }
-      video.authorize(
+      return video.authorize(
         (isAuth) => {
           if (isAuth) {
             return extractVideoInfo(video);
           } else {
+            return {};
           }
         },
         {
@@ -181,15 +183,11 @@ const methods = (videoSchema) => {
 
 const authorize = function (callback, { onlyPublic = false, video, userId }) {
   const { visibility, uploader } = video || this;
-  const strictVisibility = onlyPublic && visibility === 0;
+  const strictVisibility = onlyPublic ? visibility === 0 : true;
   const normalVisibility =
     visibility < 2 || (visibility === 2 && uploader == userId);
   try {
-    if (normalVisibility && strictVisibility) {
-      callback(true);
-    } else {
-      callback(false);
-    }
+    return callback(normalVisibility && strictVisibility);
   } catch (err) {
     throw err;
   }

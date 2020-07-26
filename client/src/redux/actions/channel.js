@@ -13,35 +13,35 @@ const setAuth = (isAuth) => {
   };
 };
 
-const setUserInfo = (user) => {
+const setChannelInfo = (channel) => {
   return {
-    type: "SET_USER_INFO",
-    payload: user,
+    type: "SET_CHANNEL_INFO",
+    payload: channel,
   };
 };
 
-const logoutUser = (history) => {
+const logoutChannel = (history) => {
   return async (dispatch) => {
     try {
       await api.get("/api/auth/google/logout");
       dispatch(setAuth(false));
       dispatch(
-        setUserInfo({
+        setChannelInfo({
           id: null,
           name: null,
           email: null,
-          profileImg: null,
+          image: null,
         })
       );
       history.push("/");
     } catch (err) {
       dispatch(setAuth(false));
       dispatch(
-        setUserInfo({
+        setChannelInfo({
           id: null,
           name: null,
           email: null,
-          profileImg: null,
+          image: null,
         })
       );
     }
@@ -51,27 +51,27 @@ const logoutUser = (history) => {
 const auth = () => {
   return async (dispatch) => {
     try {
-      const { data } = await api.get("/api/users");
+      const { data } = await api.get("/api/channels");
       dispatch(setAuth(true));
       dispatch(
-        setUserInfo({
+        setChannelInfo({
           id: data.id,
           name: data.name,
           email: data.email,
-          profileImg: data.profileImg,
+          image: data.imageLink,
         })
       );
     } catch (err) {
       dispatch(setAuth(false));
       dispatch(
-        setUserInfo({
+        setChannelInfo({
           id: null,
           name: null,
           email: null,
-          profileImg: null,
+          image: null,
         })
       );
     }
   };
 };
-export { auth, logoutUser, setUserInfo };
+export { auth, logoutChannel, setChannelInfo };

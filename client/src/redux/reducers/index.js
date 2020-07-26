@@ -1,11 +1,11 @@
 import { combineReducers } from "redux";
-import user from "./user";
+import channel from "./channel";
 import layout from "./layout";
 import upload from "./upload";
 import videos from "./videos";
 
 const reducers = combineReducers({
-  user,
+  channel,
   layout,
   upload,
   videos,

@@ -3,12 +3,12 @@ const initialState = {
   isAuth: false,
   name: null,
   email: null,
-  profileImg: null,
+  image: null,
 };
 
-const userReducer = (state = initialState, action) => {
+const channelReducer = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_USER_INFO":
+    case "SET_CHANNEL_INFO":
     case "SET_AUTH":
       return { ...state, ...action.payload };
     default:
@@ -16,4 +16,4 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+export default channelReducer;

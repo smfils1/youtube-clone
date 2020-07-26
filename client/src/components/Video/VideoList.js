@@ -19,7 +19,15 @@ export default function VideoList({ isLoading, videos }) {
       {!isLoading
         ? videos.map(
             (
-              { duration, uploader, createdAt, thumbnail, title, video, views },
+              {
+                duration,
+                channelName: uploader,
+                createdAt,
+                thumbnailLink: thumbnail,
+                title,
+                videoLink: video,
+                views,
+              },
               i
             ) => (
               <VideoCard

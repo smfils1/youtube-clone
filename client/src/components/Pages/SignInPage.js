@@ -27,7 +27,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 const SignInPage = ({ page }) => {
-  const isAuth = useSelector(({ user }) => user.isAuth);
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const authIcon = menuAuthIcons.filter(
     ({ title }) => title.toLowerCase() === page
   )[0];

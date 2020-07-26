@@ -34,10 +34,10 @@ const setThumbnails = (thumbnails) => {
   };
 };
 
-const setThumbnail = (thumbnail) => {
+const setThumbnail = (thumbnailFilename) => {
   return {
     type: "SET_THUMBNAIL",
-    payload: { thumbnail },
+    payload: { thumbnailFilename },
   };
 };
 
@@ -76,8 +76,10 @@ const uploadVideo = (file) => {
       const { data } = await api.post("/api/videos/thumbnails", {
         filename,
       });
+      console.log(data);
       dispatch(setThumbnails(data.thumbnails));
     } catch (err) {
+      console.log(err);
       dispatch(setVideoFile(null));
       dispatch(setThumbnails(null));
     } finally {
@@ -94,12 +96,19 @@ const setVisibilitySubmit = (visibility) => {
 };
 const uploadVideoInfo = () => {
   return async (dispatch, getState) => {
-    const { thumbnail, details, visibility, filename } = getState().upload;
+    const {
+      thumbnailFilename,
+      details,
+      visibility,
+      filename,
+    } = getState().upload;
+    const { id: uploader } = getState().channel;
     try {
       await api.post("/api/videos/upload", {
         filename,
-        thumbnail,
+        thumbnailFilename,
         visibility,
+        uploader,
         ...details,
       });
       dispatch(resetUpload());

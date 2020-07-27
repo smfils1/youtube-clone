@@ -151,6 +151,20 @@ router.get("/trending/:categoryId", async (req, res) => {
   }
 });
 
+// Search for videos
+router.get("/search", async (req, res) => {
+  const { search_query } = req.query;
+  try {
+    const videos = await Video.findByTitle(search_query);
+    res.json({
+      videos,
+    });
+  } catch (err) {
+    console.log(err);
+    errorResponse(err, res);
+  }
+});
+
 // Get channel videos
 router.get("/channel/:channelId", async (req, res) => {
   const { userId } = req;

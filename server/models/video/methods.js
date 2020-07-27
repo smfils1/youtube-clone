@@ -22,6 +22,34 @@ const methods = (videoSchema) => {
     }
   };
 
+  //Partial title search
+  videoSchema.statics.findByTitle = async function (title) {
+    const Video = this;
+    let videoResults = [];
+    try {
+      const videos = await Video.find({
+        title: {
+          $regex: title,
+          $options: "i",
+        },
+      });
+      videos.forEach((video) => {
+        video.authorize(
+          (isAuth) => {
+            if (isAuth) {
+              const videoInfo = extractVideoInfo(video);
+              videoResults.push(videoInfo);
+            } else {
+            }
+          },
+          { onlyPublic: true }
+        );
+      });
+      return videoResults;
+    } catch (err) {
+      throw err;
+    }
+  };
   videoSchema.statics.findByThumbnail = async function (thumbnailFilename) {
     const Video = this;
     let video;

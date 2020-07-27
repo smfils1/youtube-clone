@@ -1,35 +1,40 @@
-# MERN Boilerplate (Counter App)
+# MERN Stack [YouTube Clone](https://smfils1-youtube-clone.herokuapp.com)
 
-This is a YouTube Clone that implements the main features of [YouTube](https://www.youtube.com/)
+This is a YouTube Clone that implements the main features of [YouTube](https://www.youtube.com/) **solely intended for educational purposes** and is created under **fair use**.
+
+##### &ast; **Video Uploads are limited to 25 MB.**
 
 ## Technologies
 
 - [MongoDB & Mongoose](https://mongoosejs.com/) for the database
 - [Node & Express](http://expressjs.com/) for the backend
+- [Fluent FFMPEG](https://github.com/fluent-ffmpeg/node-fluent-ffmpeg) for video proccessing
+- [Google OAuth2](https://developers.google.com/identity/protocols/oauth2/web-server) for authentication
+- [Google Drive API](https://developers.google.com/drive/api/v3/quickstart/nodejs) for cloud storage (services like AWS S3 and Google Cloud is recommended for production applications)
 - [React](https://reactjs.org/docs/create-a-new-react-app.html) for the frontend
-- [React Router](https://reacttraining.com/react-router/) for the frontend routing
-- [Sendgid](https://github.com/sendgrid/sendgrid-nodejs) for email service
-- [Json Web Tokens](https://github.com/auth0/node-jsonwebtoken) for authentication
-- [bcryptjs](https://github.com/dcodeIO/bcrypt.js) for hashing the user passwords
-- [Redux](https://react-redux.js.org/) for application state
-- [Formik](https://jaredpalmer.com/formik/) for forms
-- [Material UI](https://material-ui.com/) for styles (pagination)
+- [Redux](https://react-redux.js.org/) for frontend application state
+- [Material UI](https://material-ui.com/) for UI
+
 
 ## Features
 
-- [x] Login and Signup (email & password)
-- [x] Forgot Password
-- [x] Authenticated Routes
-- [x] Realtime counter updates
-- [x] History paginated logs
-- [ ] Google OAuth
+- [x] Google OAuth
+- [x] Video upload, streaming, commenting, and rating
+- [x] Channel subscriptions
+- [x] Trending, recommended, and categorized videos
+- [x] Video searching
+- [ ] Pagination
+- [ ] Watch history
+- [ ] Video Playlist
+- [ ] Updating & deleting videos
+- [ ] Going live
 
 ## Running Locally
 
 ### Configuring environment variables
 
-- Rename client's [.env-sample](https://github.com/smfils1/mern-boilerplate/blob/master/client/.env-sample) to `.env`
-- Rename server's [.env-sample](https://github.com/smfils1/mern-boilerplate/blob/master/server/.env-sample) to `.env`
+- Rename client's [.env-sample](https://github.com/smfils1/youtube-clone/blob/master/client/sample.env) to `.env`
+- Rename server's [.env-sample](https://github.com/smfils1/youtube-clone/blob/master/server/sample.env) to `.env`
 - Fill in the environment variable values in both `.env` files
 
 ### Starting the App

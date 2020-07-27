@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { grey } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 import { InputBase, Button, Tooltip } from "@material-ui/core";
 import { Search as SearchIcon } from "@material-ui/icons";
+import { withRouter } from "react-router";
 
 const useStyles = makeStyles((theme) => ({
   searchButton: {
@@ -36,13 +37,26 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const MiddleNav = () => {
+const MiddleNav = ({ history }) => {
+  const [searchValue, setSearch] = useState("");
   const classes = useStyles();
 
+  const handleSearch = () => {
+    console.log(searchValue);
+    if (searchValue) {
+      history.push(`/results?search_query=${searchValue}`);
+    }
+  };
+
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value);
+  };
   return (
     <div className={classes.searchForm}>
       <InputBase
         fullWidth
+        value={searchValue}
+        onChange={handleSearchChange}
         className={classes.border}
         classes={{
           input: classes.input,
@@ -56,6 +70,7 @@ const MiddleNav = () => {
               size="small"
               type="submit"
               className={classes.searchButton}
+              onClick={handleSearch}
               aria-label="search"
             >
               <SearchIcon fontSize="small" />
@@ -67,4 +82,4 @@ const MiddleNav = () => {
   );
 };
 
-export default MiddleNav;
+export default withRouter(MiddleNav);

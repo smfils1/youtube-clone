@@ -4,6 +4,7 @@ import SignInPage from "./components/Pages/SignInPage";
 import HomePage from "./components/Pages/HomePage";
 import VideoPage from "./components/Pages/VideoPage";
 import TrendingPage from "./components/Pages/TrendingPage";
+import SearchPage from "./components/Pages/SearchPage";
 //import SubscriptionPage from "./components/Pages/SubscriptionPage";
 
 import auth from "./components/authHOC";
@@ -16,6 +17,7 @@ function App() {
   const History = auth(SignInPage, false);
   const Video = auth(VideoPage, false);
   const Trending = auth(TrendingPage, false);
+  const Search = auth(SearchPage, false);
   //const Subscription = auth(SubscriptionPage, false);
 
   return (
@@ -56,6 +58,11 @@ function App() {
             exact
             path="/channel/:id"
             render={(props) => <div {...props}>Channel</div>}
+          />
+          <Route
+            exact
+            path="/results"
+            render={(props) => <Search {...props} />}
           />
           <Route render={() => <Redirect to="/" />} />
         </Switch>

@@ -2,6 +2,8 @@
 
 This is a YouTube Clone that implements the main features of [YouTube](https://www.youtube.com/) **solely intended for educational purposes** and is created under **fair use**.
 
+##### &ast; **Video Uploads are limited to 25 MB.**
+
 ## Technologies
 
 - [MongoDB & Mongoose](https://mongoosejs.com/) for the database

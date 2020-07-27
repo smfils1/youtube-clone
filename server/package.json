@@ -21,6 +21,7 @@
     "googleapis": "^39.2.0",
     "helmet": "^3.22.0",
     "jsonwebtoken": "^8.5.1",
+    "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "mongoose": "^5.9.14",
     "mongoose-unique-validator": "^2.0.3",

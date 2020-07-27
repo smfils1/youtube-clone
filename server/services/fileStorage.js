@@ -10,28 +10,24 @@ const getFile = ({ fileId, pathDir }) => {
     try {
       const drive = await getDrive();
       const file = await drive.files.get({
-        fileId,
-        fields: "*",
+        fileId: fileId,
+        fields: "name",
       });
-      const url = file.data.webContentLink;
       const filePath = path.join(pathDir, file.data.name);
       const writer = fs.createWriteStream(filePath);
-      const response = await axios({
-        url,
-        method: "GET",
-        responseType: "stream",
-      });
-      let error = null;
-      response.data.pipe(writer);
-      writer.on("error", (err) => {
-        error = err;
-        reject(err);
-      });
-      writer.on("close", () => {
-        if (!error) {
+
+      const res = await drive.files.get(
+        { fileId: fileId, alt: "media", fields: "*" },
+        { responseType: "stream" }
+      );
+      res.data
+        .on("end", () => {
           resolve(true);
-        }
-      });
+        })
+        .on("error", (err) => {
+          reject(err);
+        })
+        .pipe(writer);
     } catch (err) {
       reject(err);
     }
@@ -130,18 +126,3 @@ module.exports = {
   getFile,
   saveFile,
 };
-
-// (async () => {
-//   try {
-//     const a = await getFile("1S3bERIOnWANjEdDWyHMleCaABARwOpYw"); //126DfWnSRfKPOtNc3J3zXsLrIYJ1rvJ8g
-//     // const a = await saveFile({
-//     //   filePath: path.join(__dirname, "../IMG_026.MOV"),
-//     //   filename: "v11.mov",
-//     //   mimeType: "video/quicktime",
-//     // });
-//     console.log("a", a);
-//     console.log("a");
-//   } catch (e) {
-//     console.log(e);
-//   }
-// })();

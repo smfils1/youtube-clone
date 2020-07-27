@@ -11,9 +11,22 @@ const errorResponse = require("../utils/error");
 const localVidPath = path.join(__dirname, "../", "data", "videos");
 const localThumbPath = path.join(__dirname, "../", "data", "thumbnails");
 
-const streamVideo = ({ videoFile, range, res }) => {
+const getPath = async ({ type, filename = "" }) => {
+  const pathDir = type === "video" ? localVidPath : localThumbPath;
   try {
-    const videoPath = path.join(localVidPath, videoFile);
+    const isDirExist = await checkFileExists({ type, filename: "" });
+
+    if (!isDirExist) {
+      await fs.promises.mkdir(pathDir, { recursive: true });
+    }
+  } finally {
+    return path.join(pathDir, filename);
+  }
+};
+
+const streamVideo = async ({ videoFile, range, res }) => {
+  try {
+    const videoPath = await getPath({ type: "video", filename: videoFile });
     const stat = fs.statSync(videoPath);
     const fileSize = stat.size;
     if (range) {
@@ -42,8 +55,9 @@ const streamVideo = ({ videoFile, range, res }) => {
   }
 };
 
-const sendImage = ({ filename, res }) => {
-  const filePath = path.join(localThumbPath, filename);
+const sendImage = async ({ filename, res }) => {
+  //TODO: need getPath function that creates path if dont exist
+  const filePath = await getPath({ type: "thumbnail", filename });
   res.sendFile(filePath, function (err) {
     if (err) {
       errorResponse(
@@ -58,10 +72,8 @@ const sendImage = ({ filename, res }) => {
 };
 
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    if (!fs.existsSync(localVidPath)) {
-      fs.mkdirSync(localVidPath, { recursive: true });
-    }
+  destination: async (req, file, cb) => {
+    await getPath({ type: "video" });
     cb(null, localVidPath);
   },
   filename: (req, file, cb) => {
@@ -78,8 +90,8 @@ const uploadFilter = (req, file, cb) => {
 };
 const uploadFile = multer({ storage, fileFilter: uploadFilter }).single("file");
 
-const generateThumbnails = (videoFile, limit) => {
-  const videoPath = path.join(localVidPath, videoFile);
+const generateThumbnails = async (videoFile, limit) => {
+  const videoPath = await getPath({ type: "video", filename: videoFile });
   let thumbnailLinks;
   const promise = new Promise((resolve, reject) => {
     ffmpeg(videoPath)
@@ -109,12 +121,11 @@ const generateLink = ({ filename, type }) => {
   const url = type === "video" ? "/api/videos/stream" : "/api/videos/thumbnail";
   return urljoin(config.BACKEND_URL, url, encodeURIComponent(filename));
 };
-const videoInfo = (filename) => {
-  const videoPath = path.join(localVidPath, filename);
+const videoInfo = async (filename) => {
+  const videoPath = await getPath({ type: "video", filename });
   return new Promise((resolve, reject) => {
     ffmpeg.ffprobe(videoPath, function (err, metadata) {
       if (err) {
-        console.log(err);
         reject(err);
       } else {
         resolve({ duration: metadata.format.duration });
@@ -126,12 +137,11 @@ const videoInfo = (filename) => {
 const storeFile = async ({ filename, type }) => {
   const filePath =
     type === "video"
-      ? path.join(localVidPath, filename)
-      : path.join(localThumbPath, filename);
+      ? await getPath({ type: "video", filename: videoFile })
+      : await getPath({ type: "thumbnail", filename: videoFile });
   const mimeType = type === "video" ? "video/mp4" : "image/png";
 
   try {
-    console.log(filePath);
     const results = await googleStore.saveFile({
       filePath,
       filename,
@@ -144,7 +154,10 @@ const storeFile = async ({ filename, type }) => {
 };
 
 const getStoreFile = async ({ fileStoreId, type }) => {
-  const path = type === "video" ? localVidPath : localThumbPath;
+  const path =
+    type === "video"
+      ? await getPath({ type: "video" })
+      : await getPath({ type: "thumbnail" });
   try {
     const results = await googleStore.getFile({
       fileId: fileStoreId,

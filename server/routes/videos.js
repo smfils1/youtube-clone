@@ -83,7 +83,7 @@ router.get("/stream/:videoFile", async (req, res) => {
           shouldStream = true;
         }
         if (shouldStream) {
-          fileProcess.streamVideo({
+          await fileProcess.streamVideo({
             videoFile: decodeURIComponent(videoFile),
             range: req.headers.range,
             res,
@@ -119,7 +119,6 @@ router.get("/recommended", async (req, res) => {
     res.json({
       videos,
     });
-    console.log(videos);
   } catch (err) {
     errorResponse(err, res);
   }
@@ -218,10 +217,11 @@ router.get("/thumbnail/:thumbFile", async (req, res) => {
     } catch (err) {
       const isTemporary = temporary == "true";
       if (isTemporary) {
-        return fileProcess.sendImage({
+        await fileProcess.sendImage({
           filename: decodeURIComponent(thumbFile),
           res,
         });
+        return;
       } else {
         throw err;
       }
@@ -239,7 +239,7 @@ router.get("/thumbnail/:thumbFile", async (req, res) => {
           shouldSend = true;
         }
         if (shouldSend) {
-          fileProcess.sendImage({
+          await fileProcess.sendImage({
             filename: decodeURIComponent(thumbFile),
             res,
           });

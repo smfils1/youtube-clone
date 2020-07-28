@@ -9,7 +9,7 @@ const CLIENT_URL =
 const PORT = process.env.PORT || process.env.REACT_APP_BACKEND_PORT;
 const BACKEND_URL =
   process.env.NODE_ENV === "production"
-    ? proccess.env.REACT_APP_BACKEND_URL
+    ? process.env.REACT_APP_BACKEND_URL
     : `http://localhost:${PORT}`;
 
 const config = {

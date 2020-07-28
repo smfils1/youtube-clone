@@ -7,6 +7,7 @@ import { Container, Typography } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import SignInBtn from "../SignInBtn";
 import menuAuthIcons from "../menuAuthIcons";
+import ComingSoonPage from "./ComingSoonPage";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -35,24 +36,45 @@ const SignInPage = ({ page }) => {
   const classes = useStyles();
   return (
     <Container className={classes.root}>
-      {!isAuth ? (
-        <div className={classes.content}>
-          <Icon className={classes.icon} />
-          <Typography variant="h4" align="center" className={classes.text}>
-            {authIcon.description}
-          </Typography>
-          <Typography
-            variant="subtitle1"
-            align="center"
-            className={classes.text}
-          >
-            {authIcon.signInMsg}
-          </Typography>
-          <SignInBtn size="large" />
-        </div>
-      ) : (
-        <div>{page}</div>
-      )}
+      <div className={classes.content}>
+        {(() => {
+          if (!isAuth) {
+            return (
+              <>
+                <Icon className={classes.icon} />
+                <Typography
+                  variant="h4"
+                  align="center"
+                  className={classes.text}
+                >
+                  {authIcon.description}
+                </Typography>
+                <Typography
+                  variant="subtitle1"
+                  align="center"
+                  className={classes.text}
+                >
+                  {authIcon.signInMsg}
+                </Typography>
+                <SignInBtn size="large" />
+              </>
+            );
+          } else if (
+            [
+              "library",
+              "myVideos",
+              "live",
+              "watchLater",
+              "history",
+              "subscriptions",
+            ].includes(page)
+          ) {
+            return <ComingSoonPage />;
+          } else {
+            return <div>{page}</div>;
+          }
+        })()}
+      </div>
     </Container>
   );
 };

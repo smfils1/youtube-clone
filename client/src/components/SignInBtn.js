@@ -3,6 +3,9 @@ import { blue } from "@material-ui/core/colors";
 import { makeStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import { AccountCircle as AccountIcon } from "@material-ui/icons";
+import urlJoin from "url-join";
+
+import { BACKEND_URL } from "../config";
 
 const useStyles = makeStyles((theme) => ({
   signButton: {
@@ -15,14 +18,16 @@ const useStyles = makeStyles((theme) => ({
 const SignInBtn = ({ size }) => {
   const classes = useStyles();
   return (
-    <Button
-      size={size}
-      variant="outlined"
-      className={classes.signButton}
-      startIcon={<AccountIcon />}
-    >
-      sign in
-    </Button>
+    <a href={urlJoin(BACKEND_URL, "/api/auth/google")}>
+      <Button
+        size={size}
+        variant="outlined"
+        className={classes.signButton}
+        startIcon={<AccountIcon />}
+      >
+        sign in
+      </Button>
+    </a>
   );
 };
 

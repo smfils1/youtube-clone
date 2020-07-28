@@ -103,7 +103,7 @@ const NavVideoMenuBtn = () => {
                   onClick={handleUploadClick}
                 />
                 <NavItem
-                  to="#"
+                  to="/live"
                   title="Go live"
                   icon={LiveIcon}
                   onClick={handleClose}

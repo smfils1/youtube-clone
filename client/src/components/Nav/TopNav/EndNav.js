@@ -8,10 +8,8 @@ import {
   Apps as AppsIcon,
   Notifications as NotificationsIcon,
 } from "@material-ui/icons";
-import urlJoin from "url-join";
 import { setMobileSearch } from "../../../redux/actions/layout";
 import SignInBtn from "../../SignInBtn";
-import { BACKEND_URL } from "../../../config";
 import NavUserMenuBtn from "./NavUserMenuBtn";
 import NavVidMenuBtn from "./NavVidMenuBtn";
 const useStyles = makeStyles((theme) => ({
@@ -83,9 +81,7 @@ const NavBar = () => {
 
         {isAuth && <NavUserMenuBtn />}
         {isAuth || (
-          <a href={urlJoin(BACKEND_URL, "/api/auth/google")}>
-            <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />
-          </a>
+          <SignInBtn size={theme.breakpoints.up("md") ? "medium" : "large"} />
         )}
       </>
     </Toolbar>

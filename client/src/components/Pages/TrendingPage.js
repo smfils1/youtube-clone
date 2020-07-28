@@ -52,7 +52,11 @@ const TrendingPage = ({ location }) => {
         <HorizontalCategoryMenu />
 
         <Divider light className={classes.divider} />
-        <VideoList isLoading={isLoading} videos={trendingVids} />
+        {trendingVids.length ? (
+          <VideoList isLoading={isLoading} videos={trendingVids} />
+        ) : (
+          "Nothing Trending"
+        )}
       </div>
     </Container>
   );

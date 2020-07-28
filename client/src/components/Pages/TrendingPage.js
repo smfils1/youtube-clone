@@ -5,9 +5,10 @@ import { makeStyles } from "@material-ui/core/styles";
 import { Container, Typography, Divider } from "@material-ui/core";
 import { capitalize } from "lodash";
 
+import { HorizontalCategoryMenu } from "../Nav/CategoryMenus";
 import VideoGrid from "../Video/VideoGrid";
 import { categories } from "../../utils";
-import { getHomeVideos, getTrendingVideos } from "../../redux/actions/videos";
+import { getTrendingVideos } from "../../redux/actions/videos";
 import VideoList from "../Video/VideoList";
 
 const useStyles = makeStyles((theme) => ({
@@ -39,7 +40,8 @@ const TrendingPage = ({ location }) => {
 
   useEffect(() => {
     dispatch(getTrendingVideos(categoryId));
-  }, []);
+  }, [categoryId]);
+
   const classes = useStyles();
   return (
     <Container maxWidth="xl" className={classes.root}>
@@ -47,6 +49,8 @@ const TrendingPage = ({ location }) => {
         <Typography variant="h5" className={classes.text}>
           {capitalize(categories[categoryId]) || "Trending"}
         </Typography>
+        <HorizontalCategoryMenu />
+
         <Divider light className={classes.divider} />
         <VideoList isLoading={isLoading} videos={trendingVids} />
       </div>

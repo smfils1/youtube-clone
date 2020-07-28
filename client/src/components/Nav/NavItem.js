@@ -4,6 +4,7 @@ import clsx from "clsx";
 import { ListItem, ListItemIcon, ListItemText } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { red, grey } from "@material-ui/core/colors";
+
 const useStyles = makeStyles((theme) => ({
   active: {
     backgroundColor: grey[300],
@@ -24,28 +25,55 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
-
-const NavItem = ({ children, to, title, icon, onClick, disableActive }) => {
+const CircleItem = ({ children, title }) => (
+  <div
+    style={{
+      display: "flex",
+      flexDirection: "column",
+      alignItems: "center",
+    }}
+  >
+    <div
+      style={{
+        width: "80px",
+        height: "80px",
+      }}
+    >
+      {children}
+    </div>
+    <div>{title}</div>
+  </div>
+);
+const NavItem = ({ to, title, icon, onClick, disableActive, type }) => {
   const classes = useStyles();
   const location = useLocation();
-  const isActive = location.pathname === to;
+  console.log();
+  const isActive =
+    location.pathname === "/trending"
+      ? location.pathname + location.search === to
+      : location.pathname === to;
   const Icon = icon;
-  const Item = (
-    <ListItem
-      button
-      onClick={onClick}
-      className={isActive ? classes.active : ""}
-    >
-      <ListItemIcon
-        className={clsx(classes.icon, {
-          [classes.iconActive]: isActive && !disableActive,
-        })}
-      >
+  const Item =
+    type === "secondary" ? (
+      <CircleItem title={title}>
         <Icon />
-      </ListItemIcon>
-      <ListItemText primary={title} />
-    </ListItem>
-  );
+      </CircleItem>
+    ) : (
+      <ListItem
+        button
+        onClick={onClick}
+        className={isActive ? classes.active : ""}
+      >
+        <ListItemIcon
+          className={clsx(classes.icon, {
+            [classes.iconActive]: isActive && !disableActive,
+          })}
+        >
+          <Icon />
+        </ListItemIcon>
+        <ListItemText primary={title} />
+      </ListItem>
+    );
   return to ? (
     <NavLink to={to} className={classes.text}>
       {Item}

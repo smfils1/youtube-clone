@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import clsx from "clsx";
 import { Drawer, Divider, useMediaQuery } from "@material-ui/core";
 import MainNavMenu from "./MainNavMenu";
-import CategoryMenu from "./CategoryMenu";
+import { SideCategoryMenu } from "../CategoryMenus";
 import StartNav from "../TopNav/StartNav";
 const drawerWidth = 240;
 const useStyles = makeStyles((theme) => ({
@@ -46,6 +46,7 @@ const SideNav = () => {
   const isMaxScreenSm = useMediaQuery(theme.breakpoints.down("sm"));
 
   const isDrawerOpen = useSelector(({ layout }) => layout.isDrawerOpen);
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   let isOpen;
   if (isMaxScreenSm) isOpen = isDrawerOpen;
   else isOpen = true; //We will control open by css
@@ -71,7 +72,7 @@ const SideNav = () => {
       <Divider />
       <MainNavMenu />
       <Divider />
-      {isDrawerOpen && <CategoryMenu />}
+      {isDrawerOpen && !isAuth && <SideCategoryMenu />}
     </Drawer>
   );
 };

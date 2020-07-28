@@ -2,7 +2,7 @@
 
 This is a YouTube Clone that implements the main features of [YouTube](https://www.youtube.com/) **solely intended for educational purposes** and is created under **fair use**.
 
-##### &ast; **Video Uploads are limited to 25 MB.**
+##### \* **Video Uploads are limited to 25 MB.**
 
 ## Technologies
 
@@ -15,11 +15,10 @@ This is a YouTube Clone that implements the main features of [YouTube](https://w
 - [Redux](https://react-redux.js.org/) for frontend application state
 - [Material UI](https://material-ui.com/) for UI
 
-
 ## Features
 
 - [x] Google OAuth
-- [x] Video upload, streaming, commenting, and rating
+- [ ] Video upload, streaming, commenting, and rating
 - [x] Channel subscriptions
 - [x] Trending, recommended, and categorized videos
 - [x] Video searching

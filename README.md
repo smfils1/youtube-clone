@@ -39,6 +39,12 @@ This is a YouTube Clone that implements the main features of [YouTube](https://w
 ### Starting the App
 
 - `npm install` to install all dependencies
-- `npm run dev` to run both client & backend
+- `npm run dev` to run both client & backend in development
 - `cd server && npm run server` to run only backend
 - `cd client && npm start` to run only client
+
+## Deploy to Heroku
+##### The neccessary env variables are defined in [app.json](https://github.com/smfils1/youtube-clone/blob/master/app.json)
+
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+

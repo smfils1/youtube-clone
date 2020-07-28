@@ -12,13 +12,13 @@
     }
   ],
   "env": {
+    "REACT_APP_CLIENT_URL": {
+      "description": "The url of production backend (since client & backend is deploy together this should be the same as REACT_APP_BACKEND_URL)",
+      "value": "https://YOUR_BACKEND_APPNAME.herokuapp.com"
+    },
     "REACT_APP_BACKEND_URL": {
       "description": "The url of production client",
       "value": "https://YOUR_CLIENT_APPNAME.herokuapp.com"
-    },
-    "REACT_APP_CLIENT_URL": {
-      "description": "The url of production backend",
-      "value": "https://YOUR_BACKEND_APPNAME.herokuapp.com"
     },
     "MONGODB_URI": {
       "description": "Link From mLab OR MongoDB Atlas to connect to mongoDB"
@@ -27,7 +27,8 @@
       "description": "Your custom jwt secret"
     },
     "SESSION_DURATION": {
-      "description": "Number of mins to keep user logged in"
+      "description": "Number of mins to keep user logged in",
+      "value": 60
     },
     "GOOGLE_CLIENT_ID": {
       "description": "For Google OAuth"

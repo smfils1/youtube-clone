@@ -44,7 +44,7 @@ This is a YouTube Clone that implements the main features of [YouTube](https://w
 - `cd client && npm start` to run only client
 
 ## Deploy to Heroku
-##### The neccessary env variables are defined in [app.json](https://github.com/smfils1/youtube-clone/blob/master/app.json)
+
+##### The neccessary environment variables & buildpacks are defined in [app.json](https://github.com/smfils1/youtube-clone/blob/master/app.json)
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
-

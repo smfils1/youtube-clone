@@ -3,7 +3,6 @@ const express = require("express");
 const passport = require("../config/passport");
 const errorResponse = require("../utils/error");
 const { generateToken } = require("../utils/jwt");
-const { WEBSITE_URL } = require("../config/index");
 const config = require("../config");
 
 const router = express.Router();
@@ -37,7 +36,7 @@ router.get(
           sameSite: true,
           secure: config.NODE_ENV === "production",
         })
-        .redirect(WEBSITE_URL);
+        .redirect(config.CLIENT_URL);
     } catch (err) {
       errorResponse(err, res);
     }

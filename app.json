@@ -1,0 +1,43 @@
+{
+  "name": "YouTube Clone",
+  "description": "MERN stack YouTube Clone",
+  "logo": "https://avatars0.githubusercontent.com/u/29187338?s=60&v=4",
+  "repository": "https://github.com/smfils1/youtube-clone",
+  "buildpacks": [
+    {
+      "url": "https://github.com/jonathanong/heroku-buildpack-ffmpeg-latest.git"
+    },
+    {
+      "url": "heroku/nodejs"
+    }
+  ],
+  "env": {
+    "REACT_APP_BACKEND_URL": {
+      "description": "The url of production client",
+      "value": "https://YOUR_CLIENT_APPNAME.herokuapp.com"
+    },
+    "REACT_APP_CLIENT_URL": {
+      "description": "The url of production backend",
+      "value": "https://YOUR_BACKEND_APPNAME.herokuapp.com"
+    },
+    "MONGODB_URI": {
+      "description": "Link From mLab OR MongoDB Atlas to connect to mongoDB"
+    },
+    "JWT_SECRET": {
+      "description": "Your custom jwt secret"
+    },
+    "SESSION_DURATION": {
+      "description": "Number of mins to keep user logged in"
+    },
+    "GOOGLE_CLIENT_ID": {
+      "description": "For Google OAuth"
+    },
+    "GOOGLE_CLIENT_SECRET": {
+      "description": "For Google OAuth"
+    },
+    "GOOGLE_DRIVE_CREDENTIALS": {
+      "description": "One liner google drive json credentials object generated from service account credentials json file: https://dev.to/mornir/create-a-service-account-to-authenticate-with-google-5b1k",
+      "value": "{}"
+    }
+  }
+}

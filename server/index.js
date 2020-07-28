@@ -24,7 +24,7 @@ const passport = require("./config/passport");
 //Use Middlewares
 app.use(
   cors({
-    origin: config.WEBSITE_URL,
+    origin: config.CLIENT_URL,
     credentials: true,
   })
 );
@@ -57,6 +57,7 @@ if (process.env.NODE_ENV === "production") {
     );
   });
 }
+
 app.listen(config.PORT, () => {
   console.log(`Server is running on port ${config.PORT}`);
   dbConnect();

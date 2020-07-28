@@ -4,7 +4,6 @@ const errorResponse = require("../utils/error");
 
 const Comment = require("../models/comment");
 const Video = require("../models/video");
-const config = require("../config");
 
 // Get comments of a videos
 //TODO: clean up results to send

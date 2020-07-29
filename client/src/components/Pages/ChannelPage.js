@@ -1,19 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import NumAbbr from "number-abbreviate";
+import { grey } from "@material-ui/core/colors";
 
 import {
-  Container,
   Typography,
-  Divider,
   Avatar,
   makeStyles,
+  withStyles,
+  Tab,
+  Tabs,
 } from "@material-ui/core";
-import { capitalize } from "lodash";
 import axios from "axios";
 
 import SubscribeBtn from "../SubscribeBtn";
-import { getTrendingVideos } from "../../redux/actions/videos";
 import VideoGrid from "../Video/VideoGrid";
 import { BACKEND_URL } from "../../config";
 
@@ -21,19 +21,61 @@ const api = axios.create({
   withCredentials: true,
   baseURL: BACKEND_URL,
 });
+const AntTabs = withStyles({
+  indicator: {
+    backgroundColor: "black",
+  },
+})(Tabs);
+
+const AntTab = withStyles((theme) => ({
+  root: {
+    color: grey[600],
+    textTransform: "uppercase",
+    minWidth: 72,
+    fontWeight: theme.typography.fontWeightRegular,
+    marginRight: theme.spacing(4),
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:hover": {
+      color: "black",
+      opacity: 1,
+    },
+    "&$selected": {
+      color: "black",
+      fontWeight: theme.typography.fontWeightMedium,
+    },
+    "&:focus": {
+      color: "black",
+    },
+  },
+  selected: {},
+}))((props) => <Tab disableRipple {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    backgroundColor: grey[200],
     flex: 1,
-    display: "flex",
-    justifyContent: "center",
   },
-  content: {
+  header: {
+    backgroundColor: grey[50],
+    padding: theme.spacing(6),
+    paddingBottom: theme.spacing(0),
+  },
+  subscriptionContent: {
+    padding: theme.spacing(6),
     width: "100%",
     height: "100%",
-    padding: theme.spacing(3),
   },
-
   avatar: {
     width: theme.spacing(9),
     height: theme.spacing(9),
@@ -55,6 +97,7 @@ const useStyles = makeStyles((theme) => ({
   },
   subscribeBtn: {
     padding: theme.spacing(1.5),
+    padding: theme.spacing(1.5),
   },
   text: {
     paddingBottom: theme.spacing(3),
@@ -71,12 +114,19 @@ const ChannelPage = ({ match }) => {
   const { id: channelId } = match.params;
   const userId = useSelector(({ channel }) => channel.id);
   const [channel, setChannel] = useState(null);
+  const [videos, setVideos] = useState([]);
   const [numberOfSubscribers, setSubscribers] = useState(0);
+  const [tabValue, setTabValue] = React.useState(1);
   const classes = useStyles();
 
+  const handleTabChange = (event, newValue) => {
+    setTabValue(newValue);
+  };
+
   useEffect(() => {
-    const fetchChannelInfo = async () => {
+    const fetchChannel = async () => {
       try {
+        // /channel/:channelId
         const { data } = await api.get(`/api/channels/${channelId}`);
         console.log(data);
         setChannel({
@@ -91,60 +141,70 @@ const ChannelPage = ({ match }) => {
           channel: channelId,
         });
         setSubscribers(subscribers || 0);
+        const {
+          data: { videos },
+        } = await api.get(`/api/videos/channel/${channelId}`);
+        setVideos(videos);
       } catch (err) {
         console.log(err);
       }
     };
-    fetchChannelInfo();
+    fetchChannel();
   }, [channelId]);
 
   return (
-    <Container maxWidth="xl" className={classes.root}>
-      <div className={classes.content}>
+    <div className={classes.root}>
+      {" "}
+      <div className={classes.header}>
         {channel ? (
-          <div className={classes.info_1}>
-            <Avatar
-              alt="Channel Image"
-              src={channel.image}
-              className={classes.avatar}
-            />
-            <div className={classes.info_3}>
-              {" "}
-              <div className={classes.info_2}>
+          <>
+            <div className={classes.info_1}>
+              <Avatar
+                alt="Channel Image"
+                src={channel.image}
+                className={classes.avatar}
+              />
+              <div className={classes.info_3}>
                 {" "}
-                <Typography variant="h5" className={classes.channel}>
-                  {channel.name}
-                </Typography>
-                <Typography variant="subtitle1" className={classes.subTitle}>
-                  {new NumAbbr().abbreviate(numberOfSubscribers, 2)} subscribers
-                </Typography>
-              </div>
-              <div>
-                <SubscribeBtn
-                  size="lg"
-                  channelId={channel.id}
-                  className={classes.subscribeBtn}
-                />
+                <div className={classes.info_2}>
+                  {" "}
+                  <Typography variant="h5" className={classes.channel}>
+                    {channel.name}
+                  </Typography>
+                  <Typography variant="subtitle1" className={classes.subTitle}>
+                    {new NumAbbr().abbreviate(numberOfSubscribers, 2)}{" "}
+                    subscribers
+                  </Typography>
+                </div>
+                <div>
+                  <SubscribeBtn
+                    size="lg"
+                    channelId={channel.id}
+                    className={classes.subscribeBtn}
+                  />
+                </div>
               </div>
             </div>
-          </div>
+          </>
         ) : (
-          //   <>
-          //     {" "}
-          //     <Avatar
-          //       alt="Channel Image"
-          //       src={channel.image}
-          //       className={classes.avatar}
-          //     />
-          //     <Typography variant="h5" className={classes.text}></Typography>
-          //     <Divider light className={classes.divider} />
-          //   </>
-          "Channel doesn't exist"
+          "No Channel"
         )}
 
-        {[].length ? <VideoGrid videos={[]} /> : "Nothing"}
+        <AntTabs
+          value={tabValue}
+          indicatorColor="primary"
+          textColor="primary"
+          onChange={handleTabChange}
+          aria-label="tabs"
+        >
+          <AntTab label="Home" disabled />
+          <AntTab label="Videos" />
+        </AntTabs>
       </div>
-    </Container>
+      <div className={classes.subscriptionContent}>
+        {videos.length ? <VideoGrid videos={videos} /> : "Nothing to Show"}
+      </div>
+    </div>
   );
 };
 

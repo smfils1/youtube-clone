@@ -7,7 +7,6 @@ import Image from "./Image";
 export default function ImagePicker({ list }) {
   const dispatch = useDispatch();
   const thumbnail = useSelector(({ upload }) => upload.thumbnailFilename);
-  console.log(list);
   return (
     <div>
       {list.map(({ link, filename }, index) => (

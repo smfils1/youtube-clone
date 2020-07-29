@@ -20,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SubscribeBtn({ className, channelId }) {
+export default function SubscribeBtn({ className, channelId, size }) {
   const classes = useStyles();
   const userId = useSelector(({ channel }) => channel.id);
   const [isSubscribed, setSubscribed] = useState(false);
@@ -31,8 +31,6 @@ export default function SubscribeBtn({ className, channelId }) {
     };
     try {
       if (isSubscribed) {
-        console.log(data);
-
         await api.delete(`/api/subscriptions/${data.channel}`);
         setSubscribed(false);
       } else {
@@ -50,8 +48,6 @@ export default function SubscribeBtn({ className, channelId }) {
       } = await api.post(`/api/subscriptions/subscribed`, {
         channel: channelId,
       });
-      console.log("channelId", isSubscribed);
-
       setSubscribed(isSubscribed);
     } catch (err) {
       console.log(err);
@@ -66,6 +62,7 @@ export default function SubscribeBtn({ className, channelId }) {
 
   return (
     <Button
+      size={size}
       className={clsx(classes.subscribeBtn, className)}
       disableElevation
       disableFocusRipple

@@ -42,7 +42,6 @@ const MiddleNav = ({ history }) => {
   const classes = useStyles();
 
   const handleSearch = () => {
-    console.log(searchValue);
     if (searchValue) {
       history.push(`/results?search_query=${searchValue}`);
     }

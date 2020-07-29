@@ -6,6 +6,7 @@ import VideoPage from "./components/Pages/VideoPage";
 import TrendingPage from "./components/Pages/TrendingPage";
 import SearchPage from "./components/Pages/SearchPage";
 import ComingSoonPage from "./components/Pages/ComingSoonPage";
+import ChannelPage from "./components/Pages/ChannelPage";
 //import SubscriptionPage from "./components/Pages/SubscriptionPage";
 
 import auth from "./components/authHOC";
@@ -20,6 +21,7 @@ function App() {
   const Trending = auth(TrendingPage, false);
   const Search = auth(SearchPage, false);
   const ComingSoon = auth(ComingSoonPage, false);
+  const Channel = auth(ChannelPage, false);
   //const Subscription = auth(SubscriptionPage, false);
 
   return (
@@ -31,11 +33,6 @@ function App() {
           <Route
             exact
             path="/trending"
-            render={(props) => <Trending {...props} />}
-          />
-          <Route
-            exact
-            path="/trending/:id"
             render={(props) => <Trending {...props} />}
           />
           <Route
@@ -59,7 +56,7 @@ function App() {
           <Route
             exact
             path="/channel/:id"
-            render={(props) => <div {...props}>Channel</div>}
+            render={(props) => <Channel {...props} />}
           />
           <Route
             exact

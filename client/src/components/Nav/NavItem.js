@@ -47,7 +47,6 @@ const CircleItem = ({ children, title }) => (
 const NavItem = ({ to, title, icon, onClick, disableActive, type }) => {
   const classes = useStyles();
   const location = useLocation();
-  console.log();
   const isActive =
     location.pathname === "/trending"
       ? location.pathname + location.search === to

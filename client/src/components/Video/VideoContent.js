@@ -84,7 +84,6 @@ export default function VideoContent({ videoId }) {
   }, []);
 
   const classes = useStyles();
-  console.log(video);
   return (
     <div>
       <video
@@ -117,7 +116,7 @@ export default function VideoContent({ videoId }) {
                 {video.channelName}
               </Typography>
               <Typography variant="caption" className={clsx(classes.subTitle)}>
-                {numberOfSubscribers} subscribers
+                {new NumAbbr().abbreviate(numberOfSubscribers, 2)} subscribers
               </Typography>
             </div>
             <SubscribeBtn

@@ -42,7 +42,7 @@ app.use(cookieParser());
 
 // Use Routes
 app.use("/api/auth/google", authRoutes);
-app.use("/api/channels", auth, channelRoutes);
+app.use("/api/channels", auth2, channelRoutes);
 app.use("/api/subscriptions", auth2, subscriptionRoutes);
 app.use("/api/videos", auth2, videoRoutes);
 app.use("/api/comments", auth2, commentRoutes);

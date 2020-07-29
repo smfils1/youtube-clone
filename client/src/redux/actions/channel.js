@@ -51,7 +51,7 @@ const logoutChannel = (history) => {
 const auth = () => {
   return async (dispatch) => {
     try {
-      const { data } = await api.get("/api/channels");
+      const { data } = await api.get("/api/channels/owner");
       dispatch(setAuth(true));
       dispatch(
         setChannelInfo({

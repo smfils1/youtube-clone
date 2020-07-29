@@ -160,7 +160,6 @@ router.get("/search", async (req, res) => {
       videos,
     });
   } catch (err) {
-    console.log(err);
     errorResponse(err, res);
   }
 });

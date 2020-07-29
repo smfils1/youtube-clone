@@ -1,6 +1,7 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { makeStyles } from "@material-ui/core/styles";
+import NavItem from "../NavItem";
 import {
   Tooltip,
   Avatar,
@@ -53,6 +54,7 @@ const NavUserMenuBtn = () => {
   const image = useSelector(({ channel }) => channel.image);
   const name = useSelector(({ channel }) => channel.name);
   const email = useSelector(({ channel }) => channel.email);
+  const id = useSelector(({ channel }) => channel.id);
   const classes = useStyles();
   const [open, setOpen] = React.useState(false);
   const anchorRef = React.useRef(null);
@@ -85,7 +87,7 @@ const NavUserMenuBtn = () => {
         onClick={handleToggle}
         className={classes.iconButton}
       >
-        <Avatar alt="Profile Image" src={image} />
+        <Avatar alt="Channel Image" src={image} />
       </IconButton>
       <Popper
         open={open}
@@ -115,33 +117,29 @@ const NavUserMenuBtn = () => {
                 <Grid item>
                   <Grid container style={{ overflow: "hidden" }}>
                     <Grid item xs={12}>
-                      <TooltipHeader text={name}>
-                        <strong>{name}</strong>
-                      </TooltipHeader>
+                      <strong>{name}</strong>
                     </Grid>{" "}
-                    <Grid item>
-                      <TooltipHeader text={email}>{email}</TooltipHeader>
-                    </Grid>
+                    <Grid item>{email}</Grid>
                   </Grid>
                 </Grid>
               </Grid>
               <Divider />
               <List component="nav" aria-labelledby="nested-list-subheader">
-                <ListItem
-                  button
+                <NavItem
+                  to={`/channel/${id}`}
+                  title={"Your Channel"}
+                  icon={ExitToAppIcon}
+                  onClick={handleClose}
+                />
+
+                <NavItem
+                  title={"Sign Out"}
+                  icon={ExitToAppIcon}
                   onClick={(e) => {
                     handleClose(e);
                     dispatch(logoutChannel());
                   }}
-                >
-                  <ListItemIcon>
-                    <ExitToAppIcon />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary="Sign Out"
-                    primaryTypographyProps={{ variant: "body2" }}
-                  />
-                </ListItem>
+                />
               </List>
               <Divider />
             </MenuList>

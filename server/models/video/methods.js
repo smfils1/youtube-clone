@@ -92,7 +92,6 @@ const methods = (videoSchema) => {
       videos.forEach((video) => {
         authorize(
           (isAuth) => {
-            console.log(isAuth);
             if (isAuth) {
               const recommendVideo = { ...extractVideoInfo(video) };
               recommended.push(recommendVideo);

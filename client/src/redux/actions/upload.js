@@ -76,10 +76,8 @@ const uploadVideo = (file) => {
       const { data } = await api.post("/api/videos/thumbnails", {
         filename,
       });
-      console.log(data);
       dispatch(setThumbnails(data.thumbnails));
     } catch (err) {
-      console.log(err);
       dispatch(setVideoFile(null));
       dispatch(setThumbnails(null));
     } finally {

@@ -1,7 +1,6 @@
 const { generateLink } = require("../services/fileProcess");
 const { isPlainObject } = require("lodash");
 const extractVideoInfo = (video) => {
-  console.log(video);
   let videoResult = {
     id: video._id,
     views: video.views,

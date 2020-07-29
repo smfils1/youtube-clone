@@ -38,6 +38,7 @@ const auth2 = (req, res, next) => {
     req.userId = signedUserId;
     next();
   } catch (err) {
+    req.userError = err;
     next();
   }
 };

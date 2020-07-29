@@ -63,7 +63,6 @@ const getRecommended = () => {
       const {
         data: { videos },
       } = await api.get("/api/videos/recommended");
-      console.log(videos);
       dispatch(setRecommended(videos));
     } catch (err) {
       console.error(err);

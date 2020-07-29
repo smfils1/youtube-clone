@@ -34,8 +34,6 @@ router.post("/", async (req, res) => {
 router.post("/subscribed", async (req, res) => {
   const subscriber = req.userId;
   const { channel } = req.body;
-  console.log(subscriber, channel);
-
   if (!channel) {
     errorResponse(
       {
@@ -88,7 +86,6 @@ router.delete("/:id", async (req, res) => {
   //req.userId = "5edeb0185d791c662f246289";
   const subscriber = req.userId;
   const { id } = req.params;
-  console.log(id);
 
   try {
     await ChannelSubscription.findOneAndDelete({

@@ -28,7 +28,7 @@
     },
     "SESSION_DURATION": {
       "description": "Number of mins to keep user logged in",
-      "value": 60
+      "value": "60"
     },
     "GOOGLE_CLIENT_ID": {
       "description": "For Google OAuth"
@@ -37,7 +37,8 @@
       "description": "For Google OAuth"
     },
     "GOOGLE_DRIVE_CREDENTIALS": {
-      "description": "One liner google drive json credentials object generated from service account credentials json file: https://dev.to/mornir/create-a-service-account-to-authenticate-with-google-5b1k"
+      "description": "One liner google drive json credentials object generated from service account credentials json file: https://dev.to/mornir/create-a-service-account-to-authenticate-with-google-5b1k",
+      "value": "{}"
     }
   }
 }

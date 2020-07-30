@@ -15,11 +15,7 @@ const Comments = ({ videoId }) => {
       {comments.length &&
         comments.map(
           (comment) =>
-            !comment.commentTo && (
-              <>
-                <Comment comment={comment} />
-              </>
-            )
+            !comment.commentTo && <Comment key={comment.id} comment={comment} />
         )}
     </div>
   );

@@ -8,7 +8,7 @@ import {
   Collapse,
 } from "@material-ui/core";
 import clsx from "clsx";
-import { grey, red } from "@material-ui/core/colors";
+import { grey } from "@material-ui/core/colors";
 import SubscribeBtn from "../SubscribeBtn";
 import axios from "axios";
 import NumAbbr from "number-abbreviate";

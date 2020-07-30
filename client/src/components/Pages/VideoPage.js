@@ -3,6 +3,7 @@ import { makeStyles, Grid, Divider } from "@material-ui/core";
 import VideoContent from "../Video/VideoContent";
 import SecondaryVidContent from "../Video/SecondaryVidContent";
 import queryString from "query-string";
+import CommentsContent from "../Comments/CommentsContent";
 const useStyles = makeStyles((theme) => ({
   container: {
     paddingLeft: theme.spacing(8),
@@ -20,7 +21,7 @@ export default function VideoPage({ location }) {
       <Grid container spacing={2}>
         <Grid item xs={12} sm={12} md={9}>
           <VideoContent videoId={id} />
-          Comments
+          <CommentsContent videoId={id} />
         </Grid>
         <Grid item xs={12} sm={12} md={3}>
           <SecondaryVidContent />

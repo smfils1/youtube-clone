@@ -11,7 +11,7 @@ const videosReducer = (state = initialState, action) => {
     case "SET_LOADING":
     case "SET_RECOMMENDED":
       return { ...state, ...action.payload };
-    case "REST_VIDEOS":
+    case "RESET_VIDEOS":
       return { ...initialState };
     default:
       return state;

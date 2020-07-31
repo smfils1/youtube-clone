@@ -11,6 +11,7 @@ import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
 
 import CommentReplies from "./CommentReplies";
+import LikeDislikes from "../LikeDislikes";
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,
@@ -61,7 +62,9 @@ const Comment = ({ comment }) => {
           </Typography>
         </div>
         <div>{comment.content}</div>
-        <div>LIKES & REPLY</div>
+        <div>
+          <LikeDislikes size="small" showDislikes={false} />
+        </div>
         <div>
           <CommentReplies parentCommentId={comment.id} />
         </div>

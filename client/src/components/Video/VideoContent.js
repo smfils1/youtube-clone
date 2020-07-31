@@ -10,6 +10,7 @@ import {
 import clsx from "clsx";
 import { grey } from "@material-ui/core/colors";
 import SubscribeBtn from "../SubscribeBtn";
+import LikeDislikes from "../LikeDislikes";
 import axios from "axios";
 import NumAbbr from "number-abbreviate";
 import moment from "moment";
@@ -53,7 +54,8 @@ const useStyles = makeStyles((theme) => ({
     paddingLeft: theme.spacing(1),
     lineHeight: "80%",
   },
-  subscribeBtn: {
+  likeSubscribe: {
+    display: "flex",
     marginLeft: "auto",
   },
 }));
@@ -119,10 +121,9 @@ export default function VideoContent({ videoId }) {
                 {new NumAbbr().abbreviate(numberOfSubscribers, 2)} subscribers
               </Typography>
             </div>
-            <SubscribeBtn
-              channelId={video.channelId}
-              className={classes.subscribeBtn}
-            />
+            <div className={classes.likeSubscribe}>
+              <LikeDislikes /> <SubscribeBtn channelId={video.channelId} />
+            </div>
           </div>{" "}
           <div>
             <Collapse in={showMore} collapsedHeight={50}>

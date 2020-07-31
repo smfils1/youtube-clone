@@ -8,6 +8,9 @@ import {
   makeStyles,
 } from "@material-ui/core";
 import { red } from "@material-ui/core/colors";
+import urlJoin from "url-join";
+
+import { BACKEND_URL } from "../../config";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -36,11 +39,15 @@ const CommentForm = () => {
   const handleChange = (e) => setComment(e.target.value);
   const handleSubmit = (e) => {
     e.preventDefault();
-    setComment("");
+    if (isAuth) {
+      setComment("");
+    } else {
+      window.location.assign(urlJoin(BACKEND_URL, "/api/auth/google"));
+    }
   };
 
   return (
-    <form className={classes.root} onSubmit={handleSubmit}>
+    <form className={classes.root}>
       <Avatar alt="Avatar" src={image} />
       <TextareaAutosize
         onChange={handleChange}
@@ -49,11 +56,6 @@ const CommentForm = () => {
         className={classes.textArea}
         placeholder="Add a public comment..."
       />
-      {/* <TextField
-        className={classes.textField}
-        label="Add a public comment..."
-  
-      /> */}
       <Button
         disableElevation
         disableFocusRipple
@@ -62,6 +64,7 @@ const CommentForm = () => {
         color="secondary"
         className={classes.commentBtn}
         type="submit"
+        onClick={handleSubmit}
       >
         Comment
       </Button>

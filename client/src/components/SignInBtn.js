@@ -7,6 +7,9 @@ import urlJoin from "url-join";
 
 import { BACKEND_URL } from "../config";
 
+const handleClick = () => {
+  window.location.assign(urlJoin(BACKEND_URL, "/api/auth/google"));
+};
 const useStyles = makeStyles((theme) => ({
   signButton: {
     color: blue[800],
@@ -18,16 +21,15 @@ const useStyles = makeStyles((theme) => ({
 const SignInBtn = ({ size }) => {
   const classes = useStyles();
   return (
-    <a href={urlJoin(BACKEND_URL, "/api/auth/google")}>
-      <Button
-        size={size}
-        variant="outlined"
-        className={classes.signButton}
-        startIcon={<AccountIcon />}
-      >
-        sign in
-      </Button>
-    </a>
+    <Button
+      size={size}
+      variant="outlined"
+      className={classes.signButton}
+      startIcon={<AccountIcon />}
+      onClick={handleClick}
+    >
+      sign in
+    </Button>
   );
 };
 

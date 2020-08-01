@@ -75,7 +75,7 @@ router.post("/:ratingType/:videoId/:ratingTypeId", auth, async (req, res) => {
 });
 
 // Update likes & dislike on ratingType
-router.patch("/:ratingType/:videoId/:ratingType", async (req, res) => {
+router.patch("/:ratingType/:videoId/:ratingTypeId", async (req, res) => {
   const { userId } = req;
   const { ratingType, ratingTypeId, videoId } = req.params;
   const { rating } = req.body;
@@ -92,6 +92,31 @@ router.patch("/:ratingType/:videoId/:ratingType", async (req, res) => {
       });
     }
     res.json({ rating: updatedRating });
+  } catch (err) {
+    console.log(err);
+    errorResponse(err, res);
+  }
+});
+
+router.delete("/:ratingType/:videoId/:ratingTypeId", auth, async (req, res) => {
+  const { userId } = req;
+  const { ratingType, ratingTypeId, videoId } = req.params;
+
+  try {
+    const video = await Video.getVideo({ userId, videoId });
+    if (video) {
+      await Rating.findOneAndDelete({
+        ratingType,
+        [ratingType + "Id"]: ratingTypeId,
+        userId,
+      });
+      console.log({
+        ratingType,
+        [ratingType + "Id"]: ratingTypeId,
+        userId,
+      });
+    }
+    res.json({ success: true });
   } catch (err) {
     console.log(err);
     errorResponse(err, res);

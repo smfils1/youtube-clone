@@ -52,6 +52,7 @@ const LikeDislikes = ({ size, showDislikes = true, type, id, videoId }) => {
           data: { ratings },
         } = await api.get(url1);
         const { data } = await api.get(url2);
+
         setLikes(ratings.likes);
         setDislikes(ratings.dislikes);
         if (data) {
@@ -94,6 +95,13 @@ const LikeDislikes = ({ size, showDislikes = true, type, id, videoId }) => {
           setRating(newRating);
         } else {
           console.log("need to delete");
+          await api.delete(url);
+          if (rating > 0) {
+            setLikes((count) => --count);
+          } else {
+            setDislikes((count) => --count);
+          }
+          setRating(null);
         }
       } catch (err) {
         console.log(err);

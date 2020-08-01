@@ -53,7 +53,11 @@ const TrendingPage = ({ location }) => {
 
         <Divider light className={classes.divider} />
         {trendingVids.length ? (
-          <VideoList isLoading={isLoading} videos={trendingVids} />
+          <VideoList
+            type="horizontal_1"
+            isLoading={isLoading}
+            videos={trendingVids}
+          />
         ) : (
           "Nothing Trending"
         )}

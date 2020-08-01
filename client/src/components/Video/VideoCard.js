@@ -1,156 +1,193 @@
-import React, { useState } from "react";
+import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import Box from "@material-ui/core/Box";
 import Typography from "@material-ui/core/Typography";
-import CardHeader from "@material-ui/core/CardHeader";
 import Avatar from "@material-ui/core/Avatar";
-import IconButton from "@material-ui/core/IconButton";
-import MoreVertIcon from "@material-ui/icons/MoreVert";
 import moment from "moment";
 import clsx from "clsx";
 import Skeleton from "@material-ui/lab/Skeleton";
-
+import { grey } from "@material-ui/core/colors";
+import NumAbbr from "number-abbreviate";
+import Thumbnail from "./Thumbnail";
 const useStyles = makeStyles((theme) => ({
-  root: {
-    color: "blue",
-    textDecoration: "none" /* no underline */,
-  },
-  card: {
-    backgroundColor: "transparent",
-    borderWidth: "0px",
-    "&:hover, &:focus": {
-      backgroundColor: "transparent",
-    },
-  },
-  cardV: {
-    maxWidth: 500,
-  },
-  cardH: {
+  root_h: {
     display: "flex",
+    marginBottom: theme.spacing(1.5),
   },
-  footer: {
-    alignItems: "start",
-    paddingLeft: 0,
-  },
-  side: {
-    alignItems: "start",
+  root_v: {
+    display: "flex",
     width: "100%",
-    paddingLeft: theme.spacing(1),
+    flexDirection: "column",
   },
-  icon: {
-    padding: 0,
-    "&:hover, &:focus": {
-      backgroundColor: "transparent",
-    },
+  thumbnail: {
+    marginRight: theme.spacing(1.5),
+  },
+  content_1: {
+    minWidth: 0,
+    width: "100%",
+  },
+  content_1_v: {
+    display: "flex",
   },
 
-  sideContent2: {
+  content_2: {
     display: "flex",
-    flexWrap: "wrap",
+    flexDirection: "column",
+    overflow: "hidden",
+    paddingRight: theme.spacing(1.5),
+  },
+  content_2_v: {
+    paddingTop: theme.spacing(1),
+  },
+  text: {
+    width: "100%",
+    whiteSpace: "nowrap",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+  },
+  title: {
+    fontWeight: 500,
+  },
+  link_1: {
+    color: "inherit",
+    textDecoration: "none",
+    "&:hover": { color: "inherit", textDecoration: "none" },
+  },
+  channel: {
+    paddingRight: theme.spacing(1),
+  },
+  avatar: {
+    margin: theme.spacing(1),
+    marginLeft: theme.spacing(0),
+  },
+  description: {
+    padding: theme.spacing(1),
+    paddingLeft: theme.spacing(0),
+  },
+  link_2: {
+    color: "inherit",
+    textDecoration: "none",
+    "&:hover": { color: "black", textDecoration: "none" },
+  },
+  subtitle: {
+    color: grey[600],
+  },
+
+  subContent: {
+    display: "flex",
+  },
+  imagSize_1: {
+    width: 240,
+    height: 130,
+  },
+  imagSize_2: {
+    width: 160,
+    height: 90,
+  },
+  imagSize_3: {
+    width: "100%",
+    height: "100%",
   },
 }));
 
 const VideoCard = ({
-  vertical,
-  horizontal,
-  isLoading,
-  videoThumbnail,
-  ThumbComponent,
-  videoLink = "#",
-  channelThumbnail,
+  type = "vertical_1",
+  id,
+  description,
+  channelId,
+  channelImg,
+  thumbnail,
+  duration,
   title = "N/A",
   channel = "N/A",
-  views = "0",
+  views = 0,
   date = "1/1/0000",
 }) => {
   const classes = useStyles();
-  const [isActive, setActive] = useState(false);
-  if (!vertical && !horizontal) {
-    vertical = true;
-  }
   return (
-    <Card
-      onMouseEnter={() => setActive(true)}
-      onMouseLeave={() => setActive(false)}
-      className={clsx(classes.card, {
-        [classes.cardV]: vertical,
-        [classes.cardH]: horizontal,
+    <div
+      className={clsx({
+        [classes.root_v]: ["vertical_1", "vertical_2"].includes(type),
+        [classes.root_h]: ["horizontal_1", "horizontal_2"].includes(type),
       })}
-      variant="outlined"
     >
-      <CardMedia
-        component={
-          isLoading
-            ? () => (
-                <Skeleton
-                  animation={"wave"}
-                  variant="rect"
-                  width={250}
-                  height={100}
-                />
-              )
-            : ThumbComponent
-        }
-        alt="video thumbnail"
-        height="200"
-        image={videoThumbnail}
-        title="thumbnail"
-      />
-      <CardHeader
-        className={clsx({
-          [classes.footer]: vertical,
-          [classes.side]: horizontal,
+      <div className={classes.thumbnail}>
+        <a href={`/watch?v=${id}`}>
+          <Thumbnail
+            imgStyle={clsx({
+              [classes.imagSize_1]: type === "horizontal_1",
+              [classes.imagSize_2]: type === "horizontal_2",
+              [classes.imagSize_3]: ["vertical_1", "vertical_2"].includes(type),
+            })}
+            src={thumbnail}
+            duration={duration}
+          />
+        </a>
+      </div>
+      <a
+        href={`/watch?v=${id}`}
+        className={clsx(classes.link_1, classes.content_1, {
+          [classes.content_1_v]: ["vertical_1", "vertical_2"].includes(type),
         })}
-        avatar={(() => {
-          if (vertical && isLoading) {
-            return (
-              <Skeleton variant="circle">
-                <Avatar />
-              </Skeleton>
-            );
-          } else if (vertical) {
-            return <Avatar className={classes.avatar} src={channelThumbnail} />;
-          } else {
-            return <></>;
-          }
-        })()}
-        action={
-          !isLoading &&
-          isActive && (
-            <IconButton aria-label="options" className={classes.icon}>
-              <MoreVertIcon />
-            </IconButton>
-          )
-        }
-        title={
-          isLoading ? (
-            <Skeleton width="100%">
-              <Typography>.</Typography>
-            </Skeleton>
-          ) : (
-            title
-          )
-        }
-        subheader={
-          isLoading ? (
-            <Skeleton width="80%">
-              <Typography>.</Typography>
-            </Skeleton>
-          ) : (
+      >
+        {type === "vertical_2" && (
+          <a href={`/channel/${channelId}`} className={classes.avatar}>
+            <Avatar src={channelImg} />
+          </a>
+        )}
+
+        <div
+          className={clsx(classes.content_2, {
+            [classes.content_2_v]: ["vertical_1", "vertical_2"].includes(type),
+          })}
+        >
+          <Typography
+            variant="body1"
+            className={clsx(classes.text, classes.title)}
+          >
+            {title}
+          </Typography>
+          <div
+            className={clsx({
+              [classes.subContent]: type === "horizontal_1",
+            })}
+          >
             <div>
-              <div className={clsx({ [classes.sideContent2]: horizontal })}>
-                {channel}
-              </div>
-              <div>
-                {views} • {moment(date).fromNow()}
-              </div>
+              <Typography
+                variant="body2"
+                className={clsx(
+                  classes.text,
+                  classes.subtitle,
+                  classes.channel
+                )}
+              >
+                <a href={`/channel/${channelId}`} className={classes.link_2}>
+                  {channel}{" "}
+                </a>
+              </Typography>
             </div>
-          )
-        }
-      />
-    </Card>
+            <div>
+              {" "}
+              <Typography
+                variant="body2"
+                className={clsx(classes.text, classes.subtitle)}
+              >
+                {new NumAbbr().abbreviate(views, 2)} views •{" "}
+                {moment(date).fromNow()}
+              </Typography>
+            </div>
+          </div>
+
+          {type === "horizontal_1" && (
+            <Typography
+              variant="body2"
+              className={clsx(classes.text, classes.description)}
+            >
+              {description}
+            </Typography>
+          )}
+        </div>
+      </a>
+    </div>
   );
 };
 

@@ -4,7 +4,6 @@ import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
 import Thumbnail from "./Thumbnail";
 import VideoCard from "./VideoCard";
-import VideoCard1 from "./VideoCard1";
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -37,7 +36,7 @@ export default function VideoList({ type, isLoading, videos }) {
               },
               i
             ) => (
-              <VideoCard1
+              <VideoCard
                 type={type}
                 horizontal
                 key={id}

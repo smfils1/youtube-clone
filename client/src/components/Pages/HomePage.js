@@ -97,12 +97,21 @@ const HomePage = () => {
           <Typography variant="h5" className={classes.text}>
             Recommended
           </Typography>
-          <VideoGrid isLoading={isLoading} videos={recommendedVids} />
+
+          <VideoGrid
+            type="vertical_2"
+            isLoading={isLoading}
+            videos={recommendedVids}
+          />
           <Divider light className={classes.divider} />
           <Typography variant="h5" className={classes.text}>
             Trending
           </Typography>
-          <VideoGrid isLoading={isLoading} videos={trendingVids} />
+          <VideoGrid
+            type="vertical_2"
+            isLoading={isLoading}
+            videos={trendingVids}
+          />
         </div>
       </Container>
     </div>

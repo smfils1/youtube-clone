@@ -202,7 +202,11 @@ const ChannelPage = ({ match }) => {
         </AntTabs>
       </div>
       <div className={classes.subscriptionContent}>
-        {videos.length ? <VideoGrid videos={videos} /> : "Nothing to Show"}
+        {videos.length ? (
+          <VideoGrid type="vertical_1" videos={videos} />
+        ) : (
+          "Nothing to Show"
+        )}
       </div>
     </div>
   );

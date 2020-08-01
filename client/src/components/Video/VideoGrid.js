@@ -10,7 +10,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VideoGrid({ isLoading, videos }) {
+export default function VideoGrid({ isLoading, videos, type }) {
   const classes = useStyles();
   return (
     <div className={classes.root}>
@@ -19,27 +19,36 @@ export default function VideoGrid({ isLoading, videos }) {
           ? videos.map(
               (
                 {
-                  channelImg,
-                  duration,
-                  channelName: channel,
-                  channelId,
                   id,
+                  description,
+                  duration,
+                  channelName: uploader,
+                  channelId,
                   createdAt,
                   thumbnailLink: thumbnail,
                   title,
                   videoLink: video,
                   views,
+                  channelImg,
                 },
                 i
               ) => (
                 <Grid key={id} item xs={12} sm={6} md={4} lg={3}>
                   <VideoCard
-                    channelThumbnail={channelImg}
+                    type={type}
+                    channelImg={channelImg}
+                    horizontal
+                    key={id}
+                    description={description}
+                    id={id}
+                    channelId={channelId}
                     date={createdAt}
                     videoLink={video}
                     title={title}
-                    channel={channel}
+                    channel={uploader}
                     views={views}
+                    thumbnail={thumbnail}
+                    duration={duration}
                     ThumbComponent={() => (
                       <Thumbnail
                         image={thumbnail || "https://via.placeholder.com/300"}

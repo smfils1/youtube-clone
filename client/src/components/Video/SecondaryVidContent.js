@@ -2,11 +2,13 @@ import React, { useEffect } from "react";
 
 import { useSelector, useDispatch } from "react-redux";
 
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, Typography } from "@material-ui/core";
 import VideoList from "./VideoList";
 import { getSuggestedVideos } from "../../redux/actions/videos";
 const useStyles = makeStyles((theme) => ({
-  root: {},
+  title: {
+    paddingBottom: theme.spacing(1),
+  },
 }));
 
 export default () => {
@@ -22,6 +24,9 @@ export default () => {
   const classes = useStyles();
   return (
     <div>
+      <Typography variant="h6" className={classes.title}>
+        Suggested Videos
+      </Typography>
       <VideoList
         type="horizontal_2"
         isLoading={isLoading}

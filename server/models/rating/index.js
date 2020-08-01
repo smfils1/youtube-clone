@@ -5,7 +5,6 @@ const ratingSchema = mongoose.Schema({
   userId: {
     type: Schema.Types.ObjectId,
     ref: "Channel",
-    unique: true,
     required: [true, "{PATH} is required"],
   },
   rating: {

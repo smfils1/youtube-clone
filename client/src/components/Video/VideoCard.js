@@ -144,7 +144,7 @@ const VideoCard = ({
                 {channel}
               </div>
               <div>
-                {views} • {moment(date).format("MMM Do YY")}
+                {views} • {moment(date).fromNow()}
               </div>
             </div>
           )

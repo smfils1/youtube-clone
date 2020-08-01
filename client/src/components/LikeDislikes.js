@@ -1,11 +1,19 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Button, Typography, makeStyles } from "@material-ui/core";
 import { ThumbDown, ThumbUp } from "@material-ui/icons";
 import { blue, grey } from "@material-ui/core/colors";
 import urlJoin from "url-join";
 import clsx from "clsx";
+import NumAbbr from "number-abbreviate";
+import axios from "axios";
+
 import { BACKEND_URL } from "../config";
+
+const api = axios.create({
+  withCredentials: true,
+  baseURL: BACKEND_URL,
+});
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -28,58 +36,98 @@ const useStyles = makeStyles((theme) => ({
   small: { fontSize: 18 },
 }));
 
-const LikeDislikes = ({ size, showDislikes = true }) => {
+const LikeDislikes = ({ size, showDislikes = true, type, id, videoId }) => {
   const options = [-1, 1]; //Dislike, Like
   const [rating, setRating] = useState(null);
   const [dislikes, setDislikes] = useState(0);
   const [likes, setLikes] = useState(0);
-  const isAuth = useSelector((channel) => channel.isAuth);
+  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const classes = useStyles();
+  useEffect(() => {
+    const fetchRating = async () => {
+      const url1 = `/api/ratings/${type}/${videoId}/${id}`;
+      const url2 = `/api/ratings/user/${type}/${videoId}/${id}`;
+      try {
+        const {
+          data: { ratings },
+        } = await api.get(url1);
+        const { data } = await api.get(url2);
+        setLikes(ratings.likes);
+        setDislikes(ratings.dislikes);
+        if (data) {
+          setRating(data.rating);
+        }
+      } catch (err) {
+        console.log(err);
+      }
+    };
+    fetchRating();
+  }, [type, id]);
 
   const getRating = (option) => options[option];
 
-  const handleThumbClick = (option) => {
+  const handleThumbClick = async (newRating) => {
     if (isAuth) {
-      setRating(options[option]);
+      const url = `/api/ratings/${type}/${videoId}/${id}`;
+      try {
+        if (!rating) {
+          await api.post(url, {
+            rating: newRating,
+          });
+          if (newRating > 0) {
+            setLikes((count) => ++count);
+          } else {
+            setDislikes((count) => ++count);
+          }
+          setRating(newRating);
+        } else if (rating && newRating !== rating) {
+          await api.patch(url, {
+            rating: newRating,
+          });
+          if (rating > 0) {
+            setDislikes((count) => ++count);
+            setLikes((count) => --count);
+          } else {
+            setDislikes((count) => --count);
+            setLikes((count) => ++count);
+          }
+          setRating(newRating);
+        } else {
+          console.log("need to delete");
+        }
+      } catch (err) {
+        console.log(err);
+      }
     } else {
       window.location.assign(urlJoin(BACKEND_URL, "/api/auth/google"));
     }
   };
-  const CommmentButton = (
-    <Button
-      disableElevation
-      disableFocusRipple
-      disableRipple
-      variant="contained"
-      color="secondary"
-      className={classes.commentBtn}
-      type="submit"
-    >
-      Comment
-    </Button>
-  );
+
   return (
     <div className={classes.root}>
       <div className={classes.rating}>
         <ThumbUp
-          onClick={() => handleThumbClick(options[1])}
+          onClick={() => handleThumbClick(getRating(1))}
           className={clsx(classes.thumbBtn, {
             [classes.small]: size === "small",
             [classes.active]: getRating(1) === rating,
           })}
         />
-        <Typography variant="body2">{likes}</Typography>
+        <Typography variant="body2">
+          {" "}
+          {new NumAbbr().abbreviate(likes, 2)}
+        </Typography>
       </div>
       <div className={classes.rating}>
         {" "}
         <ThumbDown
-          onClick={() => handleThumbClick(options[0])}
+          onClick={() => handleThumbClick(getRating(0))}
           className={clsx(classes.thumbBtn, {
             [classes.small]: size === "small",
             [classes.active]: getRating(0) === rating,
           })}
         />
-        {showDislikes && dislikes}
+        {showDislikes && new NumAbbr().abbreviate(dislikes, 2)}
       </div>
     </div>
   );

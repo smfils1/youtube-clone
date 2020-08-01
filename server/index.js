@@ -5,7 +5,7 @@ const cookieParser = require("cookie-parser");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
 const path = require("path");
-const { auth, auth2 } = require("./middleware/auth");
+const { auth2 } = require("./middleware/auth");
 const { runCronJobs } = require("./services/cronJobs");
 
 //Configurations
@@ -46,7 +46,7 @@ app.use("/api/channels", auth2, channelRoutes);
 app.use("/api/subscriptions", auth2, subscriptionRoutes);
 app.use("/api/videos", auth2, videoRoutes);
 app.use("/api/comments", auth2, commentRoutes);
-app.use("/api/ratings", auth, ratingRoutes);
+app.use("/api/ratings", auth2, ratingRoutes);
 
 //For Deploying client & api on one server
 if (process.env.NODE_ENV === "production") {

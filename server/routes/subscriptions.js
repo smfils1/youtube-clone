@@ -61,7 +61,7 @@ router.post("/count", async (req, res) => {
   const { channel } = req.body;
 
   if (!channel) {
-    res.status(400).json({
+    return res.status(400).json({
       name: "SubscriptionError",
       message: "Invalid Channel",
     });

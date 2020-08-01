@@ -15,7 +15,7 @@ const CommentsContent = ({ videoId }) => {
   return (
     <div>
       <p>{comments.length} Comments</p>
-      <CommentForm />
+      <CommentForm videoId={videoId} />
       <Comments videoId={videoId} />
     </div>
   );

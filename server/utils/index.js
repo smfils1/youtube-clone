@@ -1,5 +1,5 @@
 const { generateLink } = require("../services/fileProcess");
-const { isPlainObject } = require("lodash");
+const { isString } = require("lodash");
 const extractVideoInfo = (video) => {
   let videoResult = {
     id: video._id,
@@ -14,7 +14,7 @@ const extractVideoInfo = (video) => {
       type: "thumbnail",
     }),
   };
-  if (isPlainObject(video.uploader)) {
+  if (video.uploader && !isString(video.uploader)) {
     videoResult = {
       ...videoResult,
       channelName: video.uploader.name || video.uploader[0].name,
@@ -23,6 +23,24 @@ const extractVideoInfo = (video) => {
     };
   }
   return videoResult;
+};
+
+const extractCommentInfo = (comment) => {
+  let commentResult = {
+    id: comment._id,
+    content: comment.content,
+    createdAt: comment.createdAt,
+    videoId: comment.videoId,
+  };
+  if (comment.commentBy && !isString(comment.commentBy)) {
+    commentResult = {
+      ...commentResult,
+      channelName: comment.commentBy.name,
+      channelImg: comment.commentBy.imageLink,
+      channelId: comment.commentBy._id,
+    };
+  }
+  return commentResult;
 };
 
 const extractUploadFilenames = (uploadInfo) => {
@@ -36,4 +54,8 @@ const extractUploadFilenames = (uploadInfo) => {
   return { videoFilename, thumbnailFilename };
 };
 
-module.exports = { extractVideoInfo, extractUploadFilenames };
+module.exports = {
+  extractCommentInfo,
+  extractVideoInfo,
+  extractUploadFilenames,
+};

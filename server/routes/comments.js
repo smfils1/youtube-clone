@@ -14,10 +14,11 @@ router.get("/:videoId", async (req, res) => {
   try {
     const video = await Video.getVideo({ userId, videoId });
     if (video) {
-      comments = await Comment.find({ videoId }).populate("commentBy");
+      comments = await Comment.getVideoComments(videoId);
     }
     res.json({ comments });
   } catch (err) {
+    console.log(err);
     errorResponse(err, res);
   }
 });
@@ -27,17 +28,19 @@ router.post("/", async (req, res) => {
   const { userId } = req;
   const { videoId, content, commentBy, commentTo } = req.body;
   try {
+    let comment;
     const video = await Video.getVideo({ userId, videoId });
     if (video) {
-      await Comment.create({
+      comment = await Comment.createVideoComments({
         videoId,
         content,
         commentBy,
         commentTo,
       });
     }
-    res.json({ success: true });
+    res.json({ comment });
   } catch (err) {
+    console.log(err);
     errorResponse(err, res);
   }
 });

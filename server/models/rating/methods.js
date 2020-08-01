@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const methods = (ratingSchema) => {
   ratingSchema.statics.getRating = async function ({
@@ -6,12 +7,11 @@ const methods = (ratingSchema) => {
     ratingTypeId,
   }) {
     const Rating = this;
-    let results;
     const filter = {
-      [ratingType + "Id"]: ratingTypeId,
+      [ratingType + "Id"]: ObjectId(ratingTypeId),
     };
     try {
-      results = await Rating.aggregate([
+      const results = await Rating.aggregate([
         { $match: filter },
         {
           $group: {
@@ -20,9 +20,9 @@ const methods = (ratingSchema) => {
           },
         },
       ]);
-      let ratings;
-      ratings.forEach((ratingGroup) => {
-        rating[ratingGroup._id] = ratingGroup.count;
+      let ratings = { likes: 0, dislikes: 0 };
+      results.forEach((ratingGroup) => {
+        ratings[ratingGroup._id > 0 ? "likes" : "dislikes"] = ratingGroup.count;
       });
       return ratings;
     } catch (err) {
@@ -30,25 +30,40 @@ const methods = (ratingSchema) => {
     }
   };
 
-  ratingSchema.statics.getVideoByCommentId = async function (commentId) {
+  ratingSchema.statics.getUserRating = async function ({
+    userId,
+    ratingType,
+    ratingTypeId,
+  }) {
     const Rating = this;
-    let results;
     const filter = {
-      commentId,
+      [ratingType + "Id"]: ObjectId(ratingTypeId),
+      userId,
     };
     try {
-      rating = await Rating.findOne({ commentId });
-      if (!rating) {
-        throw {
-          name: "InvalidResourceError",
-          message: "Invalid video",
-        };
-      }
-      return rating.videoId;
+      const rating = await Rating.findOne(filter);
+      return rating;
     } catch (err) {
       throw err;
     }
   };
+  // ratingSchema.statics.getVideoByCommentId = async function (commentId) {
+  //   const Rating = this;
+  //   try {
+  //     rating = await Rating.findOne({ commentId });
+
+  //     if (!rating) {
+  //       throw {
+  //         name: "InvalidResourceError",
+  //         message: "Invalid video",
+  //       };
+  //     }
+  //     return rating.videoId;
+  //   } catch (err) {
+  //     console.log(err);
+  //     throw err;
+  //   }
+  // };
 
   ratingSchema.statics.createRating = async function ({
     userId,
@@ -58,14 +73,13 @@ const methods = (ratingSchema) => {
   }) {
     const Rating = this;
     try {
-      const rating = await Rating.create({
+      const newRating = await Rating.create({
         [ratingType + "Id"]: ratingTypeId,
         userId,
         rating,
         ratingType,
       });
-      if (!rating) rating = null;
-      return rating;
+      return newRating;
     } catch (err) {
       throw err;
     }

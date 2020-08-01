@@ -166,8 +166,8 @@ const methods = (videoSchema) => {
 
   videoSchema.statics.getVideo = async function ({ videoId, userId }) {
     const Video = this;
-    const video = await Video.findById(videoId).populate("uploader");
     try {
+      const video = await Video.findById(videoId).populate("uploader");
       if (!video) {
         throw {
           name: "InvalidResourceError",

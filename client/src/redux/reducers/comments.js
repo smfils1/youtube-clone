@@ -7,7 +7,7 @@ const commentsReducer = (state = initialState, action) => {
     case "SET_COMMENTS":
       return [...action.payload];
     case "ADD_COMMENT":
-      return [...state, action.payload];
+      return [action.payload, ...state];
     case "RESET_COMMENTS":
       return [];
     default:

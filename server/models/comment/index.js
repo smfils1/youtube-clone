@@ -5,7 +5,7 @@ const commentSchema = mongoose.Schema(
   {
     commentBy: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Channel",
       required: [true, "{PATH} is required"],
     },
     videoId: {
@@ -19,7 +19,7 @@ const commentSchema = mongoose.Schema(
     },
     commentTo: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Channel",
     },
   },
   { timestamps: true }

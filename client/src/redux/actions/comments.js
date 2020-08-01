@@ -44,37 +44,9 @@ const getComments = (videoId) => {
   return async (dispatch) => {
     // dispatch(setLoading(true));
     try {
-      //   const {
-      //     data: { comments },
-      //   } = await api.get(`/api/comments/${videoId}`);
-      const comments = [
-        //Dummy data
-        {
-          id: 1,
-          content: "test1",
-          commentBy: 1,
-          commentTo: null,
-        },
-        {
-          id: 2,
-          content: "test2",
-          commentBy: 2,
-          commentTo: null,
-        },
-
-        {
-          id: 3,
-          content: "test3",
-          commentBy: 3,
-          commentTo: 1,
-        },
-        {
-          id: 4,
-          content: "test4",
-          commentBy: 4,
-          commentTo: 3,
-        },
-      ];
+      const {
+        data: { comments },
+      } = await api.get(`/api/comments/${videoId}`);
       dispatch(setComments(comments));
     } catch (err) {
       dispatch(setComments([]));

@@ -2,7 +2,7 @@ const { verifyToken } = require("../utils/jwt");
 const errorResponse = require("../utils/error");
 const config = require("../config");
 
-//Responses with error if not auth
+//Responses with error if not auth (strict auth)
 const auth = (req, res, next) => {
   //Get cookies
   const token = req.cookies.jwt_auth;

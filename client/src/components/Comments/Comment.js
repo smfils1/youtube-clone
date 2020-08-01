@@ -9,7 +9,7 @@ import {
 } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
-
+import moment from "moment";
 import CommentReplies from "./CommentReplies";
 import LikeDislikes from "../LikeDislikes";
 const useStyles = makeStyles((theme) => ({
@@ -51,19 +51,25 @@ const Comment = ({ comment }) => {
   const classes = useStyles();
   return (
     <div className={classes.root}>
-      <Avatar alt="Avatar" />
+      <Avatar alt="Avatar" src={comment.channelImg} />
       <div className={classes.info_1}>
         <div className={classes.info_2}>
           <Typography variant="body2" className={clsx(classes.channel)}>
-            {comment.commentBy}
+            {comment.channelName}
           </Typography>
           <Typography variant="caption" className={clsx(classes.subTitle)}>
-            1 month ago
+            {moment(comment.createdAt).fromNow()}
           </Typography>
         </div>
         <div>{comment.content}</div>
         <div>
-          <LikeDislikes size="small" showDislikes={false} />
+          <LikeDislikes
+            size="small"
+            showDislikes={false}
+            type="comment"
+            id={comment.id}
+            videoId={comment.videoId}
+          />
         </div>
         <div>
           <CommentReplies parentCommentId={comment.id} />

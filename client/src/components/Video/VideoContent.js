@@ -108,7 +108,7 @@ export default function VideoContent({ videoId }) {
         <Divider />
       </div>
       <div className={classes.secondaryInfo}>
-        <Avatar alt="Avatar" />
+        <Avatar alt="Avatar" src={video.channelImg} />
         <div className={classes.secondaryInfo_1}>
           <div className={classes.secondaryInfo_2}>
             {" "}
@@ -122,7 +122,8 @@ export default function VideoContent({ videoId }) {
               </Typography>
             </div>
             <div className={classes.likeSubscribe}>
-              <LikeDislikes /> <SubscribeBtn channelId={video.channelId} />
+              <LikeDislikes type="video" id={video.id} videoId={video.id} />{" "}
+              <SubscribeBtn channelId={video.channelId} />
             </div>
           </div>{" "}
           <div>

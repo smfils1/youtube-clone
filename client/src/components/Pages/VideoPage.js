@@ -6,10 +6,7 @@ import queryString from "query-string";
 import CommentsContent from "../Comments/CommentsContent";
 const useStyles = makeStyles((theme) => ({
   container: {
-    paddingLeft: theme.spacing(8),
-    paddingRight: theme.spacing(8),
-    paddingTop: theme.spacing(3),
-    paddingBottom: theme.spacing(3),
+    padding: theme.spacing(3),
   },
 }));
 
@@ -19,11 +16,11 @@ export default function VideoPage({ location }) {
   return (
     <div className={classes.container}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={12} md={9}>
+        <Grid item xs={12} sm={12} md={8}>
           <VideoContent videoId={id} />
           <CommentsContent videoId={id} />
         </Grid>
-        <Grid item xs={12} sm={12} md={3}>
+        <Grid item xs={12} sm={12} md={4}>
           <SecondaryVidContent />
         </Grid>
       </Grid>

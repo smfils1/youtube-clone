@@ -22,7 +22,11 @@ export default () => {
   const classes = useStyles();
   return (
     <div>
-      <VideoList isLoading={isLoading} videos={recommendedVids} />
+      <VideoList
+        type="horizontal_2"
+        isLoading={isLoading}
+        videos={recommendedVids}
+      />
     </div>
   );
 };

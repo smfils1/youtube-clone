@@ -10,10 +10,11 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
   },
   content: {
-    flexGrow: 1,
+    flex: 1,
     display: "flex",
     flexDirection: "column",
     minHeight: "100vh",
+    overflow: "hidden",
   },
   toolbar: {
     // necessary for content to be below app bar
@@ -22,7 +23,6 @@ const useStyles = makeStyles((theme) => ({
   container: {
     display: "flex",
     flexDirection: "column",
-    flex: "1 1 auto",
   },
 }));
 const NavBar = ({ children }) => {
@@ -33,13 +33,7 @@ const NavBar = ({ children }) => {
       <SideNav />
       <div className={classes.content}>
         <div className={classes.toolbar} />
-        <Container
-          className={classes.container}
-          disableGutters
-          maxWidth={false}
-        >
-          {children}
-        </Container>
+        {children}
       </div>
     </div>
   );

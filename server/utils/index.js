@@ -1,5 +1,9 @@
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 const { generateLink } = require("../services/fileProcess");
-const { isString } = require("lodash");
+
+const isId = (field) => field instanceof ObjectId;
+
 const extractVideoInfo = (video) => {
   let videoResult = {
     doc: video,
@@ -15,7 +19,8 @@ const extractVideoInfo = (video) => {
       type: "thumbnail",
     }),
   };
-  if (video.uploader && !isString(video.uploader)) {
+
+  if (video.uploader && !isId(video.uploader)) {
     videoResult = {
       ...videoResult,
       channelName: video.uploader.name || video.uploader[0].name,
@@ -34,7 +39,7 @@ const extractCommentInfo = (comment) => {
     videoId: comment.videoId,
     commentTo: comment.commentTo,
   };
-  if (comment.commentBy && !isString(comment.commentBy)) {
+  if (comment.commentBy && !isId(comment.commentBy)) {
     commentResult = {
       ...commentResult,
       channelName: comment.commentBy.name,

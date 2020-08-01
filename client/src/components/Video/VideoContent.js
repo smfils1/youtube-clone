@@ -70,7 +70,8 @@ export default function VideoContent({ videoId }) {
       try {
         const {
           data: { video },
-        } = await api.get(`/api/videos/${videoId}`);
+        } = await api.patch(`/api/videos/${videoId}`, { updateViews: true });
+
         setVideo(video || {});
         const {
           data: { subscribers },

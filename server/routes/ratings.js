@@ -46,7 +46,7 @@ router.get("/:ratingType/:videoId/:ratingTypeId", async (req, res) => {
     }
     res.json({ ratings });
   } catch (err) {
-    console.log(err);
+    // console.log(err);
     errorResponse(err, res);
   }
 });

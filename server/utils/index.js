@@ -2,6 +2,7 @@ const { generateLink } = require("../services/fileProcess");
 const { isString } = require("lodash");
 const extractVideoInfo = (video) => {
   let videoResult = {
+    doc: video,
     id: video._id,
     views: video.views,
     createdAt: video.createdAt,
@@ -31,6 +32,7 @@ const extractCommentInfo = (comment) => {
     content: comment.content,
     createdAt: comment.createdAt,
     videoId: comment.videoId,
+    commentTo: comment.commentTo,
   };
   if (comment.commentBy && !isString(comment.commentBy)) {
     commentResult = {

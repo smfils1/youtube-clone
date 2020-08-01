@@ -60,7 +60,6 @@ router.post("/upload", async (req, res) => {
 });
 
 //Stream video
-//TODO: test
 router.get("/stream/:videoFile", async (req, res) => {
   const { videoFile } = req.params;
   const { userId } = req;
@@ -283,6 +282,30 @@ router.get(
       const video = await Video.getVideo({ videoId, userId });
       res.json({ video });
     } catch (err) {
+      errorResponse(err, res);
+    }
+  }
+);
+
+// Update video info
+router.patch(
+  "/:videoId",
+  /*auth, */ async (req, res) => {
+    const { userId } = req;
+    const { videoId } = req.params;
+    const { updateViews } = req.body;
+
+    try {
+      let updatedVideo;
+
+      const video = await Video.getVideo({ videoId, userId });
+
+      if (video && updateViews === true) {
+        updatedVideo = await video.doc.increaseViews();
+      }
+      res.json({ video: updatedVideo });
+    } catch (err) {
+      console.log(err);
       errorResponse(err, res);
     }
   }

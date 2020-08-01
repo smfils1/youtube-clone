@@ -33,7 +33,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const CommentForm = ({ videoId, commentTo }) => {
+const CommentForm = ({ videoId, commentTo, handleReplyComment }) => {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const isAuth = useSelector(({ channel }) => channel.isAuth);
@@ -57,6 +57,7 @@ const CommentForm = ({ videoId, commentTo }) => {
         const {
           data: { comment: newComment },
         } = await api.post("/api/comments", data);
+        handleReplyComment();
         dispatch(addComment(newComment));
       } catch (err) {
         console.log(err);

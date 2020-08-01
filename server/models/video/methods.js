@@ -198,10 +198,22 @@ const methods = (videoSchema) => {
     if (diffDays > 0 && !(diffDays % 7)) {
       try {
         video.weeklyViews = 0;
-        this.save();
+        await this.save();
       } catch (err) {
         console.log(err);
       }
+    }
+  };
+
+  videoSchema.methods.increaseViews = async function () {
+    const video = this;
+    try {
+      video.weeklyViews = ++video.weeklyViews;
+      video.views = ++video.views;
+      await this.save();
+      return extractVideoInfo(video);
+    } catch (err) {
+      console.log(err);
     }
   };
 

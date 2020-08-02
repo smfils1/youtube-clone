@@ -1,8 +1,6 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Thumbnail from "./Thumbnail";
+import { makeStyles } from "@material-ui/core";
+
 import VideoCard from "./VideoCard";
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,22 +52,7 @@ export default function VideoList({ type, isLoading, videos }) {
               />
             )
           )
-        : new Array(8)
-            .fill(null)
-            .map((value, i) => (
-              <VideoCard
-                horizontal
-                key={i}
-                isLoading={isLoading}
-                ThumbComponent={() => (
-                  <Thumbnail
-                    image={"https://via.placeholder.com/300"}
-                    height={100}
-                    width={150}
-                  />
-                )}
-              />
-            ))}
+        : new Array(8).fill(<VideoCard isLoading={isLoading} type={type} />)}
     </div>
   );
 }

@@ -1,9 +1,8 @@
 import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import Paper from "@material-ui/core/Paper";
-import Grid from "@material-ui/core/Grid";
-import Thumbnail from "./Thumbnail";
+import { makeStyles, Grid } from "@material-ui/core";
+
 import VideoCard from "./VideoCard";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     flexGrow: 1,
@@ -52,16 +51,11 @@ export default function VideoGrid({ isLoading, videos, type }) {
                 </Grid>
               )
             )
-          : new Array(8).fill(null).map((value, i) => (
-              <Grid key={i} item xs={12} sm={6} md={4} lg={3}>
-                <VideoCard
-                  isLoading={isLoading}
-                  ThumbComponent={() => (
-                    <Thumbnail image={"https://via.placeholder.com/300"} />
-                  )}
-                />
+          : new Array(8).fill(
+              <Grid item xs={12} sm={6} md={4} lg={3}>
+                <VideoCard isLoading={isLoading} type={type} />{" "}
               </Grid>
-            ))}
+            )}
       </Grid>
     </div>
   );

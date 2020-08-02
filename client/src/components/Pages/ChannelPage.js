@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import NumAbbr from "number-abbreviate";
 import { grey } from "@material-ui/core/colors";
-
-import {
-  Typography,
-  Avatar,
-  makeStyles,
-  withStyles,
-  Tab,
-  Tabs,
-} from "@material-ui/core";
+import { Typography, Avatar, makeStyles } from "@material-ui/core";
 import axios from "axios";
 
+import { AntTab, AntTabs } from "../AntTabs";
 import SubscribeBtn from "../SubscribeBtn";
 import VideoGrid from "../Video/VideoGrid";
 import { BACKEND_URL } from "../../config";
@@ -21,45 +14,6 @@ const api = axios.create({
   withCredentials: true,
   baseURL: BACKEND_URL,
 });
-const AntTabs = withStyles({
-  indicator: {
-    backgroundColor: "black",
-  },
-})(Tabs);
-
-const AntTab = withStyles((theme) => ({
-  root: {
-    color: grey[600],
-    textTransform: "uppercase",
-    minWidth: 72,
-    fontWeight: theme.typography.fontWeightRegular,
-    marginRight: theme.spacing(4),
-    fontFamily: [
-      "-apple-system",
-      "BlinkMacSystemFont",
-      '"Segoe UI"',
-      "Roboto",
-      '"Helvetica Neue"',
-      "Arial",
-      "sans-serif",
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(","),
-    "&:hover": {
-      color: "black",
-      opacity: 1,
-    },
-    "&$selected": {
-      color: "black",
-      fontWeight: theme.typography.fontWeightMedium,
-    },
-    "&:focus": {
-      color: "black",
-    },
-  },
-  selected: {},
-}))((props) => <Tab disableRipple {...props} />);
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -82,6 +36,7 @@ const useStyles = makeStyles((theme) => ({
   },
   info_1: {
     display: "flex",
+    flexWrap: "wrap",
     paddingTop: theme.spacing(1),
     paddingBottom: theme.spacing(1),
   },
@@ -91,28 +46,17 @@ const useStyles = makeStyles((theme) => ({
   },
   info_3: {
     display: "flex",
-    width: "100%",
+    flex: 1,
     justifyContent: "space-between",
     padding: theme.spacing(1),
   },
   subscribeBtn: {
     padding: theme.spacing(1.5),
-    padding: theme.spacing(1.5),
-  },
-  text: {
-    paddingBottom: theme.spacing(3),
-    fontWeight: 500,
-  },
-  divider: {
-    height: "5px",
-    marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(3),
   },
 }));
 
 const ChannelPage = ({ match }) => {
   const { id: channelId } = match.params;
-  const userId = useSelector(({ channel }) => channel.id);
   const [channel, setChannel] = useState(null);
   const [videos, setVideos] = useState([]);
   const [numberOfSubscribers, setSubscribers] = useState(0);
@@ -126,7 +70,6 @@ const ChannelPage = ({ match }) => {
   useEffect(() => {
     const fetchChannel = async () => {
       try {
-        // /channel/:channelId
         const { data } = await api.get(`/api/channels/${channelId}`);
         console.log(data);
         setChannel({
@@ -154,7 +97,6 @@ const ChannelPage = ({ match }) => {
 
   return (
     <div className={classes.root}>
-      {" "}
       <div className={classes.header}>
         {channel ? (
           <>
@@ -165,9 +107,7 @@ const ChannelPage = ({ match }) => {
                 className={classes.avatar}
               />
               <div className={classes.info_3}>
-                {" "}
                 <div className={classes.info_2}>
-                  {" "}
                   <Typography variant="h5" className={classes.channel}>
                     {channel.name}
                   </Typography>

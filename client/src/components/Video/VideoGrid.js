@@ -37,7 +37,6 @@ export default function VideoGrid({ isLoading, videos, type }) {
                   <VideoCard
                     type={type}
                     channelImg={channelImg}
-                    horizontal
                     key={id}
                     description={description}
                     id={id}
@@ -49,12 +48,6 @@ export default function VideoGrid({ isLoading, videos, type }) {
                     views={views}
                     thumbnail={thumbnail}
                     duration={duration}
-                    ThumbComponent={() => (
-                      <Thumbnail
-                        image={thumbnail || "https://via.placeholder.com/300"}
-                        duration={duration}
-                      />
-                    )}
                   />
                 </Grid>
               )

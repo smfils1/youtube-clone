@@ -17,6 +17,7 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     width: "100%",
     flexDirection: "column",
+    marginBottom: theme.spacing(1.5),
   },
   thumbnail: {
     marginRight: theme.spacing(1.5),

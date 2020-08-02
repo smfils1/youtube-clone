@@ -22,6 +22,17 @@ const useStyles = makeStyles((theme) => ({
     height: "24px",
     borderRadius: "50%",
   },
+  root_h: {
+    display: "flex",
+    overflowX: "auto",
+    justifyContent: "center",
+  },
+  spacing_h: { margin: "1em" },
+  img_h: {
+    width: "100%",
+    height: "100%",
+    borderRadius: "100%",
+  },
 }));
 
 const Img = ({ className, src, alt }) => {
@@ -40,7 +51,6 @@ const Img = ({ className, src, alt }) => {
 // };
 
 const SideCategoryMenu = () => {
-  const history = useHistory;
   const classes = useStyles();
   return (
     <List>
@@ -72,13 +82,12 @@ const SideCategoryMenu = () => {
 };
 
 const HorizontalCategoryMenu = () => {
-  const history = useHistory;
   const classes = useStyles();
   return (
-    <div style={{ display: "flex" }}>
+    <div className={classes.root_h}>
       {categoryIcons.map((item, index) => {
         return (
-          <div style={{ margin: "1em" }}>
+          <div className={classes.spacing_h}>
             <NavItem
               key={index}
               to={`/trending?category=${index}`}
@@ -86,12 +95,7 @@ const HorizontalCategoryMenu = () => {
               type="secondary"
               icon={() => (
                 <img
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    borderRadius: "100%",
-                  }}
-                  //className={classes.bestOfYoutubeIcon}
+                  className={classes.img_h}
                   src={item.icon}
                   alt={item.title + " logo"}
                 />

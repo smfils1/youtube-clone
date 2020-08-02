@@ -33,12 +33,13 @@ export default function VideoList({ type, isLoading, videos }) {
                 title,
                 videoLink: video,
                 views,
+                channelImg,
               },
               i
             ) => (
               <VideoCard
                 type={type}
-                horizontal
+                channelImg={channelImg}
                 key={id}
                 description={description}
                 id={id}
@@ -50,13 +51,6 @@ export default function VideoList({ type, isLoading, videos }) {
                 views={views}
                 thumbnail={thumbnail}
                 duration={duration}
-                ThumbComponent={() => (
-                  <Thumbnail
-                    image={thumbnail || "https://via.placeholder.com/300"}
-                    duration={duration}
-                    imgStyle={classes.thumbnail}
-                  />
-                )}
               />
             )
           )

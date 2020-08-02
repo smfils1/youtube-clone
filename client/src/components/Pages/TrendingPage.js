@@ -2,7 +2,13 @@ import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import queryString from "query-string";
 import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, Divider } from "@material-ui/core";
+import {
+  Container,
+  Typography,
+  Divider,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import { capitalize } from "lodash";
 
 import { HorizontalCategoryMenu } from "../Nav/CategoryMenus";
@@ -37,6 +43,8 @@ const TrendingPage = ({ location }) => {
   const trendingVids = useSelector(({ videos }) => videos.trending);
   const isLoading = useSelector(({ videos }) => videos.isLoading);
   const dispatch = useDispatch();
+  const theme = useTheme();
+  const isMaxScreenSm = useMediaQuery(theme.breakpoints.only("xs"));
 
   useEffect(() => {
     dispatch(getTrendingVideos(categoryId));
@@ -52,15 +60,27 @@ const TrendingPage = ({ location }) => {
         <HorizontalCategoryMenu />
 
         <Divider light className={classes.divider} />
-        {trendingVids.length ? (
-          <VideoList
-            type="horizontal_1"
-            isLoading={isLoading}
-            videos={trendingVids}
-          />
-        ) : (
-          "Nothing Trending"
-        )}
+        {(() => {
+          if (trendingVids.length && isMaxScreenSm) {
+            return (
+              <VideoList
+                type="vertical_2"
+                isLoading={isLoading}
+                videos={trendingVids}
+              />
+            );
+          } else if (trendingVids.length && !isMaxScreenSm) {
+            return (
+              <VideoList
+                type="horizontal_2"
+                isLoading={isLoading}
+                videos={trendingVids}
+              />
+            );
+          } else {
+            return "Nothing Trending";
+          }
+        })()}
       </div>
     </Container>
   );

@@ -1,17 +1,13 @@
 import React, { useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, IconButton } from "@material-ui/core";
+import { makeStyles, IconButton } from "@material-ui/core";
 import { Close as CloseIcon } from "@material-ui/icons";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: "flex",
     position: "relative",
     height: 250,
     backgroundColor: "gray",
-  },
-  content: {
-    maxWidth: "100%",
-    display: "flex",
   },
   icon: {
     position: "absolute",

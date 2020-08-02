@@ -1,23 +1,24 @@
 import React, { useEffect } from "react";
-
 import { useSelector, useDispatch } from "react-redux";
+import {
+  makeStyles,
+  Container,
+  Typography,
+  Divider,
+  createMuiTheme,
+  responsiveFontSizes,
+  ThemeProvider,
+} from "@material-ui/core/";
 
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography, Divider } from "@material-ui/core";
 import VideoGrid from "../Video/VideoGrid";
 import { getHomeVideos } from "../../redux/actions/videos";
 import Banner from "../Banner";
 import youtubeIcon from "../../assets/youtube-icon.png";
+
 const useStyles = makeStyles((theme) => ({
   root: {
-    flex: 1,
     display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  content: {
-    width: "100%",
-    height: "100%",
+    flexDirection: "column",
     padding: theme.spacing(3),
   },
   text: {
@@ -29,9 +30,23 @@ const useStyles = makeStyles((theme) => ({
     marginTop: theme.spacing(3),
     marginBottom: theme.spacing(3),
   },
+  banner: {
+    width: "100%",
+    backgroundColor: "black",
+    color: "white",
+    display: "flex",
+    padding: theme.spacing(1),
+    alignItems: "center",
+  },
+  bannerImg: {
+    width: "100%",
+    maxWidth: 150,
+    height: "auto",
+    margin: theme.spacing(1.5),
+  },
 }));
+
 const HomePage = () => {
-  const isAuth = useSelector(({ channel }) => channel.isAuth);
   const recommendedVids = useSelector(({ videos }) => videos.recommended);
   const trendingVids = useSelector(({ videos }) => videos.trending);
   const isLoading = useSelector(({ videos }) => videos.isLoading);
@@ -41,78 +56,56 @@ const HomePage = () => {
     dispatch(getHomeVideos());
   }, []);
   const classes = useStyles();
+  let theme = createMuiTheme();
+  theme = responsiveFontSizes(theme);
   return (
     <div>
       <Banner closeable>
-        <div
-          style={{
-            width: "100%",
-            height: "100%",
-            backgroundColor: "black",
-            color: "white",
-            display: "flex",
-            padding: "1em",
-          }}
-        >
-          {" "}
+        <div className={classes.banner}>
           <img
-            style={{
-              alignSelf: "center",
-            }}
+            className={classes.bannerImg}
+            alt="youtube icon"
             src={youtubeIcon}
-            height="60%"
           />
-          <div
-            style={{
-              margin: "2em",
-            }}
-          >
-            <h1
-              style={{
-                fontSize: "4em",
-              }}
-            >
-              FullStack Clone
-            </h1>
-            <h1
-              style={{
-                fontSize: "2em",
-              }}
-            >
-              <a
-                style={{
-                  color: "red",
-                }}
-                href="https://github.com/smfils1/youtube-clone"
-              >
-                GitHub Repo
-              </a>
-            </h1>
-            <p>* For Educational Purposes</p>
+          <div>
+            <ThemeProvider theme={theme}>
+              <Typography variant="h2"> FullStack Clone</Typography>
+              <Typography variant="h4">
+                <a
+                  style={{
+                    color: "red",
+                  }}
+                  href="https://github.com/smfils1/youtube-clone"
+                >
+                  GitHub Repo
+                </a>
+              </Typography>
+              <Typography variant="body2">
+                * for Educational Purposes
+              </Typography>
+            </ThemeProvider>
           </div>
         </div>
       </Banner>
       <Container maxWidth="xl" className={classes.root}>
-        <div className={classes.content}>
-          <Typography variant="h5" className={classes.text}>
-            Recommended
-          </Typography>
+        <Typography variant="h5" className={classes.text}>
+          Recommended
+        </Typography>
 
-          <VideoGrid
-            type="vertical_2"
-            isLoading={isLoading}
-            videos={recommendedVids}
-          />
-          <Divider light className={classes.divider} />
-          <Typography variant="h5" className={classes.text}>
-            Trending
-          </Typography>
-          <VideoGrid
-            type="vertical_2"
-            isLoading={isLoading}
-            videos={trendingVids}
-          />
-        </div>
+        <VideoGrid
+          type="vertical_2"
+          isLoading={isLoading}
+          videos={recommendedVids}
+        />
+        <Divider light className={classes.divider} />
+        <Typography variant="h5" className={classes.text}>
+          Trending
+        </Typography>
+        <VideoGrid
+          type="vertical_2"
+          isLoading={isLoading}
+          videos={trendingVids}
+        />
       </Container>
     </div>
   );

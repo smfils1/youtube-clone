@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Redirect } from "react-router-dom";
 import queryString from "query-string";
-import { makeStyles } from "@material-ui/core/styles";
-import { Container, Typography } from "@material-ui/core";
+import {
+  Container,
+  makeStyles,
+  useTheme,
+  useMediaQuery,
+} from "@material-ui/core";
 import axios from "axios";
 
 import VideoList from "../Video/VideoList";
@@ -18,10 +22,6 @@ const useStyles = makeStyles((theme) => ({
     flex: 1,
     display: "flex",
     justifyContent: "center",
-  },
-  content: {
-    width: "100%",
-    height: "100%",
     padding: theme.spacing(3),
   },
   text: {
@@ -38,6 +38,8 @@ const SearchPage = ({ location, history }) => {
   const { search_query } = queryString.parse(location.search);
   const [videoResults, setVideoResult] = useState([]);
   const classes = useStyles();
+  const theme = useTheme();
+  const isMaxScreenSm = useMediaQuery(theme.breakpoints.only("xs"));
 
   useEffect(() => {
     const fetchVideoContent = async () => {
@@ -58,13 +60,15 @@ const SearchPage = ({ location, history }) => {
   } else {
     return (
       <Container maxWidth="xl" className={classes.root}>
-        <div className={classes.content}>
-          {!videoResults.length ? (
-            "No results found"
-          ) : (
-            <VideoList videos={videoResults} />
-          )}
-        </div>
+        {(() => {
+          if (videoResults.length && isMaxScreenSm) {
+            return <VideoList type="vertical_2" videos={videoResults} />;
+          } else if (videoResults.length && !isMaxScreenSm) {
+            return <VideoList type="horizontal_1" videos={videoResults} />;
+          } else {
+            return "No videos found";
+          }
+        })()}
       </Container>
     );
   }

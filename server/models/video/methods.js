@@ -32,7 +32,7 @@ const methods = (videoSchema) => {
           $regex: title,
           $options: "i",
         },
-      });
+      }).populate("uploader");
       videos.forEach((video) => {
         video.authorize(
           (isAuth) => {
@@ -164,7 +164,7 @@ const methods = (videoSchema) => {
     }
   };
 
-  videoSchema.statics.getVideo = async function ({ videoId, userId }) {
+  videoSchema.statics.getVideo = async function ({ videoId, userId, withDoc }) {
     const Video = this;
     try {
       const video = await Video.findById(videoId).populate("uploader");
@@ -177,7 +177,7 @@ const methods = (videoSchema) => {
       return video.authorize(
         (isAuth) => {
           if (isAuth) {
-            return extractVideoInfo(video);
+            return extractVideoInfo(video, withDoc);
           } else {
             return {};
           }

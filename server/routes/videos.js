@@ -298,7 +298,7 @@ router.patch(
     try {
       let updatedVideo;
 
-      const video = await Video.getVideo({ videoId, userId });
+      const video = await Video.getVideo({ videoId, userId, withDoc: true });
 
       if (video && updateViews === true) {
         updatedVideo = await video.doc.increaseViews();

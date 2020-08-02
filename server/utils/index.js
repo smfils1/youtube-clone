@@ -4,9 +4,8 @@ const { generateLink } = require("../services/fileProcess");
 
 const isId = (field) => field instanceof ObjectId;
 
-const extractVideoInfo = (video) => {
+const extractVideoInfo = (video, withDoc = false) => {
   let videoResult = {
-    doc: video,
     id: video._id,
     views: video.views,
     createdAt: video.createdAt,
@@ -19,7 +18,7 @@ const extractVideoInfo = (video) => {
       type: "thumbnail",
     }),
   };
-
+  if (withDoc) videoResult.doc = video;
   if (video.uploader && !isId(video.uploader)) {
     videoResult = {
       ...videoResult,
@@ -50,19 +49,7 @@ const extractCommentInfo = (comment) => {
   return commentResult;
 };
 
-const extractUploadFilenames = (uploadInfo) => {
-  //May not need
-  const videoFilename = uploadInfo.filename;
-  const thumbLink = uploadInfo.thumbnail;
-  const thumbSplit = thumbLink.split("/");
-  const thumbnailFilename = decodeURIComponent(
-    thumbSplit[thumbLink.length - 1]
-  );
-  return { videoFilename, thumbnailFilename };
-};
-
 module.exports = {
   extractCommentInfo,
   extractVideoInfo,
-  extractUploadFilenames,
 };

@@ -1,12 +1,11 @@
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
-
 import { useDropzone } from "react-dropzone";
-import { makeStyles } from "@material-ui/core/styles";
-import { Button, Fab, Typography } from "@material-ui/core";
+import { Button, Fab, Typography, makeStyles } from "@material-ui/core";
 import { Publish as PublishIcon } from "@material-ui/icons";
 import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
+
 import { uploadVideo } from "../../redux/actions/upload";
 
 const useStyles = makeStyles((theme) => ({
@@ -94,6 +93,9 @@ function StyledDropzone() {
         <Typography variant="body2" gutterBottom>
           Your videos will be private until you publish them.
         </Typography>
+        <Typography variant="caption" gutterBottom>
+          * Video Uploads are limited to 25 MB.
+        </Typography>
 
         <Button
           className={classes.button}
@@ -104,10 +106,6 @@ function StyledDropzone() {
           Select File
         </Button>
       </div>
-      {/* <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
-      </aside> */}
     </div>
   );
 }

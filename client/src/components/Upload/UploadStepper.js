@@ -1,25 +1,30 @@
 import React, { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import {
+  makeStyles,
+  Typography,
+  Button,
+  StepLabel,
+  Step,
+  Stepper,
+} from "@material-ui/core";
 
-import { makeStyles } from "@material-ui/core/styles";
-import Stepper from "@material-ui/core/Stepper";
-import Step from "@material-ui/core/Step";
-import StepLabel from "@material-ui/core/StepLabel";
-import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
 import UploadForm from "./UploadForm";
 import { setVisibilitySubmit, setDetails } from "../../redux/actions/upload";
 import ImagePicker from "../ImagePicker";
+
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: "100%",
-  },
   button: {
     marginRight: theme.spacing(1),
   },
   instructions: {
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
   },
 }));
 
@@ -27,7 +32,7 @@ function getSteps() {
   return ["Details", "Visiblity"];
 }
 
-export default function HorizontalLinearStepper({ filename }) {
+export default function HorizontalLinearStepper() {
   const classes = useStyles();
   const formRef = useRef();
   const [activeStep, setActiveStep] = React.useState(0);
@@ -61,7 +66,7 @@ export default function HorizontalLinearStepper({ filename }) {
   };
 
   return (
-    <div className={classes.root}>
+    <div>
       <Stepper activeStep={activeStep}>
         {steps.map((label) => {
           const stepProps = {};
@@ -75,7 +80,6 @@ export default function HorizontalLinearStepper({ filename }) {
         })}
       </Stepper>
       <div>
-        <div>{filename}</div>
         {activeStep === steps.length - 1 ? (
           <div>
             <Typography className={classes.instructions}>
@@ -108,17 +112,17 @@ export default function HorizontalLinearStepper({ filename }) {
           </div>
         ) : (
           <div>
-            <Typography className={classes.instructions}>
-              <div>
-                <UploadForm
-                  type="details"
-                  formRef={formRef}
-                  onSubmit={setDetailsRx}
-                />
+            <div className={classes.content}>
+              <UploadForm
+                type="details"
+                formRef={formRef}
+                onSubmit={setDetailsRx}
+              />
+              <Typography variant="body1" className={classes.instructions}>
                 Pick an thumbnail:
-                <ImagePicker list={thumbnails || new Array(3).fill({})} />}
-              </div>
-            </Typography>
+              </Typography>
+              <ImagePicker list={thumbnails || new Array(3).fill({})} />
+            </div>
             <div>
               <Button
                 disabled={activeStep === 0}

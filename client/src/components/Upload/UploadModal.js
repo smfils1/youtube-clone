@@ -53,20 +53,6 @@ const DialogContent = withStyles((theme) => ({
 export default function CustomizedDialogs({ isOpen, handleClose }) {
   const filename = useSelector(({ upload }) => upload.filename);
 
-  //const [open, setOpen] = React.useState(isOpen);
-  //const [filename, setFilename] = React.useState("");
-  //const [openStepper, setOpenStepper] = React.useState(false);
-
-  // const handleClose = () => {
-  //   setOpen(false);
-  //   handUploadClose();
-  // };
-
-  // const loadStepper = (filename) => {
-  //   setOpenStepper(true);
-  //   setFilename(filename);
-  // };
-
   return (
     <Dialog
       onClose={handleClose}
@@ -77,7 +63,7 @@ export default function CustomizedDialogs({ isOpen, handleClose }) {
         Upload video
       </DialogTitle>
       <DialogContent dividers>
-        {filename ? <UploadStepper filename={filename} /> : <VidDropzone />}
+        {filename ? <UploadStepper /> : <VidDropzone />}
       </DialogContent>
     </Dialog>
   );

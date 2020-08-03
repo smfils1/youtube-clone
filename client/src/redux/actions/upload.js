@@ -118,6 +118,7 @@ const uploadVideoInfo = () => {
 
 export {
   setModal,
+  resetUpload,
   uploadVideo,
   setThumbnail,
   setDetails,

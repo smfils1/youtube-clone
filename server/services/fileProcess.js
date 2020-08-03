@@ -97,7 +97,7 @@ const generateThumbnails = async (videoFile, limit) => {
     ffmpeg(videoPath)
       .on("filenames", function (filenames) {
         thumbnailLinks = filenames.map((filename) => {
-          const link = generateLink({ filename, type: "video" });
+          const link = generateLink({ filename, type: "thumbnail" });
           return { filename, link };
         });
       })
@@ -137,8 +137,8 @@ const videoInfo = async (filename) => {
 const storeFile = async ({ filename, type }) => {
   const filePath =
     type === "video"
-      ? await getPath({ type: "video", filename: videoFile })
-      : await getPath({ type: "thumbnail", filename: videoFile });
+      ? await getPath({ type: "video", filename })
+      : await getPath({ type: "thumbnail", filename });
   const mimeType = type === "video" ? "video/mp4" : "image/png";
 
   try {

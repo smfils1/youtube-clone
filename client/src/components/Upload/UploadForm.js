@@ -28,15 +28,12 @@ const categories = [
 ];
 
 const useStyles = makeStyles((theme) => ({
-  formControl: {
-    margin: theme.spacing(3),
-  },
-  button: {
-    margin: theme.spacing(1, 1, 0, 0),
+  spacing: {
+    margin: theme.spacing(2),
   },
 }));
 
-const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
+const UploadForm = ({ type, onSubmit, formRef }) => {
   const classes = useStyles();
   const form = (type) => {
     let validation = {};
@@ -74,16 +71,7 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
       }}
       validateOnMount
     >
-      {({
-        values,
-        errors,
-        touched,
-        handleChange,
-        handleBlur,
-        handleSubmit,
-        isSubmitting,
-        validateForm,
-      }) => (
+      {({ values, errors, touched, handleChange, handleBlur }) => (
         <>
           {type === "details" && (
             <>
@@ -97,6 +85,7 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
                 variant="outlined"
                 onChange={handleChange}
                 onBlur={handleBlur}
+                className={classes.spacing}
               />
               <TextField
                 error={touched.description && errors.description}
@@ -107,6 +96,7 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
                 helperText={errors.description}
                 variant="outlined"
                 onChange={handleChange}
+                className={classes.spacing}
                 onBlur={handleBlur}
               />
 
@@ -115,6 +105,7 @@ const UploadForm = ({ type, onSubmit, submitBtnText, formRef }) => {
                 label="category"
                 name="category"
                 value={values.category}
+                className={classes.spacing}
                 onChange={handleChange}
                 onBlur={handleBlur}
               >

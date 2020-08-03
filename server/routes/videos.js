@@ -39,7 +39,7 @@ router.post("/upload", async (req, res) => {
     const { id: videoStoreId } = await fileProcess.storeFile({
       filename: videoFilename,
       type: "video",
-    }); //"1EpoxKjGQtiB4GCQOZfsPwDtOYjKrX-Ig"
+    });
     const { id: thumbnailStoreId } = await fileProcess.storeFile({
       filename: thumbnailFilename,
       type: "thumbnail",

@@ -1,22 +1,16 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-
-import {
-  makeStyles,
-  Typography,
-  Divider,
-  Avatar,
-  Button,
-  Collapse,
-} from "@material-ui/core";
+import { makeStyles, Typography, Avatar, Button } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
 import clsx from "clsx";
 import moment from "moment";
 import urlJoin from "url-join";
+
 import { BACKEND_URL } from "../../config";
 import CommentReplies from "./CommentReplies";
 import LikeDislikes from "../LikeDislikes";
 import CommentForm from "./CommentForm";
+
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,
@@ -52,6 +46,9 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: grey[400],
     borderRadius: 2,
   },
+  timeAgo: {
+    marginLeft: theme.spacing(1),
+  },
 }));
 
 const Comment = ({ comment }) => {
@@ -81,7 +78,10 @@ const Comment = ({ comment }) => {
             <Typography variant="body2" className={clsx(classes.channel)}>
               {comment.channelName}
             </Typography>
-            <Typography variant="caption" className={clsx(classes.subTitle)}>
+            <Typography
+              variant="caption"
+              className={clsx(classes.subTitle, classes.timeAgo)}
+            >
               {moment(comment.createdAt).fromNow()}
             </Typography>
           </div>

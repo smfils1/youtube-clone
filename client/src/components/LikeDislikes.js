@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Button, Typography, makeStyles } from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { Typography, makeStyles } from "@material-ui/core";
 import { ThumbDown, ThumbUp } from "@material-ui/icons";
 import { blue, grey } from "@material-ui/core/colors";
 import urlJoin from "url-join";
@@ -122,12 +122,10 @@ const LikeDislikes = ({ size, showDislikes = true, type, id, videoId }) => {
           })}
         />
         <Typography variant="body2">
-          {" "}
           {new NumAbbr().abbreviate(likes, 2)}
         </Typography>
       </div>
       <div className={classes.rating}>
-        {" "}
         <ThumbDown
           onClick={() => handleThumbClick(getRating(0))}
           className={clsx(classes.thumbBtn, {

@@ -2,15 +2,11 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { List, ListItem, ListItemText } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-import { useHistory } from "react-router";
 
 import NavItem from "./NavItem";
 import categoryIcons from "../categoryIcons";
 
 const useStyles = makeStyles((theme) => ({
-  icon: {
-    padding: theme.spacing(0, 1),
-  },
   title: {
     padding: theme.spacing(0, 1),
     fontSize: "1em",
@@ -35,21 +31,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Img = ({ className, src, alt }) => {
-  return (
-    <img
-      src={src}
-      alt={alt}
-      // className={className}
-      style={{ width: "100%", height: "100%" }}
-    />
-  );
-};
-
-// const handleCategoryClick = (history, categoryId) => {
-//   history.push(`/trending?category=${categoryId}`);
-// };
-
 const SideCategoryMenu = () => {
   const classes = useStyles();
   return (
@@ -68,7 +49,6 @@ const SideCategoryMenu = () => {
             title={item.title}
             icon={() => (
               <img
-                //style={{ width: "100%", height: "100%" }}
                 className={classes.bestOfYoutubeIcon}
                 src={item.icon}
                 alt={item.title + " logo"}

@@ -8,9 +8,6 @@ const useStyles = makeStyles((theme) => ({
     display: "flex",
     flexDirection: "column",
   },
-  thumbnail: {
-    width: "25%",
-  },
 }));
 
 export default function VideoList({ type, isLoading, videos }) {

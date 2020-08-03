@@ -140,7 +140,6 @@ const VideoCard = ({
                   [classes.size_2]: type === "horizontal_2",
                   [classes.size_3]: ["vertical_1", "vertical_2"].includes(type),
                 })}
-                src={"https://via.placeholder.com/1280x720"}
                 duration={duration}
               />
             </Skeleton>

@@ -5,9 +5,6 @@ import clsx from "clsx";
 const useStyles = makeStyles((theme) => ({
   root: {
     position: "relative",
-    // width: "100%",
-    // height: "100%",
-    // backgroundImage: `url(${"https://via.placeholder.com/200x200"})`,
   },
   img: {
     width: "100%",
@@ -30,10 +27,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Thumb = ({
-  src = "https://via.placeholder.com/200x200",
-  // href,
-  // width = "100%",
-  // height = "100%",
+  src = "https://via.placeholder.com/1280x720",
   imgStyle,
   duration = 0,
 }) => {

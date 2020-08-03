@@ -4,22 +4,23 @@ import {
   Typography,
   Divider,
   Avatar,
-  Button,
   Collapse,
 } from "@material-ui/core";
-import clsx from "clsx";
-import { grey } from "@material-ui/core/colors";
-import SubscribeBtn from "../SubscribeBtn";
-import LikeDislikes from "../LikeDislikes";
 import axios from "axios";
 import NumAbbr from "number-abbreviate";
 import moment from "moment";
+import clsx from "clsx";
+
+import { grey } from "@material-ui/core/colors";
+import SubscribeBtn from "../SubscribeBtn";
+import LikeDislikes from "../LikeDislikes";
 import { BACKEND_URL } from "../../config";
 
 const api = axios.create({
   withCredentials: true,
   baseURL: BACKEND_URL,
 });
+
 const useStyles = makeStyles((theme) => ({
   text: {
     fontWeight: 400,
@@ -28,6 +29,9 @@ const useStyles = makeStyles((theme) => ({
   },
   subTitle: {
     color: grey[700],
+  },
+  pointer: {
+    cursor: "pointer",
   },
   primaryInfo: {
     paddingTop: theme.spacing(1),
@@ -84,7 +88,7 @@ export default function VideoContent({ videoId }) {
       }
     };
     fetchVideoContent();
-  }, []);
+  }, [videoId]);
 
   const classes = useStyles();
   return (
@@ -134,7 +138,7 @@ export default function VideoContent({ videoId }) {
             <Typography
               variant="subtitle2"
               gutterBottom
-              className={classes.subTitle}
+              className={clsx(classes.subTitle, classes.pointer)}
               onClick={() => setShowMore((previous) => !previous)}
             >
               Show More{" "}

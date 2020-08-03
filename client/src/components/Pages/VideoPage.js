@@ -3,15 +3,15 @@ import {
   makeStyles,
   Grid,
   Divider,
-  Toolbar,
   useMediaQuery,
-  IconButton,
   useTheme,
 } from "@material-ui/core";
+import queryString from "query-string";
+
 import VideoContent from "../Video/VideoContent";
 import SecondaryVidContent from "../Video/SecondaryVidContent";
-import queryString from "query-string";
 import CommentsContent from "../Comments/CommentsContent";
+
 const useStyles = makeStyles((theme) => ({
   container: {
     padding: theme.spacing(3),

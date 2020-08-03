@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import NumAbbr from "number-abbreviate";
 import { grey } from "@material-ui/core/colors";
 import { Typography, Avatar, makeStyles } from "@material-ui/core";

@@ -1,13 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import {
-  makeStyles,
-  Typography,
-  Divider,
-  Avatar,
-  Button,
-  Collapse,
-} from "@material-ui/core";
+import { useSelector } from "react-redux";
+import { makeStyles, Typography } from "@material-ui/core";
 import { blue } from "@material-ui/core/colors";
 import { ArrowDropDown, ArrowDropUp } from "@material-ui/icons";
 
@@ -59,7 +52,7 @@ const CommentReplies = ({ parentCommentId }) => {
   const toggleOpen = () => setOpen((isOpen) => !isOpen);
   useEffect(() => {
     let count = 0;
-    comments.map((comment) => {
+    comments.forEach((comment) => {
       if (comment.commentTo === parentCommentId) {
         count++;
       }

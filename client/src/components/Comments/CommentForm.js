@@ -9,8 +9,10 @@ import {
 import { red } from "@material-ui/core/colors";
 import urlJoin from "url-join";
 import axios from "axios";
+
 import { BACKEND_URL } from "../../config";
 import { addComment } from "../../redux/actions/comments";
+
 const api = axios.create({
   withCredentials: true,
   baseURL: BACKEND_URL,
@@ -39,7 +41,6 @@ const CommentForm = ({ videoId, commentTo, handleReplyComment }) => {
   const isAuth = useSelector(({ channel }) => channel.isAuth);
   const userId = useSelector(({ channel }) => channel.id);
   const channelImg = useSelector(({ channel }) => channel.image);
-  const channelName = useSelector(({ channel }) => channel.name);
   const classes = useStyles();
 
   const handleChange = (e) => setComment(e.target.value);

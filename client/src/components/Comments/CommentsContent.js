@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { Typography } from "@material-ui/core";
+
 import Comments from "./Comments";
 import CommentForm from "./CommentForm";
 import { getVideoComments } from "../../redux/actions/comments";
@@ -14,7 +16,7 @@ const CommentsContent = ({ videoId }) => {
 
   return (
     <div>
-      <p>{comments.length} Comments</p>
+      <Typography variant="body1">{comments.length} Comments</Typography>
       <CommentForm videoId={videoId} />
       <Comments videoId={videoId} />
     </div>

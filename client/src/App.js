@@ -7,7 +7,6 @@ import TrendingPage from "./components/Pages/TrendingPage";
 import SearchPage from "./components/Pages/SearchPage";
 import ComingSoonPage from "./components/Pages/ComingSoonPage";
 import ChannelPage from "./components/Pages/ChannelPage";
-//import SubscriptionPage from "./components/Pages/SubscriptionPage";
 
 import auth from "./components/authHOC";
 import Nav from "./components/Nav";
@@ -22,7 +21,6 @@ function App() {
   const Search = auth(SearchPage, false);
   const ComingSoon = auth(ComingSoonPage, false);
   const Channel = auth(ChannelPage, false);
-  //const Subscription = auth(SubscriptionPage, false);
 
   return (
     <div>

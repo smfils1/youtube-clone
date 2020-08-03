@@ -2,17 +2,26 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { makeStyles, Container, Typography } from "@material-ui/core";
 import { grey } from "@material-ui/core/colors";
-
+import clsx from "clsx";
+import SubscriptionPage from "./SubscriptionPage";
 import SignInBtn from "../SignInBtn";
 import menuAuthIcons from "../menuAuthIcons";
 import ComingSoonPage from "./ComingSoonPage";
 
+const comingSoon = ["library", "myVideos", "live", "watchLater", "history"];
+const authPages = ["subscriptions"];
+
 const useStyles = makeStyles((theme) => ({
-  root: {
+  root_1: {
     flex: 1,
     display: "flex",
     justifyContent: "center",
     alignItems: "center",
+    flexDirection: "column",
+  },
+  root_2: {
+    flex: 1,
+    display: "flex",
     flexDirection: "column",
   },
   icon: { fontSize: "7em", color: grey[500], paddingBottom: theme.spacing(2) },
@@ -28,7 +37,12 @@ const SignInPage = ({ page }) => {
   const Icon = authIcon.icon;
   const classes = useStyles();
   return (
-    <Container className={classes.root}>
+    <Container
+      className={clsx({
+        [classes.root_1]: !isAuth || !page || comingSoon.includes(page),
+        [classes.root_2]: authPages.includes(page),
+      })}
+    >
       {(() => {
         if (!isAuth) {
           return (
@@ -47,17 +61,10 @@ const SignInPage = ({ page }) => {
               <SignInBtn size="large" />
             </>
           );
-        } else if (
-          [
-            "library",
-            "myVideos",
-            "live",
-            "watchLater",
-            "history",
-            "subscriptions",
-          ].includes(page)
-        ) {
+        } else if (comingSoon.includes(page)) {
           return <ComingSoonPage />;
+        } else if (authPages.includes(page)) {
+          return <SubscriptionPage />;
         } else {
           return <div>{page}</div>;
         }

@@ -18,7 +18,7 @@ This is a YouTube Clone that implements the main features of [YouTube](https://w
 ## Features
 
 - [x] Google OAuth
-- [ ] Video upload, streaming, commenting, and rating
+- [x] Video upload, streaming, commenting, and rating
 - [x] Channel subscriptions
 - [x] Trending, recommended, and categorized videos
 - [x] Video searching

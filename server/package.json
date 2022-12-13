@@ -16,7 +16,7 @@
     "cookie-parser": "^1.4.5",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^39.2.0",
     "helmet": "^3.22.0",

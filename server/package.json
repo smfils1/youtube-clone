@@ -20,7 +20,7 @@
     "fluent-ffmpeg": "^2.1.2",
     "googleapis": "^39.2.0",
     "helmet": "^3.22.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "lodash": "^4.17.19",
     "moment": "^2.27.0",
     "mongoose": "^5.9.14",
